@@ -1,0 +1,21 @@
+# IDEs files
+/.vs/
+/.idea/
+
+# Build files
+/EasyStay.Application/bin/
+/EasyStay.Application/obj/
+/EasyStay.Domain/bin/
+/EasyStay.Domain/obj/
+/EasyStay.Persistence/bin/
+/EasyStay.Persistence/obj/
+/EasyStay.Infrastructure/bin/
+/EasyStay.Infrastructure/obj/
+/EasyStay.WebApi/bin/
+/EasyStay.WebApi/obj/
+
+# Development appsettings.json
+/EasyStay.WebApi/appsettings.Development.json
+
+# API data
+/EasyStay.WebApi/Data/
