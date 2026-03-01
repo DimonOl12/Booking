@@ -10,6 +10,12 @@ namespace Web.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Login(string? returnUrl = null)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpGet]
         public IActionResult Register()
         {
