@@ -1,109 +1,250 @@
 @model Web.Models.RegisterViewModel
 @{
     ViewData["Title"] = "Реєстрація";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio - Реєстрація</title>
+    <link rel="stylesheet" href="~/css/auth.css" />
+</head>
+<body>
+    <div class="auth-page-figma">
 
-<div class="auth-page">
-    <div class="auth-bg">
-        <div class="auth-bg-left"></div>
-        <div class="auth-bg-right"></div>
-    </div>
+        <!-- Background Image -->
+        <div class="auth-hero-bg">
+            <img src="~/images/Subtract.jpg" alt="" />
+        </div>
 
-    @await Html.PartialAsync("_Navbar")
+        <!-- Top Navbar -->
+        <nav class="auth-topbar">
+            <a href="/" class="auth-topbar-logo">
+                <img src="~/images/icons/Reservio.svg" alt="Reservio" />
+            </a>
+            <div class="auth-topbar-right">
+                <div class="auth-topbar-currency">UAH</div>
+                <div class="auth-topbar-flag">
+                    <img src="~/images/icons/icon_flag_ua.svg" alt="UA" />
+                </div>
+                <a href="#" class="auth-topbar-help">
+                    <img src="~/images/icons/Help.svg" alt="Допомога" />
+                </a>
+            </div>
+        </nav>
 
-    <main class="auth-content">
-        <div class="auth-card">
-            <div class="auth-card-body">
+        <!-- Main Content -->
+        <main class="auth-main-figma">
+            <div class="auth-card-figma">
 
-                <div class="auth-tabs">
-                    <a href="@Url.Action("Register", "Account")" class="auth-tab active">Зареєструватися</a>
-                    <a href="@Url.Action("Login", "Account")" class="auth-tab">Увійти</a>
+                <!-- ============================
+                     STEP 1: Registration Form
+                     ============================ -->
+                <div id="register-step-1">
+
+                    <!-- Tabs -->
+                    <div class="auth-tabs-figma" style="max-width:680px;margin:0 auto;">
+                        <a href="@Url.Action("Register", "Account")" class="auth-tab-figma active">Зареєструватися</a>
+                        <a href="@Url.Action("Login", "Account")" class="auth-tab-figma">Увійти</a>
+                    </div>
+
+                    <!-- Form Content -->
+                    <div class="auth-form-content" style="margin-top:16px;">
+
+                        <!-- Heading -->
+                        <h1 class="auth-heading-figma">Створіть акаунт</h1>
+
+                        <!-- Fields -->
+                        <div class="auth-fields-group">
+                            <!-- Email -->
+                            <div class="auth-field">
+                                <div class="auth-field-label-row">
+                                    <label class="auth-field-label" for="Email">Електронна адреса</label>
+                                </div>
+                                <div class="auth-input-wrapper">
+                                    <input type="email"
+                                           class="auth-input-figma"
+                                           id="Email"
+                                           name="Email"
+                                           placeholder="Введіть свою електронну адресу"
+                                           autocomplete="email" />
+                                </div>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="auth-field">
+                                <div class="auth-field-label-row">
+                                    <label class="auth-field-label" for="Password">Пароль</label>
+                                </div>
+                                <div class="auth-input-wrapper">
+                                    <input type="password"
+                                           class="auth-input-figma"
+                                           id="Password"
+                                           name="Password"
+                                           placeholder="Введіть пароль"
+                                           autocomplete="new-password" />
+                                    <button type="button" class="auth-eye-toggle" data-target="Password" aria-label="Показати/Сховати пароль">
+                                        <img src="~/images/icons/icon_eye_closed.svg" alt="" class="eye-icon" />
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="auth-field">
+                                <div class="auth-field-label-row">
+                                    <label class="auth-field-label" for="ConfirmPassword">Пароль</label>
+                                </div>
+                                <div class="auth-input-wrapper">
+                                    <input type="password"
+                                           class="auth-input-figma"
+                                           id="ConfirmPassword"
+                                           name="ConfirmPassword"
+                                           placeholder="Підтвердьте свій пароль"
+                                           autocomplete="new-password" />
+                                    <button type="button" class="auth-eye-toggle" data-target="ConfirmPassword" aria-label="Показати/Сховати пароль">
+                                        <img src="~/images/icons/icon_eye_closed.svg" alt="" class="eye-icon" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button (goes to step 2) -->
+                        <button type="button" class="auth-submit-btn" onclick="goToRegisterStep(2)">Продовжити</button>
+                    </div>
+
+                    <!-- Social Register Section -->
+                    <div class="auth-social-section" style="margin-top:16px;">
+                        <div class="auth-social-block">
+                            <span class="auth-social-label">Зареєструватися з</span>
+                            <div class="auth-social-buttons">
+                                <button type="button" class="auth-social-btn" aria-label="Google">
+                                    <img src="~/images/icons/google.svg" alt="Google" />
+                                </button>
+                                <button type="button" class="auth-social-btn" aria-label="Apple">
+                                    <img src="~/images/icons/apple.svg" alt="Apple" />
+                                </button>
+                                <button type="button" class="auth-social-btn" aria-label="Facebook">
+                                    <img src="~/images/icons/Facebook.svg" alt="Facebook" />
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="auth-footer-figma">
+                            <p class="auth-footer-text">
+                                Входячи в акаунт або створюючи новий, ви погоджуєтеся з нашими
+                                <a href="#">Правилами й умовами</a> та <a href="#">Політикою конфіденційності</a>
+                            </p>
+                            <p class="auth-footer-copy">Усі права захищено.</p>
+                            <p class="auth-footer-copy">Copyright (2006 - 2026) - Reservio&#8482;</p>
+                        </div>
+                    </div>
+
                 </div>
 
-                <h1 class="auth-title">Створіть акаунт</h1>
+                <!-- ============================
+                     STEP 2: Email Confirmation (OTP)
+                     ============================ -->
+                <div id="register-step-2" style="display:none;">
 
-                <form asp-action="Register" asp-controller="Account" method="post">
-                    <div class="form-group">
-                        <div class="form-label-row">
-                            <label class="form-label" for="Email">Електронна адреса</label>
+                    <!-- Tabs -->
+                    <div class="auth-tabs-figma" style="max-width:680px;margin:0 auto;">
+                        <span class="auth-tab-figma active">Зареєструватися</span>
+                        <a href="@Url.Action("Login", "Account")" class="auth-tab-figma">Увійти</a>
+                    </div>
+
+                    <!-- Form Content -->
+                    <div class="auth-form-content" style="margin-top:16px;max-width:505px;align-items:flex-start;">
+
+                        <!-- Heading -->
+                        <h1 class="auth-heading-figma" style="text-align:left;">Підтвердьте свою електронну адресу, щоб увійти</h1>
+                        <p class="auth-subheading-figma" style="text-align:left;max-width:100%;">
+                            Ми надіслали код підтвердження на *email*. Введіть цей код, щоб продовжити.
+                        </p>
+
+                        <!-- OTP Inputs -->
+                        <div class="auth-otp-group">
+                            <input type="text" class="auth-otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Код 1" />
+                            <input type="text" class="auth-otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Код 2" />
+                            <input type="text" class="auth-otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Код 3" />
+                            <input type="text" class="auth-otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Код 4" />
+                            <input type="text" class="auth-otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Код 5" />
+                            <input type="text" class="auth-otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="Код 6" />
                         </div>
-                        <div class="input-wrapper">
-                            <input type="email" class="form-input" id="Email" name="Email" placeholder="Введіть свою електронну адресу" asp-for="Email" />
+
+                        <!-- Continue (goes to home) -->
+                        <a href="/" class="auth-submit-btn" style="align-self:center;">Продовжити</a>
+
+                        <!-- Resend info -->
+                        <p class="auth-resend-text" style="align-self:center;">
+                            Не отримали електронного листа? Перевірте папку зі спамом або надішліть запит на інший код через 60 секунд
+                        </p>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="auth-social-section" style="margin-top:16px;">
+                        <div class="auth-footer-figma">
+                            <p class="auth-footer-text">
+                                Входячи в акаунт або створюючи новий, ви погоджуєтеся з нашими
+                                <a href="#">Правилами й умовами</a> та <a href="#">Політикою конфіденційності</a>
+                            </p>
+                            <p class="auth-footer-copy">Усі права захищено.</p>
+                            <p class="auth-footer-copy">Copyright (2006 - 2026) - Reservio&#8482;</p>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <div class="form-label-row">
-                            <label class="form-label" for="Password">Пароль</label>
-                        </div>
-                        <div class="input-wrapper">
-                            <input type="password" class="form-input has-toggle" id="Password" name="Password" placeholder="Введіть пароль" asp-for="Password" />
-                            <button type="button" class="password-toggle" aria-label="Показати пароль">
-                                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-                                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-                                    <line x1="1" y1="1" x2="23" y2="23"/>
-                                </svg>
-                                <svg class="eye-closed" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                    <circle cx="12" cy="12" r="3"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="form-label-row">
-                            <label class="form-label" for="ConfirmPassword">Пароль</label>
-                        </div>
-                        <div class="input-wrapper">
-                            <input type="password" class="form-input has-toggle" id="ConfirmPassword" name="ConfirmPassword" placeholder="Підтвердіть свій пароль" asp-for="ConfirmPassword" />
-                            <button type="button" class="password-toggle" aria-label="Показати пароль">
-                                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-                                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-                                    <line x1="1" y1="1" x2="23" y2="23"/>
-                                </svg>
-                                <svg class="eye-closed" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                    <circle cx="12" cy="12" r="3"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="btn-center">
-                        <button type="submit" class="btn-primary">Продовжити</button>
-                    </div>
-                </form>
-
-                <div class="social-section">
-                    <p class="social-label">Або зареєструватися з</p>
-                    <div class="social-buttons">
-                        <button type="button" class="social-btn" aria-label="Google">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
-                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                            </svg>
-                        </button>
-                        <button type="button" class="social-btn" aria-label="Apple">
-                            <svg viewBox="0 0 24 24" fill="#000">
-                                <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-                            </svg>
-                        </button>
-                        <button type="button" class="social-btn" aria-label="Facebook">
-                            <svg viewBox="0 0 24 24" fill="#1877F2">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                            </svg>
-                        </button>
-                    </div>
                 </div>
 
             </div>
+        </main>
 
-            @await Html.PartialAsync("_Footer")
-        </div>
-    </main>
-</div>
+    </div>
+
+    <script>
+        // Toggle password visibility (multiple fields)
+        (function () {
+            var toggleBtns = document.querySelectorAll('.auth-eye-toggle');
+            toggleBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var targetId = btn.getAttribute('data-target');
+                    var input = document.getElementById(targetId);
+                    var icon = btn.querySelector('.eye-icon');
+                    if (input && icon) {
+                        var isPassword = input.type === 'password';
+                        input.type = isPassword ? 'text' : 'password';
+                        icon.src = isPassword
+                            ? '/images/icons/icon_eye_open.svg'
+                            : '/images/icons/icon_eye_closed.svg';
+                    }
+                });
+            });
+        })();
+
+        // Step navigation
+        function goToRegisterStep(step) {
+            document.getElementById('register-step-1').style.display = 'none';
+            document.getElementById('register-step-2').style.display = 'none';
+            document.getElementById('register-step-' + step).style.display = 'block';
+        }
+
+        // OTP auto-focus: after typing 1 digit, jump to next input
+        (function () {
+            var otpInputs = document.querySelectorAll('.auth-otp-input');
+            otpInputs.forEach(function (input, idx) {
+                input.addEventListener('input', function () {
+                    if (input.value.length === 1 && idx < otpInputs.length - 1) {
+                        otpInputs[idx + 1].focus();
+                    }
+                });
+                input.addEventListener('keydown', function (e) {
+                    if (e.key === 'Backspace' && input.value === '' && idx > 0) {
+                        otpInputs[idx - 1].focus();
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

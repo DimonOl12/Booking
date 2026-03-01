@@ -1,0 +1,13 @@
+src/Web/wwwroot/images/Subtract.jpg
+src/Web/wwwroot/images/icons/MeowChik.svg
+src/Web/wwwroot/images/icons/Reservio.svg
+src/Web/wwwroot/images/icons/Help.svg
+src/Web/wwwroot/images/icons/icon_flag_ua.svg
+src/Web/wwwroot/images/icons/icon_eye_closed.svg
+src/Web/wwwroot/images/icons/icon_success_circle.svg
+src/Web/wwwroot/images/icons/Facebook.svg
+src/Web/wwwroot/images/icons/apple.svg
+src/Web/wwwroot/images/icons/icon_close_circle.svg
+src/Web/wwwroot/images/icons/google.svg
+src/Web/wwwroot/images/icons/icon_arrow_back.svg
+src/Web/wwwroot/images/icons/icon_eye_open.svg
