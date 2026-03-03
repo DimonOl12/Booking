@@ -8,7 +8,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reservio - Бронювання житла</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/home.css" />
+    <link rel="stylesheet" href="~/css/search.css" />
 </head>
 <body>
 
@@ -36,44 +40,97 @@
                 <button class="search-tab">Дозвілля</button>
                 <button class="search-tab">Таксі з/до аеропорту</button>
             </div>
-
-            <div class="search-inputs-row">
+            <form class="search-inputs-row" id="homeSearchForm" method="get" action="/Home/Search">
                 <div class="search-input-group" style="flex:2;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    <input type="text" placeholder="Куди ви вирушаєте?" />
+                    <input type="text" name="city" id="homeCity" placeholder="Куди ви вирушаєте?" autocomplete="off" />
+                    <input type="hidden" name="adults"   id="homeAdults"   value="2" />
+                    <input type="hidden" name="children" id="homeChildren" value="0" />
+                    <input type="hidden" name="rooms"    id="homeRooms"    value="1" />
+                    <input type="hidden" name="checkIn"  id="homeCheckIn"  value="" />
+                    <input type="hidden" name="checkOut" id="homeCheckOut" value="" />
                 </div>
 
-                <div class="search-input-group">
+                <div class="search-input-group" id="homeDateField" style="cursor:pointer;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                         <line x1="16" y1="2" x2="16" y2="6"/>
                         <line x1="8" y1="2" x2="8" y2="6"/>
                         <line x1="3" y1="10" x2="21" y2="10"/>
                     </svg>
-                    <span class="search-text">Дата заїзду &ndash; Дата виїзду</span>
+                    <span id="homeDateLabel" class="search-text">Дата заїзду &ndash; Дата виїзду</span>
                 </div>
 
-                <div class="search-input-group">
+                <div class="search-input-group" id="homeGuestsField" style="cursor:pointer;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
                         <circle cx="9" cy="7" r="4"/>
                         <path d="M23 21v-2a4 4 0 00-3-3.87"/>
                         <path d="M16 3.13a4 4 0 010 7.75"/>
                     </svg>
-                    <span class="search-text">2 дорослих &middot; 0 дитина &middot; 1 номер</span>
+                    <span id="homeGuestsLabel" class="search-text">2 дорослих &middot; 0 дітей &middot; 1 номер</span>
                     <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 12 15 18 9"/>
                     </svg>
                 </div>
-            </div>
+            </form>
 
             <div class="search-btn-wrapper">
-                <button class="search-btn">Шукати</button>
+                <button class="search-btn" onclick="document.getElementById('homeSearchForm').submit()">Шукати</button>
             </div>
         </div>
+
+    <!-- Date picker popup (home) — inside wrapper for correct absolute positioning -->
+    <div class="home-popup datepicker-popup" id="homeDatepickerPopup" style="display:none; position:absolute; left:0; right:0; z-index:300;">
+        <div class="dp-months">
+            <div class="dp-month" id="hdpMonth1"></div>
+            <div class="dp-month" id="hdpMonth2"></div>
+        </div>
+        <div class="dp-footer">
+            <button class="dp-clear" id="hdpClear">Очистити</button>
+            <button class="dp-done" id="hdpDone">Готово</button>
+        </div>
     </div>
+
+    <!-- Guests popup (home) -->
+    <div class="home-popup guests-popup" id="homeGuestsPopup" style="display:none; position:absolute; z-index:300; right:0;">
+        <div class="gp-row">
+            <div class="gp-label">
+                <span class="gp-title">Дорослі</span>
+                <span class="gp-sub">Від 18 років</span>
+            </div>
+            <div class="gp-counter">
+                <button class="gp-btn" data-target="adults" data-action="dec">−</button>
+                <span id="hgp-adults">2</span>
+                <button class="gp-btn" data-target="adults" data-action="inc">+</button>
+            </div>
+        </div>
+        <div class="gp-row">
+            <div class="gp-label">
+                <span class="gp-title">Діти</span>
+                <span class="gp-sub">0–17 років</span>
+            </div>
+            <div class="gp-counter">
+                <button class="gp-btn" data-target="children" data-action="dec">−</button>
+                <span id="hgp-children">0</span>
+                <button class="gp-btn" data-target="children" data-action="inc">+</button>
+            </div>
+        </div>
+        <div class="gp-row">
+            <div class="gp-label">
+                <span class="gp-title">Номери</span>
+            </div>
+            <div class="gp-counter">
+                <button class="gp-btn" data-target="rooms" data-action="dec">−</button>
+                <span id="hgp-rooms">1</span>
+                <button class="gp-btn" data-target="rooms" data-action="inc">+</button>
+            </div>
+        </div>
+        <button class="gp-done" id="hgpDone">Готово</button>
+    </div>
+    </div><!-- /search-card-wrapper -->
 
 
     <div class="section">

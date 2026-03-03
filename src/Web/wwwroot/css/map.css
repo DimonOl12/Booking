@@ -1,0 +1,259 @@
+/* ============================================================
+   map.css — Map modal overlay for the search / catalog page
+   ============================================================ */
+
+/* ── Modal overlay ── */
+.map-modal {
+    position: fixed;
+    inset: 0;
+    background: var(--color-bg, #F2F2F2);
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+}
+.map-modal-inner {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    min-height: 0;
+}
+
+/* ── Left: filters sidebar ── */
+.map-sidebar {
+    width: 248px;
+    flex-shrink: 0;
+    background: var(--color-card, #FAFAFA);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #e0e0e0;
+}
+.map-sidebar-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #000;
+    padding: 24px 24px 12px;
+}
+
+/* Budget filter in map sidebar */
+.map-filter-budget {
+    padding: 20px 24px 24px;
+    background: rgba(34,51,0,.10);
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+}
+.map-filter-budget-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 14px;
+}
+.map-filter-budget-labels span:first-child { font-size: 16px; font-weight: 500; }
+.map-filter-budget-labels span:last-child  { font-size: 13px; color: #000; }
+
+/* Accordion items in map sidebar */
+.map-acc-item {
+    border-bottom: 1px solid #d0d0d0;
+}
+.map-acc-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body, Rubik, sans-serif);
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    text-align: left;
+    transition: background .15s;
+}
+.map-acc-header:hover { background: rgba(0,0,0,.03); }
+.map-acc-chevron {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    transition: transform .25s;
+    color: #000;
+}
+.map-acc-item.open .map-acc-chevron { transform: rotate(180deg); }
+.map-acc-body {
+    display: none;
+    padding: 0 24px 20px;
+    flex-direction: column;
+    gap: 12px;
+}
+.map-acc-item.open .map-acc-body { display: flex; }
+
+/* Reuse main filter-checkbox styles */
+.map-filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+    user-select: none;
+}
+.map-filter-checkbox input[type="checkbox"] { display: none; }
+.map-checkbox-custom {
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--color-primary, #223300);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background .15s;
+}
+.map-filter-checkbox input:checked + .map-checkbox-custom {
+    background: var(--color-primary, #223300);
+    border-color: var(--color-primary, #223300);
+}
+.map-filter-checkbox input:checked + .map-checkbox-custom::after {
+    content: '';
+    width: 12px;
+    height: 7px;
+    border-left: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: rotate(-45deg) translateY(-2px);
+    display: block;
+}
+
+/* ── Middle: hotel cards list ── */
+.map-cards-panel {
+    width: 420px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    padding: 16px;
+    background: var(--color-bg, #F2F2F2);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+.map-cards-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-muted, #777);
+    padding: 0 0 12px;
+}
+#mapCardsList {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+/* Smaller image height in map panel */
+#mapCardsList .lc-img-wrap { height: 140px; }
+
+/* Highlighted card in map panel */
+.listing-card.map-card-active {
+    box-shadow: 0 0 0 3px var(--color-accent, #E73D00);
+}
+
+/* ── Right: map area ── */
+.map-area-panel {
+    flex: 1;
+    position: relative;
+    min-width: 0;
+    background: #e8e8e8;
+}
+#leafletMap {
+    width: 100%;
+    height: 100%;
+}
+
+/* "← Повернутись" button */
+.btn-return-map {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    background: var(--color-primary, #223300);
+    color: #FFFFEE;
+    border: none;
+    border-radius: 20px;
+    font-family: var(--font-body, Rubik, sans-serif);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .2s;
+    box-shadow: 0 4px 16px rgba(0,0,0,.25);
+}
+.btn-return-map:hover { opacity: .88; }
+
+/* ── Leaflet price markers ── */
+.map-price-marker { background: transparent !important; border: none !important; }
+.mpm-inner {
+    display: inline-flex;
+    align-items: center;
+    background: var(--color-primary, #223300);
+    color: #FFFFEE;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-family: var(--font-body, Rubik, sans-serif);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    position: relative;
+    cursor: pointer;
+    transition: transform .15s, background .15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.mpm-inner::after {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 7px solid transparent;
+    border-top: 7px solid var(--color-primary, #223300);
+    border-bottom: none;
+}
+.map-price-marker:hover .mpm-inner,
+.map-price-marker.mpm-active .mpm-inner {
+    background: var(--color-accent, #E73D00);
+    transform: scale(1.08);
+}
+.map-price-marker.mpm-active .mpm-inner::after {
+    border-top-color: var(--color-accent, #E73D00);
+}
+
+/* Leaflet popup customisation */
+.leaflet-popup-content-wrapper {
+    border-radius: 16px !important;
+    padding: 0 !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,.15) !important;
+}
+.leaflet-popup-content { margin: 0 !important; }
+.map-popup {
+    padding: 16px;
+    min-width: 220px;
+    font-family: var(--font-body, Rubik, sans-serif);
+}
+.map-popup-name { font-size: 15px; font-weight: 700; color: var(--color-primary, #223300); margin-bottom: 4px; }
+.map-popup-loc  { font-size: 12px; color: #777; margin-bottom: 8px; }
+.map-popup-price { font-size: 15px; font-weight: 700; color: #0C1200; margin-bottom: 10px; }
+.map-popup-btn {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    background: var(--color-accent, #E73D00);
+    color: #FFFFEE;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+}
+.map-popup-btn:hover { opacity: .88; }

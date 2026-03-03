@@ -1,0 +1,6 @@
+# Игнорировать следы Claude Code
+.claude/
+.claude-code/
+CLAUDE.md
+"Фото з Figma/"
+Фото з Figma/

@@ -3,14 +3,14 @@
         <img src="~/images/icons/Reservio.svg" alt="Reservio" style="width: 159.848px; height: 30.074px; flex-shrink: 0;" />
     </a>
     <div class="home-navbar-right">
-        <span class="nav-text">UAH</span>
+        <div class="home-navbar-currency">UAH</div>
         <div class="home-navbar-flag">
-            <svg width="32" height="22" viewBox="0 0 32 22" fill="none">
-                <rect width="32" height="11" fill="#005BBB"/>
-                <rect y="11" width="32" height="11" fill="#FFD500"/>
+            <svg width="30" height="20" viewBox="0 0 30 20" fill="none">
+                <rect width="30" height="10" fill="#0057B7"/>
+                <rect y="10" width="30" height="10" fill="#FFD700"/>
             </svg>
         </div>
-        <a href="#" class="nav-text nav-text-desktop">Зареєструвати своє помешкання</a>
+        <a href="@Url.Action("Realtor", "Home")" class="nav-text nav-text-desktop">Зареєструвати своє помешкання</a>
         <a href="@Url.Action("Register", "Account")" class="nav-text nav-text-desktop">Зареєструватися</a>
         <a href="@Url.Action("Login", "Account")" class="btn-nav-primary">Увійти</a>
     </div>
