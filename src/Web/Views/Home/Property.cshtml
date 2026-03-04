@@ -20,7 +20,14 @@
 </head>
 <body>
 
-@await Html.PartialAsync("_HomeNavbarGuest")
+@if (User.Identity?.IsAuthenticated == true)
+{
+    @await Html.PartialAsync("_HomeNavbar")
+}
+else
+{
+    @await Html.PartialAsync("_HomeNavbarGuest")
+}
 
 <!-- ══ Search bar ══════════════════════════════════════════════ -->
 <div class="prop-search-wrap">
@@ -70,9 +77,10 @@
     </nav>
 </div>
 
-<!-- ══ Gallery ════════════════════════════════════════════════ -->
+<!-- ══ Main info card (cream) with gallery ══════════════════ -->
 <div class="prop-container">
-    <div class="prop-gallery" id="propGallery">
+    <div class="prop-main-card">
+        <div class="prop-gallery" id="propGallery">
         <div class="prop-gallery-main">
             <img src="@l.ImageUrl" alt="@l.Name" />
         </div>
@@ -94,12 +102,8 @@
             </svg>
             <span>10 фото</span>
         </button>
-    </div>
-</div>
-
-<!-- ══ Main info card (cream) ════════════════════════════════ -->
-<div class="prop-container">
-    <div class="prop-main-card">
+        </div>
+        <div class="prop-main-content">
         <div class="prop-info-row">
 
             <!-- Left: name + description -->
@@ -149,6 +153,7 @@
 
         <div class="prop-main-footer">
             <a href="#rooms" class="btn-choose-room">Обрати кімнату</a>
+        </div>
         </div>
     </div>
 </div>

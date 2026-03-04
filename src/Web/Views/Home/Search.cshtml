@@ -19,7 +19,14 @@
 </head>
 <body>
 
-@await Html.PartialAsync("_HomeNavbarGuest")
+@if (User.Identity?.IsAuthenticated == true)
+{
+    @await Html.PartialAsync("_HomeNavbar")
+}
+else
+{
+    @await Html.PartialAsync("_HomeNavbarGuest")
+}
 
 <div class="search-page-wrap">
 

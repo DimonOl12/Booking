@@ -1,0 +1,190 @@
+@model Web.Models.ConfirmEmailViewModel
+@{
+    ViewData["Title"] = "Підтвердження email";
+    Layout = null;
+    // For demo: show the code that would be emailed
+    var demoCode = TempData["ConfirmCode"] as string;
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Підтвердження</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/auth.css" />
+</head>
+<body>
+<div class="auth-page-figma">
+
+    <!-- Background Image -->
+    <div class="auth-hero-bg">
+        <img src="~/images/Subtract.jpg" alt="" />
+    </div>
+
+    <!-- Top Navbar -->
+    <nav class="auth-topbar">
+        <a href="/" class="auth-topbar-logo">
+            <img src="~/images/icons/Reservio.svg" alt="Reservio" />
+        </a>
+        <div class="auth-topbar-right">
+            <div class="auth-topbar-currency">UAH</div>
+            <div class="auth-topbar-flag">
+                <svg width="30" height="20" viewBox="0 0 30 20" fill="none">
+                    <rect width="30" height="10" fill="#0057B7"/>
+                    <rect y="10" width="30" height="10" fill="#FFD700"/>
+                </svg>
+            </div>
+            <a href="#" class="auth-topbar-help">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="auth-main-figma">
+        <form method="post" asp-action="ConfirmEmail" asp-controller="Account" id="confirm-form">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="Email" value="@Model.Email" />
+            <input type="hidden" name="Code" id="otp-hidden" value="" />
+
+            <div class="auth-card-figma">
+
+                <!-- Tabs -->
+                <div class="auth-tabs-figma">
+                    <span class="auth-tab-figma active">Зареєструватися</span>
+                    <a href="@Url.Action("Login", "Account")" class="auth-tab-figma">Увійти</a>
+                </div>
+
+                <!-- Form Content -->
+                <div class="auth-form-content" style="margin-top:8px;align-items:flex-start;">
+
+                    <!-- Heading -->
+                    <h1 class="auth-heading-figma" style="text-align:left;">Підтвердьте свою електронну адресу, щоб увійти</h1>
+                    <p class="auth-subheading-figma" style="text-align:left;max-width:100%;">
+                        Ми надіслали код підтвердження на <strong>@Model.Email</strong>. Введіть цей код, щоб продовжити.
+                    </p>
+
+                    @if (!string.IsNullOrEmpty(demoCode))
+                    {
+                        <div style="background:#e8f5e9;border:1px solid #4caf50;border-radius:12px;padding:10px 16px;font-size:13px;color:#2e7d32;width:100%;max-width:400px;">
+                            <strong>Demo:</strong> Ваш код підтвердження: <strong style="letter-spacing:4px;font-size:16px;">@demoCode</strong>
+                        </div>
+                    }
+
+                    <!-- Error -->
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="auth-error-box">
+                            <span class="auth-error-box-text">@ViewBag.Error</span>
+                        </div>
+                    }
+
+                    <!-- OTP Boxes -->
+                    <div class="auth-otp-group" id="otp-group">
+                        <input class="auth-otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code" data-idx="0" />
+                        <input class="auth-otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="1" />
+                        <input class="auth-otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="2" />
+                        <input class="auth-otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="3" />
+                        <input class="auth-otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="4" />
+                        <input class="auth-otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="5" />
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="auth-submit-btn" id="confirm-btn">Продовжити</button>
+
+                    <!-- Resend text -->
+                    <p class="auth-resend-text">
+                        Не отримали електронного листа? Перевірте папку зі спамом або
+                        <span id="resend-link" style="color:#0F90F3;cursor:pointer;" onclick="startResendTimer()">надішліть запит на інший код</span>
+                        <span id="resend-timer" style="display:none;">через <span id="timer-count">60</span> секунд</span>
+                    </p>
+                </div>
+
+                <!-- Footer -->
+                <div class="auth-footer-figma" style="margin-top:16px;">
+                    <p class="auth-footer-text">
+                        Входячи в акаунт або створюючи новий, ви погоджуєтеся з нашими
+                        <a href="#">Правилами й умовами</a> та <a href="#">Політикою конфіденційності</a>
+                    </p>
+                    <p class="auth-footer-copy">Усі права захищено.</p>
+                    <p class="auth-footer-copy">Copyright (2006 - 2026) - Reservio&#8482;</p>
+                </div>
+
+            </div>
+        </form>
+    </main>
+
+</div>
+
+<script>
+(function () {
+    var inputs = document.querySelectorAll('.auth-otp-input');
+    var hidden = document.getElementById('otp-hidden');
+    var form = document.getElementById('confirm-form');
+
+    inputs.forEach(function (inp, i) {
+        inp.addEventListener('input', function () {
+            inp.value = inp.value.replace(/\D/g, '');
+            if (inp.value.length === 1 && i < inputs.length - 1) {
+                inputs[i + 1].focus();
+            }
+            updateHidden();
+        });
+        inp.addEventListener('keydown', function (e) {
+            if (e.key === 'Backspace' && inp.value === '' && i > 0) {
+                inputs[i - 1].focus();
+            }
+        });
+        inp.addEventListener('paste', function (e) {
+            e.preventDefault();
+            var text = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+            for (var j = 0; j < Math.min(text.length, inputs.length); j++) {
+                inputs[j].value = text[j];
+            }
+            var focusIdx = Math.min(text.length, inputs.length - 1);
+            inputs[focusIdx].focus();
+            updateHidden();
+        });
+    });
+
+    function updateHidden() {
+        var code = '';
+        inputs.forEach(function (inp) { code += inp.value; });
+        hidden.value = code;
+    }
+
+    document.getElementById('confirm-btn').addEventListener('click', function (e) {
+        updateHidden();
+        if (hidden.value.length < 6) {
+            e.preventDefault();
+            alert('Введіть 6-значний код підтвердження.');
+        }
+    });
+
+    // Resend timer
+    window.startResendTimer = function () {
+        document.getElementById('resend-link').style.display = 'none';
+        document.getElementById('resend-timer').style.display = 'inline';
+        var count = 60;
+        document.getElementById('timer-count').textContent = count;
+        var interval = setInterval(function () {
+            count--;
+            document.getElementById('timer-count').textContent = count;
+            if (count <= 0) {
+                clearInterval(interval);
+                document.getElementById('resend-timer').style.display = 'none';
+                document.getElementById('resend-link').style.display = 'inline';
+            }
+        }, 1000);
+    };
+})();
+</script>
+</body>
+</html>

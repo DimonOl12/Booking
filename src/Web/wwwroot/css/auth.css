@@ -285,6 +285,23 @@
     border-color: var(--auth-success-border);
 }
 
+.auth-input-wrapper.field-error {
+    border-color: var(--auth-accent);
+}
+
+.field-status-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.field-status-error svg {
+    color: var(--auth-accent);
+}
+
 .auth-input-figma {
     flex: 1;
     border: none;

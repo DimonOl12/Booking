@@ -2,72 +2,97 @@
 @{
     ViewData["Title"] = "Увійти";
     Layout = null;
+    var hasError = ViewBag.Error != null;
 }
 <!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reservio - Увійти</title>
+    <title>Reservio — Увійти</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/auth.css" />
 </head>
 <body>
-    <div class="auth-page-figma">
+<div class="auth-page-figma">
 
-        <!-- Background Image -->
-        <div class="auth-hero-bg">
-            <img src="~/images/Subtract.jpg" alt="" />
-        </div>
+    <!-- Background Image -->
+    <div class="auth-hero-bg">
+        <img src="~/images/Subtract.jpg" alt="" />
+    </div>
 
-        <!-- Top Navbar -->
-        <nav class="auth-topbar">
-            <a href="/" class="auth-topbar-logo">
-                <img src="~/images/icons/Reservio.svg" alt="Reservio" />
-            </a>
-            <div class="auth-topbar-right">
-                <div class="auth-topbar-currency">UAH</div>
-                <div class="auth-topbar-flag">
-                    <img src="~/images/icons/icon_flag_ua.svg" alt="UA" />
-                </div>
-                <a href="#" class="auth-topbar-help">
-                    <img src="~/images/icons/Help.svg" alt="Допомога" />
-                </a>
+    <!-- Top Navbar -->
+    <nav class="auth-topbar">
+        <a href="/" class="auth-topbar-logo">
+            <img src="~/images/icons/Reservio.svg" alt="Reservio" />
+        </a>
+        <div class="auth-topbar-right">
+            <div class="auth-topbar-currency">UAH</div>
+            <div class="auth-topbar-flag">
+                <svg width="30" height="20" viewBox="0 0 30 20" fill="none">
+                    <rect width="30" height="10" fill="#0057B7"/>
+                    <rect y="10" width="30" height="10" fill="#FFD700"/>
+                </svg>
             </div>
-        </nav>
+            <a href="#" class="auth-topbar-help">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </a>
+        </div>
+    </nav>
 
-        <!-- Main Content -->
-        <main class="auth-main-figma">
+    <!-- Main Content -->
+    <main class="auth-main-figma">
+        <form method="post" asp-action="Login" asp-controller="Account" asp-route-returnUrl="@ViewBag.ReturnUrl">
+            @Html.AntiForgeryToken()
             <div class="auth-card-figma">
 
                 <!-- Tabs -->
                 <div class="auth-tabs-figma">
                     <a href="@Url.Action("Register", "Account")" class="auth-tab-figma">Зареєструватися</a>
-                    <a href="@Url.Action("Login", "Account")" class="auth-tab-figma active">Увійти</a>
+                    <span class="auth-tab-figma active">Увійти</span>
                 </div>
 
                 <!-- Form Content -->
                 <div class="auth-form-content">
 
                     <!-- Heading -->
-                    <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;">
                         <h1 class="auth-heading-figma">Увійдіть в свій акаунт</h1>
                         <p class="auth-subheading-figma">Ви можете увійти за допомогою свого акаунту на Reservio, щоб скористатися нашими послугами.</p>
                     </div>
 
                     <!-- Fields -->
                     <div class="auth-fields-group">
+
                         <!-- Email -->
                         <div class="auth-field">
                             <div class="auth-field-label-row">
                                 <label class="auth-field-label" for="Email">Електронна адреса</label>
                             </div>
-                            <div class="auth-input-wrapper" id="email-wrapper">
+                            <div class="auth-input-wrapper @(hasError && !string.IsNullOrEmpty(Model?.Email) ? "field-error" : "")">
                                 <input type="email"
                                        class="auth-input-figma"
                                        id="Email"
                                        name="Email"
+                                       value="@Model?.Email"
                                        placeholder="Введіть свою електронну адресу"
                                        autocomplete="email" />
+                                @if (hasError && !string.IsNullOrEmpty(Model?.Email))
+                                {
+                                    <span class="field-status-icon field-status-error">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <circle cx="10" cy="10" r="9" stroke="#EB3D00" stroke-width="1.5"/>
+                                            <line x1="10" y1="6" x2="10" y2="10.5" stroke="#EB3D00" stroke-width="1.5" stroke-linecap="round"/>
+                                            <circle cx="10" cy="13.5" r="0.8" fill="#EB3D00"/>
+                                        </svg>
+                                    </span>
+                                }
                             </div>
                         </div>
 
@@ -77,36 +102,73 @@
                                 <label class="auth-field-label" for="Password">Пароль</label>
                                 <a href="@Url.Action("ForgotPassword", "Account")" class="auth-field-link">Забули пароль?</a>
                             </div>
-                            <div class="auth-input-wrapper" id="password-wrapper">
+                            <div class="auth-input-wrapper @(hasError ? "field-error" : "")">
                                 <input type="password"
                                        class="auth-input-figma"
                                        id="Password"
                                        name="Password"
                                        placeholder="Введіть пароль"
                                        autocomplete="current-password" />
-                                <button type="button" class="auth-eye-toggle" id="toggle-password" aria-label="Показати/Сховати пароль">
-                                    <img src="~/images/icons/icon_eye_closed.svg" alt="" id="eye-icon" />
-                                </button>
+                                @if (hasError)
+                                {
+                                    <span class="field-status-icon field-status-error">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <circle cx="10" cy="10" r="9" stroke="#EB3D00" stroke-width="1.5"/>
+                                            <line x1="10" y1="6" x2="10" y2="10.5" stroke="#EB3D00" stroke-width="1.5" stroke-linecap="round"/>
+                                            <circle cx="10" cy="13.5" r="0.8" fill="#EB3D00"/>
+                                        </svg>
+                                    </span>
+                                }
+                                else
+                                {
+                                    <button type="button" class="auth-eye-toggle" data-target="Password" aria-label="Показати/Сховати пароль">
+                                        <svg id="eye-icon-Password" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                                            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                                            <line x1="1" y1="1" x2="23" y2="23"/>
+                                        </svg>
+                                    </button>
+                                }
                             </div>
                         </div>
                     </div>
 
-                    <!-- Submit Button (navigates to home without validation) -->
-                    <a href="/" class="auth-submit-btn">Продовжити</a>
+                    <!-- Error Message Box -->
+                    @if (hasError)
+                    {
+                        <div class="auth-error-box">
+                            <span class="auth-error-box-text">@ViewBag.Error</span>
+                            <div class="auth-error-box-icon">
+                                <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="30" cy="30" r="28" fill="#F5EDE0" stroke="#D9C9A8" stroke-width="2"/>
+                                    <ellipse cx="21" cy="26" rx="4" ry="5" fill="#223300"/>
+                                    <ellipse cx="39" cy="26" rx="4" ry="5" fill="#223300"/>
+                                    <ellipse cx="21" cy="25" rx="1.5" ry="2" fill="white"/>
+                                    <ellipse cx="39" cy="25" rx="1.5" ry="2" fill="white"/>
+                                    <path d="M20 38 Q30 33 40 38" stroke="#223300" stroke-width="2" stroke-linecap="round" fill="none"/>
+                                    <path d="M16 20 Q19 17 22 20" stroke="#223300" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                                    <path d="M38 20 Q41 17 44 20" stroke="#223300" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                                </svg>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Submit -->
+                    <button type="submit" class="auth-submit-btn">Продовжити</button>
                 </div>
 
-                <!-- Social Login Section -->
+                <!-- Social Login -->
                 <div class="auth-social-section">
                     <div class="auth-social-block">
                         <span class="auth-social-label">Або увійти з</span>
                         <div class="auth-social-buttons">
-                            <button type="button" class="auth-social-btn" aria-label="Увійти через Google">
+                            <button type="button" class="auth-social-btn" aria-label="Google">
                                 <img src="~/images/icons/google.svg" alt="Google" />
                             </button>
-                            <button type="button" class="auth-social-btn" aria-label="Увійти через Apple">
+                            <button type="button" class="auth-social-btn" aria-label="Apple">
                                 <img src="~/images/icons/apple.svg" alt="Apple" />
                             </button>
-                            <button type="button" class="auth-social-btn" aria-label="Увійти через Facebook">
+                            <button type="button" class="auth-social-btn" aria-label="Facebook">
                                 <img src="~/images/icons/Facebook.svg" alt="Facebook" />
                             </button>
                         </div>
@@ -124,27 +186,29 @@
                 </div>
 
             </div>
-        </main>
+        </form>
+    </main>
 
-    </div>
+</div>
 
-    <script>
-        // Toggle password visibility
-        (function () {
-            var toggleBtn = document.getElementById('toggle-password');
-            var passwordInput = document.getElementById('Password');
-            var eyeIcon = document.getElementById('eye-icon');
-
-            if (toggleBtn && passwordInput && eyeIcon) {
-                toggleBtn.addEventListener('click', function () {
-                    var isPassword = passwordInput.type === 'password';
-                    passwordInput.type = isPassword ? 'text' : 'password';
-                    eyeIcon.src = isPassword
-                        ? '/images/icons/icon_eye_open.svg'
-                        : '/images/icons/icon_eye_closed.svg';
-                });
+<script>
+(function () {
+    document.querySelectorAll('.auth-eye-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var targetId = btn.getAttribute('data-target');
+            var input = document.getElementById(targetId);
+            var icon = document.getElementById('eye-icon-' + targetId);
+            if (!input) return;
+            var isPass = input.type === 'password';
+            input.type = isPass ? 'text' : 'password';
+            if (icon) {
+                icon.innerHTML = isPass
+                    ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
+                    : '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
             }
-        })();
-    </script>
+        });
+    });
+})();
+</script>
 </body>
 </html>

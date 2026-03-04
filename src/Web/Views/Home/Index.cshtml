@@ -21,8 +21,14 @@
         <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
 
-        @* Для гостя: _HomeNavbarGuest, для авторизованого: _HomeNavbar *@
-        @await Html.PartialAsync("_HomeNavbarGuest")
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            @await Html.PartialAsync("_HomeNavbar")
+        }
+        else
+        {
+            @await Html.PartialAsync("_HomeNavbarGuest")
+        }
 
         <div class="hero-text">
             <h1 class="hero-title">Знайдіть ідеальне житло за 2 хвилини</h1>
@@ -31,6 +37,7 @@
     </section>
 
 
+    <div class="search-bg">
     <div class="search-card-wrapper">
         <div class="search-card">
             <div class="search-tabs">
@@ -131,6 +138,7 @@
         <button class="gp-done" id="hgpDone">Готово</button>
     </div>
     </div><!-- /search-card-wrapper -->
+    </div><!-- /search-bg -->
 
 
     <div class="section">
@@ -187,15 +195,23 @@
                 Місто
             </button>
             <button class="category-pill">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12C2 12 5 5 12 5s10 7 10 7-3 7-10 7S2 12 2 12z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+                    <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+                    <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+                </svg>
                 Пляж
             </button>
             <button class="category-pill">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
                 Активний відпочинок
             </button>
             <button class="category-pill">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 14l-5-5-5 5"/><path d="M12 2v16"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
                 Спокійний відпочинок
             </button>
             <button class="category-pill">
