@@ -1,0 +1,22 @@
+# IDEs files
+/.vs/
+/.idea/
+
+# Build files
+/Reservio.Application/bin/
+/Reservio.Application/obj/
+/Reservio.Domain/bin/
+/Reservio.Domain/obj/
+/Reservio.Persistence/bin/
+/Reservio.Persistence/obj/
+/Reservio.Infrastructure/bin/
+/Reservio.Infrastructure/obj/
+/Reservio.WebApi/bin/
+/Reservio.WebApi/obj/
+
+# Development appsettings.json
+/Reservio.WebApi/appsettings.Development.json
+
+# API data
+/Reservio.WebApi/Data/
+

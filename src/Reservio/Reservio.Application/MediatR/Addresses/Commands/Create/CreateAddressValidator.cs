@@ -1,0 +1,28 @@
+using Reservio.Application.Interfaces;
+using FluentValidation;
+
+namespace Reservio.Application.MediatR.Addresses.Commands.Create;
+
+public class CreateAddressValidator : AbstractValidator<CreateAddressCommand> {
+	public CreateAddressValidator(IExistingEntityCheckerService existingEntityCheckerService) {
+		RuleFor(a => a.CityId)
+			.MustAsync(existingEntityCheckerService.IsCorrectCityIdAsync)
+				.WithMessage("City with this id is not exists");
+
+		RuleFor(a => a.HouseNumber)
+			.NotEmpty()
+				.WithMessage("House number is empty or null")
+			.MaximumLength(255)
+				.WithMessage("House number is too long");
+
+		RuleFor(a => a.Street)
+			.NotEmpty()
+				.WithMessage("Street is empty or null")
+			.MaximumLength(255)
+				.WithMessage("Street is too long");
+
+		RuleFor(a => a.ApartmentNumber)
+			.MaximumLength(20)
+				.WithMessage("Apartment number is too long");
+	}
+}
