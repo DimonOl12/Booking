@@ -1,0 +1,657 @@
+@{
+    ViewData["Title"] = "Головна";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio - Бронювання житла</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/home.css" />
+    <link rel="stylesheet" href="~/css/search.css" />
+</head>
+<body>
+
+
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            @await Html.PartialAsync("_HomeNavbar")
+        }
+        else
+        {
+            @await Html.PartialAsync("_HomeNavbarGuest")
+        }
+
+        <div class="hero-text">
+            <h1 class="hero-title">Знайдіть ідеальне житло за 2 хвилини</h1>
+            <p class="hero-subtitle">Понад 10 000 перевірених помешкань в Україні та Європі</p>
+        </div>
+    </section>
+
+
+    <div class="search-bg">
+    <div class="search-card-wrapper">
+        <div class="search-card">
+            <div class="search-tabs">
+                <button class="search-tab active">Помешкання</button>
+                <button class="search-tab">Переліт</button>
+                <button class="search-tab">Оренда авто</button>
+                <button class="search-tab">Дозвілля</button>
+                <button class="search-tab">Таксі з/до аеропорту</button>
+            </div>
+            <form class="search-inputs-row" id="homeSearchForm" method="get" action="/Home/Search">
+                <div class="search-input-group" style="flex:2;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" name="city" id="homeCity" placeholder="Куди ви вирушаєте?" autocomplete="off" />
+                    <input type="hidden" name="adults"   id="homeAdults"   value="2" />
+                    <input type="hidden" name="children" id="homeChildren" value="0" />
+                    <input type="hidden" name="rooms"    id="homeRooms"    value="1" />
+                    <input type="hidden" name="checkIn"  id="homeCheckIn"  value="" />
+                    <input type="hidden" name="checkOut" id="homeCheckOut" value="" />
+                </div>
+
+                <div class="search-input-group" id="homeDateField" style="cursor:pointer;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    <span id="homeDateLabel" class="search-text">Дата заїзду &ndash; Дата виїзду</span>
+                </div>
+
+                <div class="search-input-group" id="homeGuestsField" style="cursor:pointer;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 010 7.75"/>
+                    </svg>
+                    <span id="homeGuestsLabel" class="search-text">2 дорослих &middot; 0 дітей &middot; 1 номер</span>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </div>
+            </form>
+
+            <div class="search-btn-wrapper">
+                <button class="search-btn" onclick="document.getElementById('homeSearchForm').submit()">Шукати</button>
+            </div>
+        </div>
+
+    <!-- Date picker popup (home) — inside wrapper for correct absolute positioning -->
+    <div class="home-popup datepicker-popup" id="homeDatepickerPopup" style="display:none; position:absolute; left:0; right:0; z-index:300;">
+        <div class="dp-months">
+            <div class="dp-month" id="hdpMonth1"></div>
+            <div class="dp-month" id="hdpMonth2"></div>
+        </div>
+        <div class="dp-footer">
+            <button class="dp-clear" id="hdpClear">Очистити</button>
+            <button class="dp-done" id="hdpDone">Готово</button>
+        </div>
+    </div>
+
+    <!-- Guests popup (home) -->
+    <div class="home-popup guests-popup" id="homeGuestsPopup" style="display:none; position:absolute; z-index:300; right:0;">
+        <div class="gp-row">
+            <div class="gp-label">
+                <span class="gp-title">Дорослі</span>
+                <span class="gp-sub">Від 18 років</span>
+            </div>
+            <div class="gp-counter">
+                <button class="gp-btn" data-target="adults" data-action="dec">−</button>
+                <span id="hgp-adults">2</span>
+                <button class="gp-btn" data-target="adults" data-action="inc">+</button>
+            </div>
+        </div>
+        <div class="gp-row">
+            <div class="gp-label">
+                <span class="gp-title">Діти</span>
+                <span class="gp-sub">0–17 років</span>
+            </div>
+            <div class="gp-counter">
+                <button class="gp-btn" data-target="children" data-action="dec">−</button>
+                <span id="hgp-children">0</span>
+                <button class="gp-btn" data-target="children" data-action="inc">+</button>
+            </div>
+        </div>
+        <div class="gp-row">
+            <div class="gp-label">
+                <span class="gp-title">Номери</span>
+            </div>
+            <div class="gp-counter">
+                <button class="gp-btn" data-target="rooms" data-action="dec">−</button>
+                <span id="hgp-rooms">1</span>
+                <button class="gp-btn" data-target="rooms" data-action="inc">+</button>
+            </div>
+        </div>
+        <button class="gp-done" id="hgpDone">Готово</button>
+    </div>
+    </div><!-- /search-card-wrapper -->
+    </div><!-- /search-bg -->
+
+
+    <div class="section">
+        <h2 class="section-title">Акції на проживання</h2>
+
+        <div class="promo-grid">
+            <div class="promo-card">
+                <div>
+                    <span class="promo-tag">ВАШ НОВИЙ ОФІС</span>
+                    <h3 class="promo-title">Текст: Знижка -25% при бронюванні від 7 днів.</h3>
+                    <ul class="promo-bullets">
+                        <li>Безлімітна кава для драйву</li>
+                        <li>Комфортна робоча зона</li>
+                        <li>Стабільний Wi-Fi</li>
+                    </ul>
+                </div>
+                <a href="#" class="btn-promo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
+
+            <div class="promo-card">
+                <div>
+                    <span class="promo-tag">ПЛАНУЙТЕ ЗАЗДАЛЕГІДЬ</span>
+                    <h3 class="promo-title">Знижка -15% при бронюванні за 30 днів до візиту</h3>
+                    <p class="promo-desc">Зафіксуйте найкращу ціну сезону вже сьогодні!</p>
+                </div>
+                <a href="#" class="btn-promo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
+
+            <div class="promo-card">
+                <div>
+                    <span class="promo-tag">АКЦІЯ &laquo;3+1&raquo;</span>
+                    <h3 class="promo-title">Забронюйте 4 ночі &mdash; сплатіть лише за 3!</h3>
+                    <p class="promo-desc">Обирайте тариф &laquo;Спецпропозиція 3+1&raquo; у меню бронювання</p>
+                </div>
+                <a href="#" class="btn-promo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <h2 class="section-title">Сплануйте поїздку швидко та просто</h2>
+        <p class="section-subtitle">Виберіть тип відпочинку та відвідайте найкращі місця в Україні</p>
+
+        <div class="category-pills">
+            <button class="category-pill active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M21 9H3"/></svg>
+                Місто
+            </button>
+            <button class="category-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+                    <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+                    <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+                </svg>
+                Пляж
+            </button>
+            <button class="category-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+                Активний відпочинок
+            </button>
+            <button class="category-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+                Спокійний відпочинок
+            </button>
+            <button class="category-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                Романтика
+            </button>
+            <button class="category-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                Їжа
+            </button>
+            <div class="nav-arrows" style="margin-left: auto;">
+                <button class="arrow-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                </button>
+                <button class="arrow-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="city-grid">
+            <div class="city-card">
+                <img src="/images/lviv.jpg" alt="Львів" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Львів</div>
+                    <div class="city-card-distance">350+ місць</div>
+                </div>
+            </div>
+            <div class="city-card">
+                <img src="/images/kamianets.jpg" alt="Кам'янець-Подільський" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Кам'янець-Подільський</div>
+                    <div class="city-card-distance">45+ місць</div>
+                </div>
+            </div>
+            <div class="city-card">
+                <img src="/images/kyiv.jpg" alt="Київ" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Київ</div>
+                    <div class="city-card-distance">500+ місць</div>
+                </div>
+            </div>
+            <div class="city-card">
+                <img src="/images/zhytomyr.jpg" alt="Закопане" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Закопане</div>
+                    <div class="city-card-distance">100+ місць</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="section">
+        <h2 class="section-title">Популярні напрямки</h2>
+
+        <div class="dest-grid">
+            <div class="dest-card">
+                <img src="/images/warsaw.jpg" alt="Варшава" />
+                <div class="dest-card-overlay"></div>
+                <div class="dest-card-name">Варшава</div>
+            </div>
+            <div class="dest-card">
+                <img src="/images/chisinau.jpg" alt="Кишинів" />
+                <div class="dest-card-overlay"></div>
+                <div class="dest-card-name">Кишинів</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title section-title-sm">Забронюйте наші найпопулярніші унікальні помешкання</h2>
+            <div class="nav-arrows">
+                <button class="arrow-btn disabled">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                </button>
+                <button class="arrow-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="property-scroll">
+            <div class="property-card">
+                <div class="property-card-img">
+                    <img src="/images/property-1.jpg" alt="Domki wierszyki Shelters" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Domki wierszyki Shelters</div>
+                    <div class="property-card-location">Польща, Закопане</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">9,7</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Відмінно</span>
+                            <span class="rating-reviews">96 відгуки</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-from">Від</span>
+                        <span class="price-value">UAH 4 968</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-card-img">
+                    <img src="/images/property-2.jpg" alt="Tiny House Dreishwesternz" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Tiny House Dreihwesternz</div>
+                    <div class="property-card-location">Німеччина, Трір</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">9,5</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Відмінно</span>
+                            <span class="rating-reviews">120 відгуків</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-from">Від</span>
+                        <span class="price-value">UAH 7 968</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-card-img">
+                    <img src="/images/property-3.jpg" alt="Das rote Haus Hinterm Deich" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Das rote Haus Hinterm Deich</div>
+                    <div class="property-card-location">Німеччина, Simonsberg</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">9,7</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Відмінно</span>
+                            <span class="rating-reviews">41 відгуки</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-from">Від</span>
+                        <span class="price-value">UAH 5 958</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-card-img">
+                    <img src="/images/property-4.jpg" alt="Lofthus Camping" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Lofthus Camping</div>
+                    <div class="property-card-location">Лофтгус, Норвегія</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">9,3</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Чудово</span>
+                            <span class="rating-reviews">251 відгуки</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-from">Від</span>
+                        <span class="price-value">UAH 12 909</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-card-img">
+                    <img src="/images/property-5.jpg" alt="Mini Hotel Übernachten Im Gurkenfass" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Mini Hotel Übernachten Im Gurkenfass</div>
+                    <div class="property-card-location">Німеччина, Люббенау</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">7,7</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Добре</span>
+                            <span class="rating-reviews">205 відгуків</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-from">Від</span>
+                        <span class="price-value">UAH 4 931</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Пошук за типом помешкання</h2>
+            <div class="nav-arrows">
+                <button class="arrow-btn disabled">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                </button>
+                <button class="arrow-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="types-grid">
+            <div class="type-card">
+                <div class="type-card-img"><img src="/images/type-hotel.jpg" alt="Готелі" /></div>
+                <div class="type-card-name">Готелі</div>
+            </div>
+            <div class="type-card">
+                <div class="type-card-img"><img src="/images/type-apartment.jpg" alt="Апартаменти" /></div>
+                <div class="type-card-name">Апартаменти</div>
+            </div>
+            <div class="type-card">
+                <div class="type-card-img"><img src="/images/type-villa.jpg" alt="Вілли" /></div>
+                <div class="type-card-name">Вілли</div>
+            </div>
+            <div class="type-card">
+                <div class="type-card-img"><img src="/images/type-resort.jpg" alt="Курортні-готелі" /></div>
+                <div class="type-card-name">Курортні-готелі</div>
+            </div>
+            <div class="type-card">
+                <div class="type-card-img"><img src="/images/type-business.jpg" alt="Хостели" /></div>
+                <div class="type-card-name">Хостели</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Пропозиції на вихідні</h2>
+            <div class="nav-arrows">
+                <button class="arrow-btn disabled">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                </button>
+                <button class="arrow-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="property-scroll">
+            <div class="property-card">
+                <div class="property-card-img">
+                    <img src="/images/deal-1.jpg" alt="Apartments on Velyka Vasylkivska 47" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Apartments on Velyka Vasylkivska 47</div>
+                    <div class="property-card-location">Київ, Україна</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">9,6</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Чудово</span>
+                            <span class="rating-reviews">242 відгуки</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-nights">2 ночі</span>
+                        <span class="price-old">UAH 3 366</span>
+                        <span class="price-value">UAH 2 787</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-card-img">
+                    <img src="/images/deal-2.jpg" alt="Chornovola str in Lviv" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Chornovola str in Lviv</div>
+                    <div class="property-card-location">Львів, Україна</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">9,6</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Відмінно</span>
+                            <span class="rating-reviews">6 відгуків</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-nights">2 ночі</span>
+                        <span class="price-old">UAH 3 382</span>
+                        <span class="price-value">UAH 3 742</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-card-img">
+                    <img src="/images/deal-3.jpg" alt="Апартаменти з теплом від MYFREEDOM" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Апартаменти з теплом від MYFREEDOM в ЖК...</div>
+                    <div class="property-card-location">Київ, Україна</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">9,6</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Відмінно</span>
+                            <span class="rating-reviews">5 відгуків</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-nights">2 ночі</span>
+                        <span class="price-old">UAH 3 366</span>
+                        <span class="price-value">UAH 2 787</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-card-img">
+                    <img src="/images/deal-4.jpg" alt="Freeman-4b" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Freeman-4b - двоповерховий ...</div>
+                    <div class="property-card-location">Буковель, Україна</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">9,6</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Відмінно</span>
+                            <span class="rating-reviews">37 відгуків</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-nights">2 ночі</span>
+                        <span class="price-old">UAH 3 366</span>
+                        <span class="price-value">UAH 2 787</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-card-img">
+                    <img src="/images/deal-5.jpg" alt="Pryme rest apartaments" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Pryme rest apartaments</div>
+                    <div class="property-card-location">Львів, Україна</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">9,6</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Чудово</span>
+                            <span class="rating-reviews">341 відгуків</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-nights">2 ночі</span>
+                        <span class="price-old">UAH 3 366</span>
+                        <span class="price-value">UAH 2 787</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section">
+        <h2 class="section-title">Популярні напрямки серед мандрівників з України</h2>
+
+        <div class="traveler-tabs">
+            <button class="traveler-tab active">Міста всередині країни</button>
+            <button class="traveler-tab">Міста в інших країнах</button>
+            <button class="traveler-tab">Регіони</button>
+            <button class="traveler-tab">Країни</button>
+            <button class="traveler-tab">Помешкання</button>
+        </div>
+
+        <div class="traveler-cities-grid">
+            <a href="#" class="traveler-city-link">Готелі міста Львів</a>
+            <a href="#" class="traveler-city-link">Готелі міста Київ</a>
+            <a href="#" class="traveler-city-link">Готелі міста Буковель</a>
+            <a href="#" class="traveler-city-link">Готелі міста Дніпро</a>
+            <a href="#" class="traveler-city-link">Готелі міста Івано-Франківськ</a>
+
+            <a href="#" class="traveler-city-link">Готелі міста Яремче</a>
+            <a href="#" class="traveler-city-link">Готелі міста Чернівці</a>
+            <a href="#" class="traveler-city-link">Готелі міста Славське</a>
+            <a href="#" class="traveler-city-link">Готелі міста Суми</a>
+            <a href="#" class="traveler-city-link">Готелі міста Вінниця</a>
+
+            <a href="#" class="traveler-city-link">Готелі міста Луцьк</a>
+            <a href="#" class="traveler-city-link">Готелі міста Харків</a>
+            <a href="#" class="traveler-city-link">Готелі міста Трускавець</a>
+            <a href="#" class="traveler-city-link">Готелі міста Драгонбрат</a>
+            <a href="#" class="traveler-city-link">Готелі міста Мукачево</a>
+
+            <a href="#" class="traveler-city-link">Готелі міста Берегове</a>
+            <a href="#" class="traveler-city-link">Готелі міста Полтава</a>
+            <a href="#" class="traveler-city-link">Готелі міста Кам'янець-Подільський</a>
+            <a href="#" class="traveler-city-link">Готелі міста Тернопіль</a>
+            <a href="#" class="traveler-city-link">Готелі міста Хмельницький</a>
+
+            <a href="#" class="traveler-city-link">Готелі міста Біла Церква</a>
+            <a href="#" class="traveler-city-link">Готелі міста Черкаси</a>
+            <a href="#" class="traveler-city-link">Готелі міста Поляниця</a>
+            <a href="#" class="traveler-city-link">Готелі міста Ясіня</a>
+            <a href="#" class="traveler-city-link">Готелі міста Житомир</a>
+        </div>
+    </div>
+
+
+    @await Html.PartialAsync("_Footer")
+
+    <script src="~/js/home.js"></script>
+</body>
+</html> 

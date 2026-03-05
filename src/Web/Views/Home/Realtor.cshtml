@@ -1,0 +1,572 @@
+@{
+    ViewData["Title"] = "Зареєструвати помешкання";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Реєстрація помешкання</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/realtor.css" />
+</head>
+<body>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="realtor-hero">
+        <div class="realtor-hero-overlay"></div>
+
+        <!-- Navbar -->
+        <div class="realtor-hero-inner">
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                @await Html.PartialAsync("_HomeNavbar")
+            }
+            else
+            {
+                @await Html.PartialAsync("_HomeNavbarGuest")
+            }
+        </div>
+
+        <!-- Hero content -->
+        <div class="realtor-hero-inner">
+            <div class="realtor-hero-content">
+
+                <!-- Left: title -->
+                <div class="realtor-hero-left">
+                    <h1 class="realtor-hero-title">Отримуйте більше бронювань і стабільний дохід від оренди</h1>
+                    <p class="realtor-hero-subtitle">
+                        Щоб закінчити налаштування асистента, вистачить всього 15 хвилиночок.<br />
+                        Натисни «Почати заробляти» — і ми одразу підхопимо розмову саме з того місця, де закінчили
+                    </p>
+                </div>
+
+                <!-- Right: registration info card -->
+                <div class="realtor-hero-right">
+                    <div class="realtor-reg-card">
+                        <h2 class="realtor-reg-title">Зареєструйтеся безплатно</h2>
+                        <div class="realtor-reg-bullets">
+                            <div class="realtor-reg-bullet">
+                                <img src="~/images/icons/streamline_check-solid.svg" alt="" class="realtor-reg-bullet-icon" />
+                                <span class="realtor-reg-bullet-text">Майже половина наших партнерів отримують перше бронювання вже в перший тиждень</span>
+                            </div>
+                            <div class="realtor-reg-bullet">
+                                <img src="~/images/icons/streamline_check-solid.svg" alt="" class="realtor-reg-bullet-icon" />
+                                <span class="realtor-reg-bullet-text">Ви самі вирішуєте: підтверджувати кожен запит вручну чи дозволити гостям бронювати миттєво</span>
+                            </div>
+                            <div class="realtor-reg-bullet">
+                                <img src="~/images/icons/streamline_check-solid.svg" alt="" class="realtor-reg-bullet-icon" />
+                                <span class="realtor-reg-bullet-text">Ми беремо на себе всі технічні питання, щоб ви вчасно отримували кошти</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="realtor-reg-continue">
+                        <span class="realtor-reg-continue-hint">Розпочали реєстрацію?</span>
+                        <a href="#" class="realtor-reg-continue-link">Продовжити реєстрацію</a>
+                    </div>
+
+                    <a href="#" class="btn-realtor-hero">
+                        Почати заробляти
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== STEPS CARD ==================== -->
+    <div class="realtor-steps-wrapper">
+        <div class="realtor-steps-card">
+            <div class="realtor-step">
+                <img src="~/images/icons/add_home.svg" alt="Крок 1" class="realtor-step-icon" />
+                <div>
+                    <div class="realtor-step-title">Крок 1: Опис</div>
+                    <div class="realtor-step-desc">Додайте своє помешкання<br />за кілька хвилин</div>
+                </div>
+            </div>
+            <div class="realtor-step-line"></div>
+            <div class="realtor-step">
+                <img src="~/images/icons/today.svg" alt="Крок 2" class="realtor-step-icon" />
+                <div>
+                    <div class="realtor-step-title">Крок 2: Налаштування</div>
+                    <div class="realtor-step-desc">Налаштуйте ціни, правила<br />та доступність</div>
+                </div>
+            </div>
+            <div class="realtor-step-line"></div>
+            <div class="realtor-step">
+                <img src="~/images/icons/inventory.svg" alt="Крок 3" class="realtor-step-icon" />
+                <div>
+                    <div class="realtor-step-title">Крок 3: Результат</div>
+                    <div class="realtor-step-desc">Отримуйте бронювання та оплату онлайн</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== FEATURE CARDS ==================== -->
+    <div class="r-section">
+        <h2 class="r-section-title">Приймайте гостей на своїх умовах</h2>
+        <p class="r-section-subtitle">Менше стресу &mdash; більше бронювань і доходу</p>
+        <p class="r-section-desc">Ми беремо на себе безпеку, платежі та підтримку &mdash; ви зосереджуєтесь на гостях</p>
+
+        <div class="realtor-features-outer">
+            <div class="realtor-features-grid">
+
+                <!-- Card 1: Ви керуєте всім -->
+                <div class="realtor-feature-card">
+                    <div class="realtor-feature-card-header">
+                        <div class="realtor-feature-card-icon">
+                            <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="4" y="14" width="48" height="6" rx="3" fill="#223300"/>
+                                <circle cx="38" cy="17" r="6" fill="#223300" stroke="#FAFAFA" stroke-width="3"/>
+                                <rect x="4" y="30" width="48" height="6" rx="3" fill="#223300"/>
+                                <circle cx="18" cy="33" r="6" fill="#223300" stroke="#FAFAFA" stroke-width="3"/>
+                                <rect x="4" y="46" width="48" height="6" rx="3" fill="#223300"/>
+                                <circle cx="34" cy="49" r="6" fill="#223300" stroke="#FAFAFA" stroke-width="3"/>
+                            </svg>
+                        </div>
+                        <h3 class="realtor-feature-card-title">Ви керуєте всім&nbsp;&mdash;<br />без посередників</h3>
+                    </div>
+                    <div class="realtor-feature-bullets">
+                        <div class="realtor-feature-bullet">
+                            <img src="~/images/icons/gpp_good.svg" alt="" class="realtor-feature-bullet-icon" style="filter: none; width:24px;height:24px;" />
+                            <span class="realtor-feature-bullet-text">Самі встановлюєте ціни, правила та доступність</span>
+                        </div>
+                        <div class="realtor-feature-bullet">
+                            <img src="~/images/icons/gpp_good.svg" alt="" class="realtor-feature-bullet-icon" style="filter: none; width:24px;height:24px;" />
+                            <span class="realtor-feature-bullet-text">Миттєве бронювання або підтвердження вручну</span>
+                        </div>
+                        <div class="realtor-feature-bullet">
+                            <img src="~/images/icons/gpp_good.svg" alt="" class="realtor-feature-bullet-icon" style="filter: none; width:24px;height:24px;" />
+                            <span class="realtor-feature-bullet-text">Синхронізація календарів з іншими платформами в 1 клік</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Безпека -->
+                <div class="realtor-feature-card">
+                    <div class="realtor-feature-card-header">
+                        <div class="realtor-feature-card-icon">
+                            <img src="~/images/icons/gpp_good.svg" alt="Безпека" style="width:56px;height:56px;" />
+                        </div>
+                        <h3 class="realtor-feature-card-title">Ми подбали<br />про вашу безпеку</h3>
+                    </div>
+                    <div class="realtor-feature-bullets">
+                        <div class="realtor-feature-bullet">
+                            <img src="~/images/icons/gpp_good.svg" alt="" class="realtor-feature-bullet-icon" style="filter: none; width:24px;height:24px;" />
+                            <span class="realtor-feature-bullet-text">Страхування до 1 млн € від пошкоджень і відповідальності</span>
+                        </div>
+                        <div class="realtor-feature-bullet">
+                            <img src="~/images/icons/gpp_good.svg" alt="" class="realtor-feature-bullet-icon" style="filter: none; width:24px;height:24px;" />
+                            <span class="realtor-feature-bullet-text">Перевірені гості + історія бронювань</span>
+                        </div>
+                        <div class="realtor-feature-bullet">
+                            <img src="~/images/icons/gpp_good.svg" alt="" class="realtor-feature-bullet-icon" style="filter: none; width:24px;height:24px;" />
+                            <span class="realtor-feature-bullet-text">Гарантовані виплати&nbsp;&mdash; без затримок і сюрпризів</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Все в одному місці -->
+                <div class="realtor-feature-card">
+                    <div class="realtor-feature-card-header">
+                        <div class="realtor-feature-card-icon">
+                            <img src="~/images/icons/forum.svg" alt="Чат" style="width:56px;height:56px;" />
+                        </div>
+                        <h3 class="realtor-feature-card-title">Все в одному місці</h3>
+                    </div>
+                    <div class="realtor-feature-bullets">
+                        <div class="realtor-feature-bullet">
+                            <img src="~/images/icons/gpp_good.svg" alt="" class="realtor-feature-bullet-icon" style="filter: none; width:24px;height:24px;" />
+                            <span class="realtor-feature-bullet-text">Вбудований чат без сторонніх месенджерів</span>
+                        </div>
+                        <div class="realtor-feature-bullet">
+                            <img src="~/images/icons/gpp_good.svg" alt="" class="realtor-feature-bullet-icon" style="filter: none; width:24px;height:24px;" />
+                            <span class="realtor-feature-bullet-text">Підтримка 24/7</span>
+                        </div>
+                        <div class="realtor-feature-bullet">
+                            <img src="~/images/icons/gpp_good.svg" alt="" class="realtor-feature-bullet-icon" style="filter: none; width:24px;height:24px;" />
+                            <span class="realtor-feature-bullet-text">Сповіщення про кожен етап бронювання</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="realtor-features-footer">
+                <div class="realtor-features-footer-text">
+                    <p class="stat">Вже <strong>12 000+</strong> господарів довіряють нам</p>
+                    <p class="timing">Займе ~5 хвилин. Перші бронювання &mdash; без комісії*</p>
+                </div>
+                <a href="#" class="btn-green-primary">Додати помешкання безкоштовно</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== BENEFITS SECTION ==================== -->
+    <div class="r-section" style="background: var(--color-bg);">
+        <h2 class="r-section-title">Легкий старт і швидкі результати</h2>
+
+        <div class="realtor-benefits-grid">
+
+            <!-- Benefit 1 -->
+            <div class="realtor-benefit-card">
+                <div class="realtor-benefit-illustration">
+                    <svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" width="128" height="128">
+                        <rect x="20" y="40" width="60" height="50" rx="6" fill="#455429"/>
+                        <rect x="28" y="50" width="30" height="22" rx="3" fill="#E73D00"/>
+                        <rect x="64" y="28" width="30" height="24" rx="3" stroke="#455429" stroke-width="2" fill="none"/>
+                        <rect x="20" y="95" width="88" height="6" rx="3" fill="#162113"/>
+                        <path d="M64 68 L80 55 L96 68" stroke="#455429" stroke-width="3" fill="none"/>
+                    </svg>
+                </div>
+                <div class="realtor-benefit-text">
+                    <h3 class="realtor-benefit-title">Зручне перенесення даних</h3>
+                    <p class="realtor-benefit-desc">Переносьте інформацію про ваше житло з інших платформ автоматично.<br />Синхронізація календарів захистить вас від подвійних бронювань.</p>
+                </div>
+            </div>
+
+            <!-- Benefit 2 -->
+            <div class="realtor-benefit-card">
+                <div class="realtor-benefit-illustration">
+                    <svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" width="128" height="128">
+                        <rect x="16" y="52" width="52" height="62" rx="4" fill="#162113"/>
+                        <rect x="62" y="30" width="52" height="52" rx="4" fill="#455429"/>
+                        <rect x="26" y="68" width="12" height="12" rx="2" fill="#E73D00" stroke="#E73D00"/>
+                        <rect x="72" y="42" width="12" height="12" rx="2" fill="#E73D00" stroke="#E73D00"/>
+                        <rect x="72" y="62" width="32" height="4" rx="2" fill="#FAFAFA" opacity="0.3"/>
+                        <rect x="72" y="72" width="24" height="4" rx="2" fill="#FAFAFA" opacity="0.3"/>
+                    </svg>
+                </div>
+                <div class="realtor-benefit-text">
+                    <h3 class="realtor-benefit-title">Рейтинг із першого дня</h3>
+                    <p class="realtor-benefit-desc">Поки у вас немає відгуків на Reservio, ми відобразимо ваші оцінки з інших сайтів, щоб підвищити довіру клієнтів.</p>
+                </div>
+            </div>
+
+            <!-- Benefit 3 -->
+            <div class="realtor-benefit-card">
+                <div class="realtor-benefit-illustration">
+                    <svg viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" width="128" height="128">
+                        <circle cx="76" cy="52" r="42" fill="#162113"/>
+                        <circle cx="76" cy="52" r="32" fill="#455429"/>
+                        <circle cx="76" cy="52" r="14" fill="#E73D00"/>
+                        <path d="M30 98 L55 73" stroke="#162113" stroke-width="6" stroke-linecap="round"/>
+                        <circle cx="30" cy="100" r="6" fill="#455429"/>
+                    </svg>
+                </div>
+                <div class="realtor-benefit-text">
+                    <h3 class="realtor-benefit-title">Високі позиції в пошуку</h3>
+                    <p class="realtor-benefit-desc">Завдяки спеціальній позначці «Нове на сайті», ваше оголошення буде помітнішим для потенційних гостей.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+            <a href="#" class="btn-accent-large">Почати заробляти</a>
+        </div>
+    </div>
+
+    <!-- ==================== COMPARISON SECTION ==================== -->
+    <div class="r-section">
+        <div class="realtor-comparison-wrapper">
+
+            <div class="realtor-comparison-table">
+                <div class="realtor-comparison-header">
+                    <h2 class="realtor-comparison-header-title">Порівняння: Reservio vs Конкуренти</h2>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:24px; padding: 8px 0; margin-top:8px;">
+                    <span style="width:48px; text-align:center; font-family:var(--font-body); font-size:13px; font-weight:700; color:var(--color-text);">Reservio</span>
+                    <span style="width:48px; text-align:center; font-family:var(--font-body); font-size:13px; font-weight:700; color:var(--color-muted);">Інші</span>
+                </div>
+
+                <div class="realtor-comparison-row">
+                    <p class="realtor-comparison-row-text"><strong>Видимість:</strong> Понад 1.5 млрд відвідувань на місяць</p>
+                    <div class="realtor-comparison-icons">
+                        <div class="check-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="cross-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="realtor-comparison-row">
+                    <p class="realtor-comparison-row-text"><strong>Безпека:</strong> Страхування цивільної відповідальності</p>
+                    <div class="realtor-comparison-icons">
+                        <div class="check-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="cross-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="realtor-comparison-row">
+                    <p class="realtor-comparison-row-text"><strong>Гнучкість:</strong> Жодних контрактів на довгий термін &mdash; вимикайте оголошення будь-коли</p>
+                    <div class="realtor-comparison-icons">
+                        <div class="check-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="check-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="realtor-comparison-row">
+                    <p class="realtor-comparison-row-text"><strong>Підтримка:</strong> Цілодобова допомога українською мовою</p>
+                    <div class="realtor-comparison-icons">
+                        <div class="check-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="cross-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="realtor-comparison-photo">
+                <img src="~/images/8c8376b23f2b531c6fc66ab07814f4155814744b.jpg" alt="Апартаменти" />
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==================== CALCULATOR SECTION ==================== -->
+    <div class="r-section">
+        <div class="realtor-calc-header">
+            <h2 class="realtor-calc-title">Дізнайтесь, скільки ви можете заробляти на оренді</h2>
+            <p class="realtor-calc-subtitle">На основі реальних бронювань у вашому регіоні</p>
+        </div>
+
+        <div class="realtor-calc-card">
+            <p class="realtor-calc-section-label">Локація</p>
+
+            <div class="realtor-calc-row">
+                <!-- Country -->
+                <div class="realtor-calc-input-wrap">
+                    <div class="realtor-calc-input-inner">
+                        <div class="realtor-calc-input-field">
+                            <svg class="realtor-calc-input-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 4C9.37 4 4 9.37 4 16C4 22.63 9.37 28 16 28C22.63 28 28 22.63 28 16C28 9.37 22.63 4 16 4ZM14.67 24.93C10.08 24.17 6.57 20.47 6.07 15.83H9.33C9.73 19.27 11.85 22.18 14.67 23.87V24.93ZM14.67 21.4C12.52 19.78 11.07 17.48 10.73 15.83H14.67V21.4ZM14.67 14.17H10.73C11.07 12.52 12.52 10.22 14.67 8.6V14.17ZM14.67 7.07C11.85 8.82 9.73 11.73 9.33 15.17H6.07C6.57 10.53 10.08 6.83 14.67 6.07V7.07ZM25.93 15.17H22.67C22.27 11.73 20.15 8.82 17.33 7.07V6.07C21.92 6.83 25.43 10.53 25.93 15.17ZM17.33 8.6C19.48 10.22 20.93 12.52 21.27 14.17H17.33V8.6ZM17.33 15.83H21.27C20.93 17.48 19.48 19.78 17.33 21.4V15.83ZM17.33 23.87C20.15 22.18 22.27 19.27 22.67 15.83H25.93C25.43 20.47 21.92 24.17 17.33 24.93V23.87Z" fill="#223300"/>
+                            </svg>
+                            <span class="realtor-calc-input-text">Оберіть країну</span>
+                            <svg class="realtor-calc-input-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                        <span class="realtor-calc-hint">Напр. США, Індія, Китай</span>
+                    </div>
+                </div>
+
+                <!-- City -->
+                <div class="realtor-calc-input-wrap">
+                    <div class="realtor-calc-input-inner">
+                        <div class="realtor-calc-input-field">
+                            <svg class="realtor-calc-input-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 2.67C10.84 2.67 6.67 6.84 6.67 12C6.67 19 16 29.33 16 29.33C16 29.33 25.33 19 25.33 12C25.33 6.84 21.16 2.67 16 2.67ZM16 15.33C14.16 15.33 12.67 13.84 12.67 12C12.67 10.16 14.16 8.67 16 8.67C17.84 8.67 19.33 10.16 19.33 12C19.33 13.84 17.84 15.33 16 15.33Z" fill="#223300"/>
+                            </svg>
+                            <span class="realtor-calc-input-text">Оберіть місто</span>
+                            <svg class="realtor-calc-input-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                        <span class="realtor-calc-hint">Напр. Київ, Львів, Тернопіль</span>
+                    </div>
+                </div>
+
+                <!-- District -->
+                <div class="realtor-calc-input-wrap">
+                    <div class="realtor-calc-input-inner">
+                        <div class="realtor-calc-input-field">
+                            <svg class="realtor-calc-input-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 24H12V16H4V24ZM4 12H12V4H4V12ZM14 24H22V16H14V24ZM14 12H22V4H14V12ZM24 4V12H28V4H24ZM24 24H28V16H24V24Z" fill="#223300"/>
+                            </svg>
+                            <span class="realtor-calc-input-text">Оберіть район</span>
+                            <svg class="realtor-calc-input-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                        <span class="realtor-calc-hint">Напр. Центр, Поділ, Аркадія</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="realtor-calc-bottom-row">
+                <!-- Rooms block -->
+                <div class="realtor-calc-rooms-block">
+                    <div class="realtor-calc-rooms-selector-wrap">
+                        <p class="realtor-calc-rooms-label">Кількість кімнат</p>
+                        <div class="realtor-calc-rooms-selector">
+                            <button class="realtor-calc-room-btn" data-rooms="0">Студія</button>
+                            <button class="realtor-calc-room-btn active" data-rooms="1">1</button>
+                            <button class="realtor-calc-room-btn" data-rooms="2">2</button>
+                            <button class="realtor-calc-room-btn" data-rooms="3">3+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result block -->
+                <div class="realtor-calc-result-block">
+                    <div class="realtor-calc-result-actions">
+                        <button class="btn-calc" id="calcBtn">
+                            Розрахувати дохід
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="realtor-calc-result">
+                        <div class="realtor-calc-result-value" id="calcResult">&asymp; 25&thinsp;999 &#8372; / місяць</div>
+                        <div class="realtor-calc-result-hint">Орієнтований дохід за середньої заповнюваності</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TESTIMONIALS ==================== -->
+    <div class="r-section">
+        <div class="realtor-testimonials-header">
+            <h2 class="realtor-testimonials-title">Довіряють такі професіонали, як ви</h2>
+            <div class="realtor-testimonials-arrows">
+                <button class="realtor-arrow-btn" id="testimonialPrev">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                </button>
+                <button class="realtor-arrow-btn" id="testimonialNext">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="realtor-testimonials-grid">
+            <div class="realtor-testimonial-card">
+                <p class="realtor-testimonial-text">
+                    Система онлайн-бронювання працює ідеально та дуже добре підходить для нашого помешкання. Система керування бронюваннями дозволяє легко керувати записами, а оновлення можна вносити з будь-якого пристрою, як онлайн, так і в додатку.
+                </p>
+                <div class="realtor-testimonial-author">
+                    <div class="realtor-testimonial-avatar">А</div>
+                    <div>
+                        <div class="realtor-testimonial-name">Андреа Брукнерова</div>
+                        <div class="realtor-testimonial-role">Господиня зі США</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="realtor-testimonial-card">
+                <p class="realtor-testimonial-text">
+                    Система онлайн-бронювання працює ідеально та дуже добре підходить для нашого помешкання. Система керування бронюваннями дозволяє легко керувати записами, а оновлення можна вносити з будь-якого пристрою, як онлайн, так і в додатку.
+                </p>
+                <div class="realtor-testimonial-author">
+                    <div class="realtor-testimonial-avatar">М</div>
+                    <div>
+                        <div class="realtor-testimonial-name">Михайло Коваленко</div>
+                        <div class="realtor-testimonial-role">Господар з України</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="realtor-testimonials-dots">
+            <div class="realtor-dot"></div>
+            <div class="realtor-dot inactive"></div>
+            <div class="realtor-dot inactive"></div>
+            <div class="realtor-dot inactive"></div>
+            <div class="realtor-dot inactive"></div>
+        </div>
+    </div>
+
+    <!-- ==================== FAQ SECTION ==================== -->
+    <div class="r-section">
+        <h2 class="realtor-faq-title">Найчастіші запитання</h2>
+
+        <div class="realtor-faq-list">
+            <div class="realtor-faq-item-wrap">
+                <div class="realtor-faq-item" onclick="toggleFaq(this)">
+                    <span class="realtor-faq-question">Що відбудеться після реєстрації?</span>
+                    <div class="realtor-faq-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+                <div class="realtor-faq-answer">
+                    Після реєстрації ваше помешкання проходить модерацію і протягом 24 годин з'являється на платформі. Ви отримаєте перші бронювання вже в перший тиждень.
+                </div>
+            </div>
+
+            <div class="realtor-faq-item-wrap">
+                <div class="realtor-faq-item" onclick="toggleFaq(this)">
+                    <span class="realtor-faq-question">Що я отримую за комісію, яку я сплачую?</span>
+                    <div class="realtor-faq-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+                <div class="realtor-faq-answer">
+                    За комісію ви отримуєте доступ до мільйонів потенційних гостей, систему безпечних платежів, страховий захист, підтримку 24/7 та інструменти для управління бронюваннями.
+                </div>
+            </div>
+
+            <div class="realtor-faq-item-wrap">
+                <div class="realtor-faq-item" onclick="toggleFaq(this)">
+                    <span class="realtor-faq-question">Що робити, якщо гість завдав шкоди моєму помешканню?</span>
+                    <div class="realtor-faq-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+                <div class="realtor-faq-answer">
+                    Ваше помешкання застраховане на суму до 1 млн євро. Просто зв'яжіться з нашою службою підтримки протягом 48 годин після виїзду гостя та ми вирішимо питання компенсації.
+                </div>
+            </div>
+
+            <div class="realtor-faq-item-wrap">
+                <div class="realtor-faq-item" onclick="toggleFaq(this)">
+                    <span class="realtor-faq-question">Коли моє помешкання з'явиться на сайті?</span>
+                    <div class="realtor-faq-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+                <div class="realtor-faq-answer">
+                    Зазвичай це займає від кількох годин до 1 робочого дня після завершення реєстрації. Ви отримаєте сповіщення, щойно оголошення буде опубліковано.
+                </div>
+            </div>
+
+            <div class="realtor-faq-item-wrap">
+                <div class="realtor-faq-item" onclick="toggleFaq(this)">
+                    <span class="realtor-faq-question">Що відбувається, якщо гість скасовує бронювання?</span>
+                    <div class="realtor-faq-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+                <div class="realtor-faq-answer">
+                    Все залежить від вашої політики скасування. Ви самі налаштовуєте умови — гнучкі або строгі. При скасуванні ви отримуєте компенсацію відповідно до обраних умов.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CTA BANNER ==================== -->
+    <div class="realtor-cta-banner">
+        <div class="realtor-cta-inner">
+            <div class="realtor-cta-text-block">
+                <h2 class="realtor-cta-banner-title">Почніть заробляти з Reservio вже сьогодні</h2>
+                <p class="realtor-cta-banner-subtitle">Безкоштовно &middot; Без зобов'язань &middot; 5 хвилин</p>
+                <a href="#" class="btn-accent-large" style="margin-top: 0;">Почати заробляти</a>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+                <img src="~/images/icons/Group.svg" alt="Reservio mascot" style="width:200px; height:auto;" />
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    @await Html.PartialAsync("_Footer")
+
+    <script src="~/js/realtor.js"></script>
+</body>
+</html>

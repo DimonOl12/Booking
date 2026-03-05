@@ -1,0 +1,611 @@
+@model Web.Models.SearchViewModel
+@{
+    ViewData["Title"] = "Пошук";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(string.IsNullOrEmpty(Model.City) ? "Результати пошуку" : Model.City) — Reservio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/home.css" />
+    <link rel="stylesheet" href="~/css/search.css" />
+    <link rel="stylesheet" href="~/css/map.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+</head>
+<body>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    @await Html.PartialAsync("_HomeNavbar")
+}
+else
+{
+    @await Html.PartialAsync("_HomeNavbarGuest")
+}
+
+<div class="search-page-wrap">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="/">Головна</a>
+        <span class="bc-sep">›</span>
+        <a href="#">Україна</a>
+        @if (!string.IsNullOrEmpty(Model.City))
+        {
+            <span class="bc-sep">›</span>
+            <a href="#">@Model.City</a>
+        }
+        <span class="bc-sep">›</span>
+        <span class="bc-current">Результати пошуку</span>
+    </nav>
+
+    <!-- Search bar -->
+    <div class="search-bar-section">
+        <form class="search-bar" id="searchForm" method="get" action="/Home/Search">
+            <div class="sb-field sb-city">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" name="city" id="sbCity" value="@Model.City" placeholder="Куди ви вирушаєте?" autocomplete="off" />
+                <input type="hidden" name="adults" id="hidAdults" value="@Model.Adults" />
+                <input type="hidden" name="children" id="hidChildren" value="@Model.Children" />
+                <input type="hidden" name="rooms" id="hidRooms" value="@Model.Rooms" />
+            </div>
+
+            <div class="sb-field sb-date" id="sbDateField">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span id="sbDateLabel">@Model.DatesLabel</span>
+                <input type="hidden" name="checkIn" id="hidCheckIn" value="@Model.CheckIn" />
+                <input type="hidden" name="checkOut" id="hidCheckOut" value="@Model.CheckOut" />
+            </div>
+
+            <div class="sb-field sb-guests" id="sbGuestsField">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                <span id="sbGuestsLabel">@Model.GuestsLabel</span>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+
+            <button type="submit" class="sb-btn">Шукати</button>
+        </form>
+    </div>
+
+    <!-- Date picker popup -->
+    <div class="datepicker-popup" id="datepickerPopup" style="display:none">
+        <div class="dp-months">
+            <div class="dp-month" id="dpMonth1"></div>
+            <div class="dp-month" id="dpMonth2"></div>
+        </div>
+        <div class="dp-footer">
+            <button class="dp-clear" id="dpClear">Очистити</button>
+            <button class="dp-done" id="dpDone">Готово</button>
+        </div>
+    </div>
+
+    <!-- Guests popup -->
+    <div class="guests-popup" id="guestsPopup" style="display:none">
+        <div class="gp-row">
+            <div class="gp-label">
+                <span class="gp-title">Дорослі</span>
+                <span class="gp-sub">Від 18 років</span>
+            </div>
+            <div class="gp-counter">
+                <button class="gp-btn" data-target="adults" data-action="dec">−</button>
+                <span id="gp-adults">@Model.Adults</span>
+                <button class="gp-btn" data-target="adults" data-action="inc">+</button>
+            </div>
+        </div>
+        <div class="gp-row">
+            <div class="gp-label">
+                <span class="gp-title">Діти</span>
+                <span class="gp-sub">0–17 років</span>
+            </div>
+            <div class="gp-counter">
+                <button class="gp-btn" data-target="children" data-action="dec">−</button>
+                <span id="gp-children">@Model.Children</span>
+                <button class="gp-btn" data-target="adults" data-action="inc">+</button>
+            </div>
+        </div>
+        <div class="gp-row">
+            <div class="gp-label">
+                <span class="gp-title">Номери</span>
+            </div>
+            <div class="gp-counter">
+                <button class="gp-btn" data-target="rooms" data-action="dec">−</button>
+                <span id="gp-rooms">@Model.Rooms</span>
+                <button class="gp-btn" data-target="rooms" data-action="inc">+</button>
+            </div>
+        </div>
+        <button class="gp-done" id="gpDone">Готово</button>
+    </div>
+
+    <!-- Heading -->
+    <div class="results-heading">
+        @if (!string.IsNullOrEmpty(Model.City))
+        {
+            <h1 class="results-title">@Model.City: Знайдено @Model.TotalFound помешкань</h1>
+        }
+        else
+        {
+            <h1 class="results-title">Знайдено @Model.TotalFound помешкань</h1>
+        }
+    </div>
+
+    <!-- Main layout: sidebar + listings -->
+    <div class="search-layout">
+
+        <!-- ── LEFT SIDEBAR ── -->
+        <aside class="filters-sidebar">
+
+            <!-- Map button -->
+            <div class="map-btn-wrap">
+                <button class="btn-map">Перейти на карту</button>
+            </div>
+
+            <!-- Filters card -->
+            <div class="filters-card">
+                <div class="filters-header">Фільтри</div>
+
+                <!-- Budget slider -->
+                <div class="filter-section filter-budget">
+                    <div class="filter-budget-labels">
+                        <span class="filter-title">Бюджет на ніч</span>
+                        <span class="budget-range-label" id="budgetLabel">UAH <span id="budgetMin">400</span> - <span id="budgetMax">6500</span>+</span>
+                    </div>
+                    <div class="price-slider-wrap">
+                        <div class="price-slider-track">
+                            <div class="price-slider-fill" id="sliderFill"></div>
+                        </div>
+                        <input type="range" class="price-range" id="rangeMin" min="400" max="6500" value="@((int)Model.MinPrice)" step="100" />
+                        <input type="range" class="price-range" id="rangeMax" min="400" max="6500" value="@((int)Model.MaxPrice)" step="100" />
+                    </div>
+                </div>
+
+                <!-- Accordion filters -->
+                <div class="filter-accordion" id="filterAccordion">
+
+                    <div class="accordion-item open" data-filter="type">
+                        <button class="accordion-header">
+                            <span>Тип розміщення</span>
+                            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+                        </button>
+                        <div class="accordion-body">
+                            @foreach (var type in new[] { "Апартаменти", "Домівка й апартаменти", "Готелі", "Хостели",
+                                "Розміщення сімʼї", "Гостьові будинки", "Готелі типу «ліжко та сніданок»",
+                                "Будинки на відпочинку", "Вілли", "Мотелі", "Кемпінги", "Лоджі" })
+                            {
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="filterType" value="@type"
+                                           @(Model.FilterType == type ? "checked" : "") />
+                                    <span class="checkbox-custom"></span>
+                                    @type
+                                </label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="accordion-item" data-filter="rating">
+                        <button class="accordion-header">
+                            <span>Оцінка за відгуками</span>
+                            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="accordion-body">
+                            @foreach (var r in new[] { ("9+", "9"), ("8+", "8"), ("7+", "7") })
+                            {
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="minRating" value="@r.Item2" />
+                                    <span class="checkbox-custom"></span>
+                                    @r.Item1
+                                </label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="accordion-item" data-filter="beds">
+                        <button class="accordion-header">
+                            <span>Спальні та ванні кімнати</span>
+                            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="accordion-body">
+                            <div class="beds-row">
+                                <span>Спальні</span>
+                                <div class="counter-inline">
+                                    <button class="ci-btn" data-target="bedrooms" data-action="dec">−</button>
+                                    <span id="bedroomsCount">0</span>
+                                    <button class="ci-btn" data-target="bedrooms" data-action="inc">+</button>
+                                </div>
+                            </div>
+                            <div class="beds-row">
+                                <span>Ванні кімнати</span>
+                                <div class="counter-inline">
+                                    <button class="ci-btn" data-target="bathrooms" data-action="dec">−</button>
+                                    <span id="bathroomsCount">0</span>
+                                    <button class="ci-btn" data-target="bathrooms" data-action="inc">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item" data-filter="amenities">
+                        <button class="accordion-header">
+                            <span>Зручності</span>
+                            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="accordion-body">
+                            @foreach (var a in new[] { "Басейн", "Тренажерний зал", "СПА", "Сауна", "Ресторан", "Бар" })
+                            {
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="amenity" value="@a" />
+                                    <span class="checkbox-custom"></span>
+                                    @a
+                                </label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="accordion-item" data-filter="room-amenities">
+                        <button class="accordion-header">
+                            <span>Зручності у номері</span>
+                            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="accordion-body">
+                            @foreach (var a in new[] { "Кондиціонер", "Кухонний куточок", "Балкон", "Пральна машина" })
+                            {
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="roomAmenity" value="@a" />
+                                    <span class="checkbox-custom"></span>
+                                    @a
+                                </label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="accordion-item" data-filter="bed-type">
+                        <button class="accordion-header">
+                            <span>Тип ліжка</span>
+                            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="accordion-body">
+                            @foreach (var b in new[] { "Двоспальне", "Односпальне", "Двоярусне", "Диван-ліжко" })
+                            {
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="bedType" value="@b" />
+                                    <span class="checkbox-custom"></span>
+                                    @b
+                                </label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="accordion-item" data-filter="meals">
+                        <button class="accordion-header">
+                            <span>Харчування</span>
+                            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="accordion-body">
+                            @foreach (var m in new[] { "Сніданок включено", "Напівпансіон", "Повний пансіон", "Без харчування" })
+                            {
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="meal" value="@m" />
+                                    <span class="checkbox-custom"></span>
+                                    @m
+                                </label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="accordion-item" data-filter="booking-rules">
+                        <button class="accordion-header">
+                            <span>Правила бронювання</span>
+                            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="accordion-body">
+                            @foreach (var r in new[] { "Безкоштовна відмова", "Без передплати", "Миттєве підтвердження" })
+                            {
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="bookingRule" value="@r" />
+                                    <span class="checkbox-custom"></span>
+                                    @r
+                                </label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="accordion-item" data-filter="accessibility">
+                        <button class="accordion-header">
+                            <span>Зручності для осіб з інвалідністю</span>
+                            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="accordion-body">
+                            @foreach (var a in new[] { "Пандус", "Ліфт", "Кімната для інвалідного візка" })
+                            {
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="accessibility" value="@a" />
+                                    <span class="checkbox-custom"></span>
+                                    @a
+                                </label>
+                            }
+                        </div>
+                    </div>
+
+                </div><!-- /filter-accordion -->
+            </div><!-- /filters-card -->
+        </aside>
+
+        <!-- ── RIGHT: SORT BAR + LISTINGS ── -->
+        <main class="listings-main">
+
+            <!-- Sort + View toggle row -->
+            <div class="sort-row">
+                <div class="sort-dropdown-wrap">
+                    <button class="sort-dropdown-btn" id="sortDropdownBtn">
+                        Відсортувати за: <strong id="sortLabel">Наші рекомендації</strong>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="sort-dropdown-menu" id="sortDropdownMenu" style="display:none">
+                        <button data-sort="recommended">Наші рекомендації</button>
+                        <button data-sort="rating">Рейтинг</button>
+                        <button data-sort="price_asc">Ціна: від низької до високої</button>
+                        <button data-sort="price_desc">Ціна: від високої до низької</button>
+                    </div>
+                </div>
+
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="list">Список</button>
+                    <button class="view-btn" data-view="grid">Таблиця</button>
+                </div>
+            </div>
+
+            <!-- Listings -->
+            <div class="listings-list" id="listingsContainer">
+                @if (!Model.Listings.Any())
+                {
+                    <div class="no-results" style="grid-column:1/-1">
+                        <p>На жаль, за вашим запитом нічого не знайдено.</p>
+                        <p>Спробуйте змінити місто або параметри пошуку.</p>
+                    </div>
+                }
+                @foreach (var item in Model.Listings)
+                {
+                    <article class="listing-card"
+                             data-id="@item.Id"
+                             data-price="@item.PricePerNight"
+                             data-rating="@item.RatingScore"
+                             data-type="@item.Type">
+
+                        <!-- Image -->
+                        <div class="lc-img-wrap">
+                            <img src="@item.ImageUrl" alt="@item.Name" loading="lazy" />
+                        </div>
+
+                        <!-- Card body -->
+                        <div class="lc-body">
+
+                            <!-- Rating -->
+                            <div class="lc-rating-row">
+                                <div class="lc-badge">@item.RatingScore.ToString("0.0").Replace('.', ',')</div>
+                                <div class="lc-rating-meta">
+                                    <span class="lc-rl">@item.RatingLabel</span>
+                                    <span class="lc-rr">@item.ReviewsCount відгуків</span>
+                                </div>
+                            </div>
+
+                            <!-- Name + location -->
+                            <div class="lc-name-loc">
+                                <h2 class="lc-name">@item.Name</h2>
+                                <p class="lc-location">@item.Location</p>
+                            </div>
+
+                            <!-- Amenity badges (icon-only in grid; icon + label in horizontal) -->
+                            <div class="lc-amenities">
+                                @if (item.HasFreeWifi)
+                                {
+                                    <span class="lc-amenity" title="Безкоштовний Wi-Fi">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <path d="M1.5 8.5c5.5-5.5 15.5-5.5 21 0"/>
+                                            <path d="M5 12c3.9-3.9 11-3.9 14 0"/>
+                                            <path d="M8.5 15.5c2.2-2.2 6.8-2.2 7 0"/>
+                                            <circle cx="12" cy="19" r="1" fill="currentColor"/>
+                                        </svg>
+                                        <span class="lc-amenity-label">Wi-Fi</span>
+                                    </span>
+                                }
+                                @if (item.HasFreeParking)
+                                {
+                                    <span class="lc-amenity" title="Безкоштовна парковка">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                            <path d="M9 17V8h4a3 3 0 010 6H9"/>
+                                        </svg>
+                                        <span class="lc-amenity-label">Парковка</span>
+                                    </span>
+                                }
+                                @if (item.HasPool)
+                                {
+                                    <span class="lc-amenity" title="Басейн">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <path d="M2 12h20M2 17c1.5-1 3.5-1 5 0s3.5 1 5 0 3.5-1 5 0"/>
+                                            <circle cx="8" cy="7" r="3"/>
+                                        </svg>
+                                        <span class="lc-amenity-label">Басейн</span>
+                                    </span>
+                                }
+                                @if (item.HasBreakfast)
+                                {
+                                    <span class="lc-amenity" title="Сніданок включено">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <path d="M18 8h1a4 4 0 010 8h-1"/>
+                                            <path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/>
+                                        </svg>
+                                        <span class="lc-amenity-label">Сніданок</span>
+                                    </span>
+                                }
+                            </div>
+
+                            <!-- Description: hidden in grid, shown in horizontal view -->
+                            <p class="lc-desc">@item.Description</p>
+
+                            <!-- Urgency -->
+                            @if (item.RoomsLeft <= 2)
+                            {
+                                <div class="lc-urgency">Залишився @item.RoomsLeft номер!</div>
+                            }
+
+                            <!-- Footer: price + CTA -->
+                            <div class="lc-footer">
+                                <div class="lc-price-block">
+                                    @if (item.OriginalPricePerNight.HasValue)
+                                    {
+                                        <span class="lc-price-old">UAH @item.OriginalPricePerNight.Value.ToString("N0").Replace(",", " ")</span>
+                                    }
+                                    <span class="lc-price">UAH @item.PricePerNight.ToString("N0").Replace(",", " ")</span>
+                                    <span class="lc-price-meta">за 1 ніч · @Model.Adults дорослих</span>
+                                </div>
+                                <button class="btn-view" data-id="@item.Id">Переглянути</button>
+                            </div>
+
+                        </div>
+                    </article>
+                }
+            </div>
+
+            @if (Model.Listings.Any())
+            {
+                <div class="load-more-wrap">
+                    <button class="btn-load-more" id="loadMoreBtn">Показати більше результатів</button>
+                </div>
+            }
+
+        </main>
+    </div><!-- /search-layout -->
+</div><!-- /search-page-wrap -->
+
+@await Html.PartialAsync("_Footer")
+
+<!-- ══════════════════════════════════════════════════════════════
+     MAP MODAL
+     ══════════════════════════════════════════════════════════════ -->
+<div id="mapModal" class="map-modal" style="display:none">
+  <div class="map-modal-inner">
+
+    <!-- ── Left: filter sidebar ── -->
+    <aside class="map-sidebar">
+      <div class="map-sidebar-title">Фільтри</div>
+
+      <!-- Budget -->
+      <div class="map-filter-budget">
+        <div class="map-filter-budget-labels">
+          <span>Бюджет на ніч</span>
+          <span>UAH <span id="mapBudgetMin">400</span> – <span id="mapBudgetMax">6500</span>+</span>
+        </div>
+        <div class="price-slider-wrap">
+          <div class="price-slider-track">
+            <div class="price-slider-fill" id="mapSliderFill"></div>
+          </div>
+          <input type="range" class="price-range" id="mapRangeMin" min="400" max="6500" value="400" step="100" />
+          <input type="range" class="price-range" id="mapRangeMax" min="400" max="6500" value="6500" step="100" />
+        </div>
+      </div>
+
+      <!-- Тип розміщення -->
+      <div class="map-acc-item open">
+        <button class="map-acc-header">
+          <span>Тип розміщення</span>
+          <svg class="map-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+        </button>
+        <div class="map-acc-body">
+          @foreach (var type in new[] { "Апартаменти", "Домівка й апартаменти", "Готелі", "Хостели",
+              "Розміщення сімʼї", "Гостьові будинки", "Готелі типу «ліжко та сніданок»",
+              "Вілла", "Мотелі", "Кемпінги" })
+          {
+            <label class="map-filter-checkbox">
+              <input type="checkbox" class="map-type-cb" value="@type" />
+              <span class="map-checkbox-custom"></span>
+              @type
+            </label>
+          }
+        </div>
+      </div>
+
+      <!-- Оцінка за відгуками -->
+      <div class="map-acc-item">
+        <button class="map-acc-header">
+          <span>Оцінка за відгуками</span>
+          <svg class="map-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="map-acc-body">
+          @foreach (var r in new[] { ("9+", "9"), ("8+", "8"), ("7+", "7") })
+          {
+            <label class="map-filter-checkbox">
+              <input type="checkbox" class="map-rating-cb" value="@r.Item2" />
+              <span class="map-checkbox-custom"></span>
+              @r.Item1
+            </label>
+          }
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Middle: hotel cards ── -->
+    <div class="map-cards-panel">
+      <div class="map-cards-title">0 помешкань</div>
+      <div id="mapCardsList"></div>
+    </div>
+
+    <!-- ── Right: Leaflet map ── -->
+    <div class="map-area-panel">
+      <button class="btn-return-map" id="btnCloseMap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        Повернутись
+      </button>
+      <div id="leafletMap"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+    // Pass server-side values to JS
+    window._searchParams = {
+        city: '@Html.Raw(Model.City)',
+        checkIn: '@Model.CheckIn',
+        checkOut: '@Model.CheckOut',
+        adults: @Model.Adults,
+        children: @Model.Children,
+        rooms: @Model.Rooms,
+        minPrice: @((int)Model.MinPrice),
+        maxPrice: @((int)Model.MaxPrice),
+        sortBy: '@Model.SortBy',
+        filterType: '@(Model.FilterType ?? "")'
+    };
+
+    // All city-matching listings for client-side filtering & map
+    window._allListings = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+        Model.AllListings.Select(l => new {
+            id                   = l.Id,
+            name                 = l.Name,
+            location             = l.Location,
+            imageUrl             = l.ImageUrl,
+            type                 = l.Type,
+            ratingScore          = (double)l.RatingScore,
+            ratingLabel          = l.RatingLabel,
+            reviewsCount         = l.ReviewsCount,
+            pricePerNight        = (double)l.PricePerNight,
+            originalPricePerNight= l.OriginalPricePerNight.HasValue ? (double?)l.OriginalPricePerNight.Value : null,
+            description          = l.Description,
+            hasFreeWifi          = l.HasFreeWifi,
+            hasFreeParking       = l.HasFreeParking,
+            hasPool              = l.HasPool,
+            hasBreakfast         = l.HasBreakfast,
+            roomsLeft            = l.RoomsLeft,
+        }),
+        new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = null }
+    ));
+</script>
+<script src="~/js/search.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="~/js/map.js"></script>
+</body>
+</html>

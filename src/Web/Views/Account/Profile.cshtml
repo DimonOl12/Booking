@@ -1,0 +1,361 @@
+@model Web.Models.UserProfileViewModel
+@{
+    ViewData["Title"] = "Особисті дані";
+    Layout = null;
+    var fullName = $"{Model.FirstName} {Model.LastName}".Trim();
+    if (string.IsNullOrEmpty(fullName)) fullName = Model.Email;
+    var fInit = Model.FirstName?.Length > 0 ? Model.FirstName[0].ToString().ToUpper() : "";
+    var lInit = Model.LastName?.Length > 0 ? Model.LastName[0].ToString().ToUpper() : "";
+    var initials = fInit + lInit;
+    if (string.IsNullOrEmpty(initials))
+        initials = Model.Email.Length > 0 ? Model.Email[0].ToString().ToUpper() : "?";
+
+    var citizenshipOptions = new List<SelectListItem>
+    {
+        new("Виберіть країну/регіон", ""),
+        new("Україна", "Україна"),
+        new("Польща", "Польща"),
+        new("Німеччина", "Німеччина"),
+        new("США", "США"),
+        new("Велика Британія", "Велика Британія"),
+        new("Франція", "Франція"),
+        new("Інше", "Інше"),
+    };
+
+    var countryOptions = new List<SelectListItem>
+    {
+        new("Оберіть країну/регіон", ""),
+        new("Україна", "Україна"),
+        new("Польща", "Польща"),
+        new("Німеччина", "Німеччина"),
+        new("США", "США"),
+        new("Велика Британія", "Велика Британія"),
+        new("Франція", "Франція"),
+        new("Інше", "Інше"),
+    };
+
+    var genderOptions = new List<SelectListItem>
+    {
+        new("Виберіть стать", ""),
+        new("Чоловіча", "Чоловіча"),
+        new("Жіноча", "Жіноча"),
+        new("Інше", "Інше"),
+        new("Не вказувати", "Не вказувати"),
+    };
+
+    var nationalityOptions = new List<SelectListItem>
+    {
+        new("Виберіть країну", ""),
+        new("Україна", "Україна"),
+        new("Польща", "Польща"),
+        new("Інше", "Інше"),
+    };
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Особисті дані</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/profile.css" />
+</head>
+<body>
+
+<!-- ═══════════ HERO + NAVBAR ═══════════ -->
+<div class="pr-hero">
+    <img class="pr-hero-img" src="~/images/Subtract.jpg" alt="" />
+
+    <!-- Navbar -->
+    <nav class="pr-navbar">
+        <a href="/" class="pr-navbar-logo">
+            <img src="~/images/icons/Reservio.svg" alt="Reservio" />
+        </a>
+        <div class="pr-navbar-right">
+            <div class="pr-navbar-currency">UAH</div>
+            <div class="pr-navbar-flag">
+                <svg width="30" height="20" viewBox="0 0 30 20" fill="none">
+                    <rect width="30" height="10" fill="#0057B7"/>
+                    <rect y="10" width="30" height="10" fill="#FFD700"/>
+                </svg>
+            </div>
+            <a href="@Url.Action("Realtor","Home")" class="pr-navbar-text-link">Зареєструвати своє помешкання</a>
+
+            <!-- User dropdown -->
+            <div class="pr-navbar-user-wrap" id="userDropWrap">
+                <button class="pr-navbar-user" id="userDropBtn" type="button">
+                    <div class="pr-navbar-avatar-wrap">
+                        <div class="pr-navbar-avatar">@initials</div>
+                        <span class="pr-navbar-badge">3</span>
+                    </div>
+                    <span class="pr-navbar-username">@fullName</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="pr-navbar-dropdown" id="userDrop">
+                    <a href="@Url.Action("Profile","Account")" class="pr-dropdown-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Особисті дані
+                    </a>
+                    <a href="#" class="pr-dropdown-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Мої бронювання
+                    </a>
+                    <a href="#" class="pr-dropdown-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        Збережені
+                    </a>
+                    <div class="pr-dropdown-divider"></div>
+                    <form method="post" asp-action="Logout" asp-controller="Account" style="margin:0">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="pr-dropdown-item logout">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                            Вийти
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Secondary profile tabs (inside hero) -->
+    <div class="pr-tabs-bar">
+        <div class="pr-tab-active-chip">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Особисті дані
+        </div>
+        <a href="#" class="pr-tab-icon-btn" title="Листи">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </a>
+        <a href="#" class="pr-tab-icon-btn" title="Мої бронювання">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </a>
+        <a href="#" class="pr-tab-icon-btn" title="Збережені">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </a>
+        <a href="#" class="pr-tab-icon-btn" title="Налаштування">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </a>
+        <a href="#" class="pr-tab-icon-btn" title="Способи оплати">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </a>
+    </div>
+</div>
+
+<!-- ═══════════ MAIN CONTENT ═══════════ -->
+<div class="pr-page-wrap">
+
+    @if (!string.IsNullOrEmpty(Model.SaveSuccess))
+    {
+        <div class="pr-success-msg visible" id="successMsg">@Model.SaveSuccess</div>
+    }
+
+    <form method="post" asp-action="Profile" asp-controller="Account">
+        @Html.AntiForgeryToken()
+
+        <div class="pr-main-row">
+
+            <!-- ── Left column ── -->
+            <div class="pr-col-main">
+
+                <!-- Card 1: Особиста інформація -->
+                <div class="pr-card">
+                    <h2 class="pr-card-title">Особиста інформація</h2>
+
+                    <div class="pr-form-row">
+                        <div class="pr-field">
+                            <label class="pr-field-label" for="FirstName">Ім'я</label>
+                            <input asp-for="FirstName" class="pr-input" placeholder="Введіть своє ім'я" />
+                        </div>
+                        <div class="pr-field">
+                            <label class="pr-field-label" for="LastName">Прізвище</label>
+                            <input asp-for="LastName" class="pr-input" placeholder="Введіть своє прізвище" />
+                        </div>
+                    </div>
+
+                    <div class="pr-field">
+                        <label class="pr-field-label" for="DisplayName">Відображуване ім'я</label>
+                        <input asp-for="DisplayName" class="pr-input" placeholder="Оберіть відображуване ім'я" />
+                    </div>
+
+                    <!-- Email (read-only) -->
+                    <div class="pr-field">
+                        <label class="pr-field-label">Email</label>
+                        <div class="pr-email-wrap">
+                            <span class="pr-email-value">@Model.Email</span>
+                            <svg class="pr-email-lock" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        </div>
+                        <input type="hidden" asp-for="Email" />
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="pr-field">
+                        <label class="pr-field-label">Номер телефону</label>
+                        <div class="pr-phone-wrap">
+                            <div class="pr-phone-prefix">
+                                <svg width="24" height="16" viewBox="0 0 30 20" fill="none">
+                                    <rect width="30" height="10" fill="#0057B7"/>
+                                    <rect y="10" width="30" height="10" fill="#FFD700"/>
+                                </svg>
+                                <span>+380</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                            <input asp-for="PhoneNumber" class="pr-phone-input" placeholder="Введіть свій номер телефону" />
+                        </div>
+                    </div>
+
+                    <!-- Birthday -->
+                    <div class="pr-field">
+                        <label class="pr-field-label">Дата народження</label>
+                        <div class="pr-bday-wrap">
+                            <input asp-for="BirthDay" class="pr-bday-seg" placeholder="ДД" maxlength="2" />
+                            <input asp-for="BirthMonth" class="pr-bday-seg" placeholder="ММ" maxlength="2" />
+                            <input asp-for="BirthYear" class="pr-bday-seg" placeholder="РРРР" maxlength="4" />
+                        </div>
+                    </div>
+
+                    <!-- Citizenship + Gender -->
+                    <div class="pr-form-row">
+                        <div class="pr-field">
+                            <label class="pr-field-label" for="Citizenship">Громадянство</label>
+                            <select asp-for="Citizenship" asp-items="citizenshipOptions" class="pr-select"></select>
+                        </div>
+                        <div class="pr-field">
+                            <label class="pr-field-label" for="Gender">Стать</label>
+                            <select asp-for="Gender" asp-items="genderOptions" class="pr-select"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Адреса -->
+                <div class="pr-card">
+                    <h2 class="pr-card-title">Адреса</h2>
+
+                    <div class="pr-form-row">
+                        <div class="pr-field">
+                            <label class="pr-field-label" for="Country">Країна/регіон</label>
+                            <select asp-for="Country" asp-items="countryOptions" class="pr-select"></select>
+                        </div>
+                        <div class="pr-field">
+                            <label class="pr-field-label" for="City">Місто</label>
+                            <input asp-for="City" class="pr-input" placeholder="Назва вашого міста" />
+                        </div>
+                        <div class="pr-field" style="max-width:180px;">
+                            <label class="pr-field-label" for="PostalCode">Індекс</label>
+                            <input asp-for="PostalCode" class="pr-input" placeholder="_________" />
+                        </div>
+                    </div>
+
+                    <div class="pr-field">
+                        <label class="pr-field-label" for="Address">Адреса</label>
+                        <input asp-for="Address" class="pr-input" placeholder="Назва вашої вулиці та номер будинку/квартири" />
+                    </div>
+                </div>
+
+                <!-- Card 3: Паспортні дані -->
+                <div class="pr-card">
+                    <h2 class="pr-card-title">Паспортні дані</h2>
+
+                    <div>
+                        <div class="pr-form-row">
+                            <div class="pr-field">
+                                <label class="pr-field-label" for="PassportFirstName">Ім'я</label>
+                                <input asp-for="PassportFirstName" class="pr-input" placeholder="Введіть ім'я" />
+                            </div>
+                            <div class="pr-field">
+                                <label class="pr-field-label" for="PassportLastName">Прізвище</label>
+                                <input asp-for="PassportLastName" class="pr-input" placeholder="Введіть прізвище" />
+                            </div>
+                        </div>
+                        <p class="pr-passport-hint" style="margin-top:8px;">
+                            Будь ласка, вкажіть ім'я точно так, як воно написане в паспорті або іншому офіційному проїзному документі.
+                        </p>
+                    </div>
+
+                    <div class="pr-form-row">
+                        <div class="pr-field">
+                            <label class="pr-field-label" for="PassportNationality">Громадянство</label>
+                            <select asp-for="PassportNationality" asp-items="nationalityOptions" class="pr-select"></select>
+                        </div>
+                        <div class="pr-field">
+                            <label class="pr-field-label" for="PassportNumber">Номер документа</label>
+                            <input asp-for="PassportNumber" class="pr-input" placeholder="EB123456" />
+                        </div>
+                        <div class="pr-field">
+                            <label class="pr-field-label" for="PassportExpiry">Термін дії</label>
+                            <input asp-for="PassportExpiry" class="pr-input" placeholder="ДД/ММ/РРРР" />
+                        </div>
+                    </div>
+
+                    <!-- Consent checkbox -->
+                    <div class="pr-consent-row">
+                        <label class="pr-consent-label">
+                            <input type="checkbox" class="pr-consent-check" />
+                            В цьому атрибуті Reservio зберігає мої паспортні дані відповідно до
+                            <a href="#" style="color:#0F90F3;">Положення про конфіденційність</a>.
+                        </label>
+                    </div>
+
+                    <!-- Save row -->
+                    <div class="pr-save-row">
+                        <button type="submit" class="pr-save-btn">Зберегти</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ── Right column: Photo ── -->
+            <div class="pr-col-side">
+                <div class="pr-photo-card">
+                    <div class="pr-avatar-big">@initials</div>
+                    <button type="button" class="pr-change-photo-btn">Змінити фото</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<script>
+    // Navbar dropdown
+    (function () {
+        var wrap = document.getElementById('userDropWrap');
+        var btn = document.getElementById('userDropBtn');
+        var menu = document.getElementById('userDrop');
+        if (!wrap) return;
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            menu.classList.toggle('open');
+        });
+        document.addEventListener('click', function (e) {
+            if (!wrap.contains(e.target)) menu.classList.remove('open');
+        });
+    })();
+
+    // Auto-hide success message after 3s
+    (function () {
+        var msg = document.getElementById('successMsg');
+        if (msg) {
+            setTimeout(function () {
+                msg.style.transition = 'opacity 0.5s';
+                msg.style.opacity = '0';
+            }, 3000);
+        }
+    })();
+
+    // Birthday segments: auto-advance on input
+    (function () {
+        var day = document.getElementById('BirthDay');
+        var month = document.getElementById('BirthMonth');
+        var year = document.getElementById('BirthYear');
+        if (day && month && year) {
+            day.addEventListener('input', function () { if (this.value.length === 2) month.focus(); });
+            month.addEventListener('input', function () { if (this.value.length === 2) year.focus(); });
+        }
+    })();
+</script>
+</body>
+</html>

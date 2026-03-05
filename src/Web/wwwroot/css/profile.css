@@ -1,0 +1,578 @@
+/* ========================================================
+   PROFILE PAGE — profile.css
+   Based on Figma HTML_personal_data design
+   ======================================================== */
+
+:root {
+    --pr-primary: #223300;
+    --pr-accent: #E73D00;
+    --pr-bg: #F2F2F2;
+    --pr-card: #FAFAFA;
+    --pr-cream: #FFFFEE;
+    --pr-muted: #777777;
+    --pr-border: #D9D9D9;
+    --pr-text: #3E3E3E;
+    --pr-input-bg: #F2F2F2;
+    --pr-radius: 28px;
+    --pr-radius-btn: 20px;
+    --pr-font-body: 'Rubik', sans-serif;
+    --pr-font-heading: 'Unbounded', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--pr-font-body);
+    background: var(--pr-bg);
+    color: var(--pr-primary);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ---- Hero + Navbar wrapper ---- */
+.pr-hero {
+    position: relative;
+    background: var(--pr-primary);
+    height: 210px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.pr-hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+}
+
+/* ---- Navbar on profile page ---- */
+.pr-navbar {
+    position: relative;
+    z-index: 50;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 6px 24px;
+    background: var(--pr-card);
+    border-radius: 0 0 22px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pr-navbar-logo {
+    display: flex;
+    width: 182px;
+    height: 44px;
+    padding: 9px;
+    justify-content: center;
+    align-items: center;
+    background: var(--pr-primary);
+    border-radius: 22px;
+    flex-shrink: 0;
+}
+
+.pr-navbar-logo img { height: 24px; width: auto; }
+
+.pr-navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pr-navbar-currency {
+    height: 44px;
+    padding: 8px 12px;
+    border-right: 1px solid #777;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--pr-primary);
+}
+
+.pr-navbar-flag {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.pr-navbar-text-link {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--pr-primary);
+    padding: 4px 8px;
+    border-radius: 10px;
+    transition: opacity 0.2s;
+}
+
+.pr-navbar-text-link:hover { opacity: 0.7; }
+
+.pr-navbar-user-wrap { position: relative; }
+
+.pr-navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-family: var(--pr-font-body);
+    transition: background 0.2s;
+}
+
+.pr-navbar-user:hover { background: rgba(34,51,0,0.07); }
+
+.pr-navbar-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--pr-primary);
+    border: 2px solid var(--pr-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--pr-cream);
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.pr-navbar-username {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--pr-primary);
+}
+
+/* Dropdown (reuse home navbar dropdown) */
+.pr-navbar-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    background: var(--pr-card);
+    border: 1px solid var(--pr-border);
+    border-radius: 20px;
+    min-width: 220px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    z-index: 200;
+    overflow: hidden;
+    padding: 8px 0;
+}
+
+.pr-navbar-dropdown.open { display: block; }
+
+.pr-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--pr-primary);
+    font-family: var(--pr-font-body);
+    text-decoration: none;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.pr-dropdown-item:hover { background: var(--pr-bg); }
+.pr-dropdown-item.logout { color: var(--pr-accent); }
+.pr-dropdown-divider { height: 1px; background: #E5E5E5; margin: 4px 0; }
+
+/* ---- Profile secondary nav tabs ---- */
+.pr-tabs-bar {
+    background: var(--pr-hero, var(--pr-primary));
+    display: flex;
+    align-items: flex-end;
+    padding: 0 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 8px;
+    padding-top: 32px;
+    position: relative;
+    z-index: 10;
+}
+
+.pr-tab-active-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 20px;
+    background: var(--pr-cream);
+    border-radius: 28px;
+    border: 1px solid var(--pr-border);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--pr-primary);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.pr-tab-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: var(--pr-cream);
+    border-radius: 50%;
+    border: 1px solid var(--pr-border);
+    cursor: pointer;
+    transition: background 0.2s;
+    color: var(--pr-primary);
+    text-decoration: none;
+}
+
+.pr-tab-icon-btn:hover { background: #f0f0dd; }
+
+/* ---- Main layout ---- */
+.pr-page-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+}
+
+.pr-main-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.pr-col-main { flex: 1; display: flex; flex-direction: column; gap: 24px; }
+
+.pr-col-side { width: 300px; flex-shrink: 0; }
+
+/* ---- Card ---- */
+.pr-card {
+    background: var(--pr-card);
+    border-radius: var(--pr-radius);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pr-card-title {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--pr-primary);
+    font-family: var(--pr-font-body);
+    line-height: 1.2;
+}
+
+/* ---- Form grid ---- */
+.pr-form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.pr-form-row > * { flex: 1; }
+
+.pr-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pr-field-label {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--pr-text);
+}
+
+.pr-input {
+    height: 56px;
+    padding: 0 16px;
+    background: var(--pr-input-bg);
+    border-radius: var(--pr-radius);
+    border: 1px solid var(--pr-border);
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--pr-primary);
+    font-family: var(--pr-font-body);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+}
+
+.pr-input::placeholder { color: var(--pr-muted); font-size: 13px; }
+.pr-input:focus { border-color: var(--pr-primary); }
+
+.pr-select {
+    height: 56px;
+    padding: 0 16px;
+    background: var(--pr-input-bg);
+    border-radius: var(--pr-radius);
+    border: 1px solid var(--pr-border);
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--pr-primary);
+    font-family: var(--pr-font-body);
+    outline: none;
+    cursor: pointer;
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23223300' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+    transition: border-color 0.2s;
+}
+
+.pr-select:focus { border-color: var(--pr-primary); }
+
+/* ---- Phone field ---- */
+.pr-phone-wrap {
+    display: flex;
+    border-radius: var(--pr-radius);
+    overflow: hidden;
+    border: 1px solid var(--pr-border);
+    height: 56px;
+}
+
+.pr-phone-prefix {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    background: var(--pr-card);
+    border-right: 1px solid var(--pr-border);
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--pr-primary);
+    flex-shrink: 0;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.pr-phone-input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    background: var(--pr-input-bg);
+    padding: 0 16px;
+    font-size: 15px;
+    color: var(--pr-primary);
+    font-family: var(--pr-font-body);
+    outline: none;
+}
+
+.pr-phone-input::placeholder { color: var(--pr-muted); font-size: 13px; }
+
+/* ---- Birthday (3-col) ---- */
+.pr-bday-wrap {
+    display: flex;
+    border: 1px solid var(--pr-border);
+    border-radius: var(--pr-radius);
+    overflow: hidden;
+    height: 56px;
+}
+
+.pr-bday-seg {
+    flex: 1;
+    border: none;
+    background: var(--pr-input-bg);
+    padding: 0 16px;
+    font-size: 14px;
+    color: var(--pr-primary);
+    font-family: var(--pr-font-body);
+    outline: none;
+    text-align: center;
+    border-right: 1px solid var(--pr-border);
+}
+
+.pr-bday-seg:last-child { border-right: none; }
+.pr-bday-seg::placeholder { color: var(--pr-muted); }
+
+/* ---- Passport hint ---- */
+.pr-passport-hint {
+    font-size: 12px;
+    color: var(--pr-muted);
+    margin-top: -8px;
+}
+
+/* ---- Email row with lock icon ---- */
+.pr-email-wrap {
+    height: 56px;
+    padding: 0 16px;
+    background: var(--pr-input-bg);
+    border-radius: var(--pr-radius);
+    border: 1px solid var(--pr-border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pr-email-value {
+    flex: 1;
+    font-size: 15px;
+    color: var(--pr-primary);
+    font-family: var(--pr-font-body);
+}
+
+.pr-email-lock {
+    color: var(--pr-muted);
+    flex-shrink: 0;
+}
+
+/* ---- Photo card ---- */
+.pr-photo-card {
+    background: var(--pr-card);
+    border-radius: var(--pr-radius);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.pr-avatar-big {
+    width: 158px;
+    height: 158px;
+    border-radius: 50%;
+    background: #D9D9D9;
+    border: 12px solid var(--pr-cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--pr-primary);
+    font-family: var(--pr-font-body);
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.pr-avatar-big img { width: 100%; height: 100%; object-fit: cover; }
+
+.pr-change-photo-btn {
+    width: 100%;
+    height: 37px;
+    background: var(--pr-primary);
+    color: var(--pr-cream);
+    border: none;
+    border-radius: var(--pr-radius-btn);
+    font-size: 16px;
+    font-weight: 500;
+    font-family: var(--pr-font-body);
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.pr-change-photo-btn:hover { opacity: 0.85; }
+
+/* ---- Save row ---- */
+.pr-save-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    padding-top: 8px;
+}
+
+.pr-save-btn {
+    padding: 14px 40px;
+    background: var(--pr-accent);
+    color: var(--pr-cream);
+    border: none;
+    border-radius: var(--pr-radius-btn);
+    font-size: 18px;
+    font-weight: 700;
+    font-family: var(--pr-font-body);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.pr-save-btn:hover { background: #d43600; }
+.pr-save-btn:active { transform: scale(0.98); }
+
+.pr-success-msg {
+    font-size: 15px;
+    font-weight: 500;
+    color: #2e7d32;
+    background: #e8f5e9;
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: none;
+}
+
+.pr-success-msg.visible { display: block; }
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+    .pr-main-row { flex-direction: column-reverse; }
+    .pr-col-side { width: 100%; }
+    .pr-form-row { flex-direction: column; gap: 16px; }
+}
+
+@media (max-width: 600px) {
+    .pr-card { padding: 20px; }
+    .pr-card-title { font-size: 22px; }
+    .pr-tabs-bar { gap: 4px; padding: 0 12px; }
+    .pr-page-wrap { padding: 20px 12px 48px; }
+}
+
+/* ---- Notification badge on avatar ---- */
+.pr-navbar-avatar-wrap {
+    position: relative;
+    display: inline-flex;
+}
+
+.pr-navbar-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    background: #E73D00;
+    color: #FFFFEE;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: var(--pr-font-body);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #FAFAFA;
+    line-height: 1;
+}
+
+/* ---- Passport consent checkbox ---- */
+.pr-consent-row {
+    padding: 8px 0;
+}
+
+.pr-consent-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--pr-muted);
+    font-family: var(--pr-font-body);
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+.pr-consent-check {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: var(--pr-primary);
+    cursor: pointer;
+}

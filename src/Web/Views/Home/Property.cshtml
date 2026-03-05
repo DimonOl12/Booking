@@ -1,0 +1,627 @@
+@model Web.Models.PropertyDetailViewModel
+@{
+    Layout = null;
+    var l = Model.Listing;
+    var rating = l.RatingScore.ToString("0.0").Replace('.', ',');
+    var guestsLabel = $"{Model.Adults} дорослих - {Model.Children} дит. - {Model.Rooms} номер";
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@l.Name — Reservio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="~/css/home.css" />
+    <link rel="stylesheet" href="~/css/property.css" />
+</head>
+<body>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    @await Html.PartialAsync("_HomeNavbar")
+}
+else
+{
+    @await Html.PartialAsync("_HomeNavbarGuest")
+}
+
+<!-- ══ Search bar ══════════════════════════════════════════════ -->
+<div class="prop-search-wrap">
+    <div class="prop-container">
+        <form class="prop-search-bar" method="get" action="/Home/Search">
+            <div class="psb-field psb-city">
+                <svg class="psb-icon" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5">
+                    <path d="M4 6h16M4 10h8M4 14h11M4 18h16"/>
+                </svg>
+                <input type="text" name="city" value="@Model.Listing.City" placeholder="Місто або готель" />
+            </div>
+            <div class="psb-field psb-dates">
+                <svg class="psb-icon" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+                </svg>
+                <input type="text" name="checkIn"  value="@Model.CheckIn"  placeholder="Дата заїзду" class="psb-date" id="propCheckIn" readonly />
+                <span class="psb-sep">—</span>
+                <input type="text" name="checkOut" value="@Model.CheckOut" placeholder="Дата виїзду" class="psb-date" id="propCheckOut" readonly />
+            </div>
+            <div class="psb-field psb-guests" id="propGuestsField">
+                <svg class="psb-icon" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5">
+                    <circle cx="12" cy="7" r="4"/><path d="M3 21c0-4.4 3.6-8 9-8s9 3.6 9 8"/>
+                </svg>
+                <span id="propGuestsLabel">@guestsLabel</span>
+                <svg class="psb-chevron" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+                <input type="hidden" name="adults"   id="propAdults"   value="@Model.Adults" />
+                <input type="hidden" name="children" id="propChildren" value="@Model.Children" />
+                <input type="hidden" name="rooms"    id="propRooms"    value="@Model.Rooms" />
+            </div>
+            <button type="submit" class="psb-btn">Шукати</button>
+        </form>
+    </div>
+</div>
+
+<!-- ══ Breadcrumb ══════════════════════════════════════════════ -->
+<div class="prop-container">
+    <nav class="prop-breadcrumb">
+        <a href="/">Головна</a>
+        <span class="bc-sep">›</span>
+        <a href="/Home/Search">Україна</a>
+        <span class="bc-sep">›</span>
+        <a href="/Home/Search?city=@l.City">@l.City</a>
+        <span class="bc-sep">›</span>
+        <span class="bc-cur">@l.Name</span>
+    </nav>
+</div>
+
+<!-- ══ Main info card (cream) with gallery ══════════════════ -->
+<div class="prop-container">
+    <div class="prop-main-card">
+        <div class="prop-gallery" id="propGallery">
+        <div class="prop-gallery-main">
+            <img src="@l.ImageUrl" alt="@l.Name" />
+        </div>
+        <div class="prop-gallery-grid">
+            <img src="@l.ImageUrl&q=80&w=400" alt="@l.Name" />
+            <img src="@l.ImageUrl&q=70&w=400&sat=-20" alt="@l.Name" />
+            <img src="@l.ImageUrl&q=80&w=400&flip=h" alt="@l.Name" />
+            <img src="@l.ImageUrl&q=70&w=400&rotate=5" alt="@l.Name" />
+        </div>
+        <button class="prop-fav-btn" id="propFavBtn" title="До обраного">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5">
+                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+            </svg>
+        </button>
+        <button class="prop-photos-btn" id="propPhotosBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                <path d="M21 15l-5-5L5 21"/>
+            </svg>
+            <span>10 фото</span>
+        </button>
+        </div>
+        <div class="prop-main-content">
+        <div class="prop-info-row">
+
+            <!-- Left: name + description -->
+            <div class="prop-info-left">
+                <div class="prop-name-row">
+                    <h1 class="prop-name">@l.Name</h1>
+                    <div class="prop-stars-cat">
+                        @for (int i = 0; i < 4; i++)
+                        {
+                            <svg viewBox="0 0 24 24" fill="#223300" width="20" height="20"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        }
+                        <span>Розкіш</span>
+                    </div>
+                </div>
+                <div class="prop-rating-row">
+                    <div class="prop-rating-badge">@rating</div>
+                    <div class="prop-rating-meta">
+                        <span class="prop-rl">@l.RatingLabel</span>
+                        <span class="prop-rr">@l.ReviewsCount відгуків</span>
+                    </div>
+                </div>
+                <div class="prop-description">
+                    @Html.Raw(l.Description.Replace("\n", "<br/>"))
+                </div>
+            </div>
+
+            <!-- Right: map + address + nearby -->
+            <div class="prop-info-right">
+                <h3 class="prop-map-title">Дослідіть місцевість</h3>
+                <div class="prop-map-preview" id="propMapPreview"></div>
+                <button class="prop-map-btn" id="propMapBtn">
+                    Перейти на карту
+                </button>
+                <div class="prop-address">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                        <circle cx="12" cy="9" r="2.5"/>
+                    </svg>
+                    <span>@l.Location</span>
+                </div>
+                <h4 class="prop-nearby-title">Місця поблизу</h4>
+                <ul class="prop-nearby-list" id="propNearbyList">
+                    <!-- filled from JS mock data per city -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="prop-main-footer">
+            <a href="#rooms" class="btn-choose-room">Обрати кімнату</a>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ Amenities section ═══════════════════════════════════════ -->
+<div class="prop-container" id="amenities">
+    <section class="prop-amenities">
+        <h2 class="prop-section-title">Зручності у @l.Type.ToLower() @l.Name</h2>
+        <h3 class="prop-amenities-subtitle">Найпопулярніші зручності</h3>
+        <div class="prop-amenity-chips">
+            @if (l.HasFreeWifi) {
+                <span class="amenity-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><path d="M1.5 8.5c5.5-5.5 15.5-5.5 21 0M5 12c3.9-3.9 11-3.9 14 0M8.5 15.5c2.2-2.2 6.8-2.2 7 0"/><circle cx="12" cy="19" r="1" fill="#223300"/></svg>
+                    Безкоштовний Wi-Fi
+                </span>
+            }
+            @if (l.HasFreeParking) {
+                <span class="amenity-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V8h4a3 3 0 010 6H9"/></svg>
+                    Безкоштовна парковка
+                </span>
+            }
+            @if (l.HasPool) {
+                <span class="amenity-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><path d="M2 12h20M2 17c1.5-1 3.5-1 5 0s3.5 1 5 0 3.5-1 5 0"/><circle cx="8" cy="7" r="3"/></svg>
+                    Басейн
+                </span>
+            }
+            @if (l.HasBreakfast) {
+                <span class="amenity-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg>
+                    Сніданок
+                </span>
+            }
+            <span class="amenity-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.66 0 3-4 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4-3-9s1.34-9 3-9"/></svg>
+                Можна з хатніми тваринами
+            </span>
+            <span class="amenity-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 012 2v7H16"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                Сімейні номери
+            </span>
+            <span class="amenity-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                Цілодобова стійка
+            </span>
+            <span class="amenity-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>
+                Ліфт
+            </span>
+            <span class="amenity-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/></svg>
+                Опалення
+            </span>
+            <span class="amenity-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                Ресторан
+            </span>
+            <span class="amenity-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><path d="M18 3a3 3 0 00-3 3v12a3 3 0 003 3 3 3 0 003-3 3 3 0 00-3-3H6a3 3 0 00-3 3 3 3 0 003 3 3 3 0 003-3V6a3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3h12a3 3 0 003-3 3 3 0 00-3-3z"/></svg>
+                Тренажерний зал
+            </span>
+            <span class="amenity-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+                Масажі в спа-центрі
+            </span>
+        </div>
+
+        <!-- Detailed amenity categories -->
+        <div class="prop-amenity-grid">
+            <div class="amenity-cat">
+                <div class="amenity-cat-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg>
+                    <span>Харчування та напої</span>
+                </div>
+                <ul>
+                    <li>Ресторан</li><li>Бар</li>
+                    <li>Сніданок у номері</li>
+                    <li>Сніданок (шведський стіл або континентальний)</li>
+                    <li>Дієтичне меню (за запитом)</li>
+                </ul>
+            </div>
+            <div class="amenity-cat">
+                <div class="amenity-cat-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                    <span>Реєстрація та обслуговування</span>
+                </div>
+                <ul>
+                    <li>Цілодобова стійка реєстрації</li>
+                    <li>Індивідуальна реєстрація заїзду/виїзду</li>
+                    <li>Банкомат на території</li>
+                    <li>Обслуговування номерів</li>
+                    <li>Трансфер (оплачується окремо)</li>
+                </ul>
+            </div>
+            <div class="amenity-cat">
+                <div class="amenity-cat-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/></svg>
+                    <span>Оздоровлення та відпочинок</span>
+                </div>
+                <ul>
+                    <li>Спа та оздоровчий центр (оплачується окремо)</li>
+                    <li>Сауна (оплачується окремо)</li>
+                    <li>Фітнес-центр</li>
+                    <li>Спа-лаунж / зона для релаксації</li>
+                    <li>Гідромасажна ванна (оплачується окремо)</li>
+                </ul>
+            </div>
+            <div class="amenity-cat">
+                <div class="amenity-cat-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V8h4a3 3 0 010 6H9"/></svg>
+                    <span>Парковка</span>
+                </div>
+                <ul>
+                    <li>Безкоштовна приватна автостоянка поблизу (без попереднього бронювання)</li>
+                    <li>Парковка на вулиці</li>
+                    <li>Парковка для осіб з інвалідністю</li>
+                    <li>Критий паркінг</li>
+                    <li>Зарядна станція для електромобілів</li>
+                </ul>
+            </div>
+            <div class="amenity-cat">
+                <div class="amenity-cat-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                    <span>Безпека</span>
+                </div>
+                <ul>
+                    <li>Охоронна сигналізація</li>
+                    <li>Вхід за електронною карткою</li>
+                    <li>Відеоспостереження в приміщенні</li>
+                </ul>
+            </div>
+            <div class="amenity-cat">
+                <div class="amenity-cat-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                    <span>Для бізнес-гостей</span>
+                </div>
+                <ul>
+                    <li>Конференц-зал / банкетний зал</li>
+                    <li>Бізнес-центр</li>
+                    <li>Факс / ксерокопіювання</li>
+                    <li>Зручне робоче місце в номері</li>
+                </ul>
+            </div>
+            <div class="amenity-cat">
+                <div class="amenity-cat-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                    <span>Для сімей з дітьми</span>
+                </div>
+                <ul>
+                    <li>Дитячі ліжечка (за запитом)</li>
+                    <li>Додаткові ліжка (за окрему плату)</li>
+                    <li>Дитячі стільчики в ресторані</li>
+                    <li>Дитяче меню (за запитом)</li>
+                </ul>
+            </div>
+            <div class="amenity-cat">
+                <div class="amenity-cat-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                    <span>Домашні тварини</span>
+                </div>
+                <ul>
+                    <li>Миски для домашніх тварин</li>
+                    <li>Розміщення з домашніми тваринами дозволено. Може стягуватись додаткова плата.</li>
+                </ul>
+            </div>
+            <div class="amenity-cat">
+                <div class="amenity-cat-head">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 8.5c5.5-5.5 15.5-5.5 21 0M5 12c3.9-3.9 11-3.9 14 0M8.5 15.5c2.2-2.2 6.8-2.2 7 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+                    <span>Інтернет</span>
+                </div>
+                <ul>
+                    <li>Безкоштовний Wi‑Fi на всій території</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ══ Availability / Rooms ════════════════════════════════════ -->
+<div class="prop-container" id="rooms">
+    <section class="prop-rooms-section">
+        <h2 class="prop-section-title">Наявність місць</h2>
+        <p class="prop-rooms-hint">Виберіть дати, щоб переглянути наявність місць і ціни цього помешкання</p>
+
+        <!-- date + guests re-pick -->
+        <div class="prop-rooms-search">
+            <div class="prs-field" id="prsDateField">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+                </svg>
+                <span id="prsDateLabel">@(string.IsNullOrEmpty(Model.CheckIn) ? "Дата заїзду — Дата виїзду" : $"{Model.CheckIn} — {Model.CheckOut}")</span>
+            </div>
+            <div class="prs-field prs-guests" id="prsGuestsField">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5">
+                    <circle cx="12" cy="7" r="4"/><path d="M3 21c0-4.4 3.6-8 9-8s9 3.6 9 8"/>
+                </svg>
+                <span id="prsGuestsLabel">@guestsLabel</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <button class="prs-search-btn">Шукати</button>
+        </div>
+
+        <!-- room type tabs -->
+        <div class="prop-rooms-nav">
+            <div class="prn-left">
+                <button class="prn-tab active" data-tab="all">Усі номери</button>
+                <button class="prn-tab" data-tab="1">1 ліжко</button>
+                <button class="prn-tab" data-tab="2">2 ліжка</button>
+            </div>
+            <span class="prn-count">Показано 4 з 4 номерів</span>
+        </div>
+
+        <!-- room cards grid -->
+        <div class="prop-rooms-grid" id="propRoomsGrid">
+            <!-- room card 1 -->
+            <div class="room-card" data-beds="2">
+                <div class="rc-img-wrap">
+                    <img src="@l.ImageUrl" alt="Стандартний номер" loading="lazy" />
+                    <div class="rc-rating-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#FAFAFA" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                        10
+                    </div>
+                    <div class="rc-left-badge">Залишилося @l.RoomsLeft</div>
+                </div>
+                <div class="rc-discount-badge">Знижка 10%</div>
+                <div class="rc-body">
+                    <h3 class="rc-name">Стандартний двомісний номер або номер Твін</h3>
+                    <ul class="rc-features">
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V8h4a3 3 0 010 6H9"/></svg>
+                            Безкоштовна самостійна парковка
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14" rx="1"/></svg>
+                            25 кв. м.
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9h18v10H3zM3 9V7a2 2 0 012-2h14a2 2 0 012 2v2"/></svg>
+                            3 спальних місця
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                            Забронюйте зараз, сплатіть пізніше
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 10h8M4 14h11M4 18h16"/></svg>
+                            1 двоспальне ліжко або 2 односпальні ліжка
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 8.5c5.5-5.5 15.5-5.5 21 0M5 12c3.9-3.9 11-3.9 14 0M8.5 15.5c2.2-2.2 6.8-2.2 7 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+                            Безкоштовно Wi-Fi
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h18v12H3zM8 21l4-4 4 4"/></svg>
+                            Вид на місто
+                        </li>
+                    </ul>
+                    <div class="rc-refund">
+                        <span class="rc-refund-label">Повне відшкодування</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                    </div>
+                    <p class="rc-refund-date">До суботи, 31 січня</p>
+                    <div class="rc-extras">
+                        <div class="rc-extras-header">
+                            <span>Додатково</span><span class="rc-extras-per">за ніч</span>
+                        </div>
+                        <label class="rc-extra-opt">
+                            <input type="checkbox" class="rc-cb" />
+                            <span class="rc-cb-custom"></span>
+                            <span>Без додаткових послуг</span>
+                            <span class="rc-extra-price">+ UAH 0</span>
+                        </label>
+                        <label class="rc-extra-opt">
+                            <input type="checkbox" class="rc-cb" />
+                            <span class="rc-cb-custom"></span>
+                            <span>Сніданок "шведський стіл"</span>
+                            <span class="rc-extra-price">+ UAH 100</span>
+                        </label>
+                    </div>
+                    <div class="rc-price-block">
+                        <span class="rc-price-old">UAH @((l.OriginalPricePerNight ?? l.PricePerNight * 1.1m).ToString("N0"))</span>
+                        <span class="rc-price">UAH @l.PricePerNight.ToString("N0")</span>
+                    </div>
+                    <p class="rc-price-meta">Для 1 кімнати · Включає податки та збори</p>
+                    <button class="rc-book-btn">Забронювати</button>
+                    <p class="rc-no-charge">З вас не списуватиметься плата</p>
+                </div>
+            </div>
+
+            <!-- room card 2 -->
+            <div class="room-card" data-beds="2">
+                <div class="rc-img-wrap">
+                    <img src="@l.ImageUrl" alt="Superior номер" loading="lazy" />
+                    <div class="rc-rating-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#FAFAFA" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                        10
+                    </div>
+                    <div class="rc-left-badge">Залишилося 2</div>
+                </div>
+                <div class="rc-discount-badge">Знижка 10%</div>
+                <div class="rc-body">
+                    <h3 class="rc-name">Двомісний номер категорії "Superior", з балконом</h3>
+                    <ul class="rc-features">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V8h4a3 3 0 010 6H9"/></svg>Безкоштовна самостійна парковка</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14" rx="1"/></svg>28 кв. м.</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9h18v10H3zM3 9V7a2 2 0 012-2h14a2 2 0 012 2v2"/></svg>2 спальних місця</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Забронюйте зараз, сплатіть пізніше</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 10h8M4 14h11M4 18h16"/></svg>1 двоспальне ліжко</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 8.5c5.5-5.5 15.5-5.5 21 0M5 12c3.9-3.9 11-3.9 14 0M8.5 15.5c2.2-2.2 6.8-2.2 7 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>Безкоштовно Wi-Fi</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h18v12H3zM8 21l4-4 4 4"/></svg>Вид на місто</li>
+                    </ul>
+                    <div class="rc-refund"><span class="rc-refund-label">Повне відшкодування</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+                    <p class="rc-refund-date">До суботи, 31 січня</p>
+                    <div class="rc-extras">
+                        <div class="rc-extras-header"><span>Додатково</span><span class="rc-extras-per">за ніч</span></div>
+                        <label class="rc-extra-opt"><input type="checkbox" class="rc-cb" /><span class="rc-cb-custom"></span><span>Без додаткових послуг</span><span class="rc-extra-price">+ UAH 0</span></label>
+                        <label class="rc-extra-opt"><input type="checkbox" class="rc-cb" /><span class="rc-cb-custom"></span><span>Сніданок "шведський стіл"</span><span class="rc-extra-price">+ UAH 100</span></label>
+                    </div>
+                    <div class="rc-price-block">
+                        <span class="rc-price-old">UAH @((l.PricePerNight * 1.1m).ToString("N0"))</span>
+                        <span class="rc-price">UAH @((l.PricePerNight * 1.05m).ToString("N0"))</span>
+                    </div>
+                    <p class="rc-price-meta">Для 1 кімнати · Включає податки та збори</p>
+                    <button class="rc-book-btn">Забронювати</button>
+                    <p class="rc-no-charge">З вас не списуватиметься плата</p>
+                </div>
+            </div>
+
+            <!-- room card 3 -->
+            <div class="room-card" data-beds="1">
+                <div class="rc-img-wrap">
+                    <img src="@l.ImageUrl" alt="Покращений номер" loading="lazy" />
+                    <div class="rc-rating-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#FAFAFA" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                        10
+                    </div>
+                    <div class="rc-left-badge">Залишилося 5</div>
+                </div>
+                <div class="rc-discount-badge">Знижка 10%</div>
+                <div class="rc-body">
+                    <h3 class="rc-name">Покращений двомісний номер або номер Твін</h3>
+                    <ul class="rc-features">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V8h4a3 3 0 010 6H9"/></svg>Безкоштовна самостійна парковка</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14" rx="1"/></svg>30 кв. м.</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9h18v10H3zM3 9V7a2 2 0 012-2h14a2 2 0 012 2v2"/></svg>3 спальних місця</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Забронюйте зараз, сплатіть пізніше</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 10h8M4 14h11M4 18h16"/></svg>1 двоспальне ліжко або 2 односпальні ліжка</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 8.5c5.5-5.5 15.5-5.5 21 0M5 12c3.9-3.9 11-3.9 14 0M8.5 15.5c2.2-2.2 6.8-2.2 7 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>Безкоштовно Wi-Fi</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h18v12H3zM8 21l4-4 4 4"/></svg>Вид на місто</li>
+                    </ul>
+                    <div class="rc-refund"><span class="rc-refund-label">Повне відшкодування</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+                    <p class="rc-refund-date">До суботи, 31 січня</p>
+                    <div class="rc-extras">
+                        <div class="rc-extras-header"><span>Додатково</span><span class="rc-extras-per">за ніч</span></div>
+                        <label class="rc-extra-opt"><input type="checkbox" class="rc-cb" /><span class="rc-cb-custom"></span><span>Без додаткових послуг</span><span class="rc-extra-price">+ UAH 0</span></label>
+                        <label class="rc-extra-opt"><input type="checkbox" class="rc-cb" /><span class="rc-cb-custom"></span><span>Сніданок "шведський стіл"</span><span class="rc-extra-price">+ UAH 100</span></label>
+                    </div>
+                    <div class="rc-price-block">
+                        <span class="rc-price-old">UAH @((l.PricePerNight * 1.15m).ToString("N0"))</span>
+                        <span class="rc-price">UAH @((l.PricePerNight * 1.1m).ToString("N0"))</span>
+                    </div>
+                    <p class="rc-price-meta">Для 1 кімнати · Включає податки та збори</p>
+                    <button class="rc-book-btn">Забронювати</button>
+                    <p class="rc-no-charge">З вас не списуватиметься плата</p>
+                </div>
+            </div>
+
+            <!-- room card 4 -->
+            <div class="room-card" data-beds="1">
+                <div class="rc-img-wrap">
+                    <img src="@l.ImageUrl" alt="Президентський люкс" loading="lazy" />
+                    <div class="rc-rating-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#FAFAFA" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                        10
+                    </div>
+                    <div class="rc-left-badge">Залишилося 2</div>
+                </div>
+                <div class="rc-discount-badge">Знижка 10%</div>
+                <div class="rc-body">
+                    <h3 class="rc-name">Президентський люкс</h3>
+                    <ul class="rc-features">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V8h4a3 3 0 010 6H9"/></svg>Безкоштовна самостійна парковка</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="14" height="14" rx="1"/></svg>65 кв. м.</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9h18v10H3zM3 9V7a2 2 0 012-2h14a2 2 0 012 2v2"/></svg>4 спальних місця</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Забронюйте зараз, сплатіть пізніше</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 10h8M4 14h11M4 18h16"/></svg>1 двоспальне ліжко та/або 2 односпальні ліжка</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 8.5c5.5-5.5 15.5-5.5 21 0M5 12c3.9-3.9 11-3.9 14 0M8.5 15.5c2.2-2.2 6.8-2.2 7 0"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>Безкоштовно Wi-Fi</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3h18v12H3zM8 21l4-4 4 4"/></svg>Вид на місто</li>
+                    </ul>
+                    <div class="rc-refund"><span class="rc-refund-label">Повне відшкодування</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+                    <p class="rc-refund-date">До суботи, 31 січня</p>
+                    <div class="rc-extras">
+                        <div class="rc-extras-header"><span>Додатково</span><span class="rc-extras-per">за ніч</span></div>
+                        <label class="rc-extra-opt"><input type="checkbox" class="rc-cb" /><span class="rc-cb-custom"></span><span>Без додаткових послуг</span><span class="rc-extra-price">+ UAH 0</span></label>
+                        <label class="rc-extra-opt"><input type="checkbox" class="rc-cb" /><span class="rc-cb-custom"></span><span>Сніданок "шведський стіл"</span><span class="rc-extra-price">+ UAH 100</span></label>
+                    </div>
+                    <div class="rc-price-block">
+                        <span class="rc-price-old">UAH @((l.PricePerNight * 1.5m).ToString("N0"))</span>
+                        <span class="rc-price">UAH @((l.PricePerNight * 1.35m).ToString("N0"))</span>
+                    </div>
+                    <p class="rc-price-meta">Для 1 кімнати · Включає податки та збори</p>
+                    <button class="rc-book-btn">Забронювати</button>
+                    <p class="rc-no-charge">З вас не списуватиметься плата</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ══ Similar properties ════════════════════════════════════ -->
+@if (Model.SimilarListings.Any())
+{
+    <div class="prop-container">
+        <section class="prop-similar">
+            <h2 class="prop-section-title">Схожі помешкання в @l.City</h2>
+            <div class="prop-similar-scroll">
+                @foreach (var sim in Model.SimilarListings)
+                {
+                    var simRating = sim.RatingScore.ToString("0.0").Replace('.', ',');
+                    <article class="sim-card" onclick="window.location.href='/Home/Property/@sim.Id'">
+                        <div class="sim-img-wrap">
+                            <img src="@sim.ImageUrl" alt="@sim.Name" loading="lazy" />
+                        </div>
+                        <div class="sim-body">
+                            <div class="sim-rating-row">
+                                <div class="sim-badge">@simRating</div>
+                                <span class="sim-rl">@sim.RatingLabel</span>
+                                <span class="sim-rr">@sim.ReviewsCount відгуків</span>
+                            </div>
+                            <h3 class="sim-name">@sim.Name</h3>
+                            <p class="sim-loc">@sim.Location</p>
+                            <div class="sim-footer">
+                                <span class="sim-price">UAH @sim.PricePerNight.ToString("N0")</span>
+                                <span class="sim-price-meta">за ніч</span>
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+        </section>
+    </div>
+}
+
+@await Html.PartialAsync("_Footer")
+
+<!-- Map modal (reused from search page) -->
+<div class="map-modal" id="propMapModal" style="display:none">
+    <div class="map-modal-inner">
+        <div class="map-area-panel" style="flex:1;position:relative;">
+            <div id="propLeafletMap" style="width:100%;height:100%;"></div>
+            <button class="btn-return-map" id="propCloseMapBtn">← Повернутись</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    window._propListing = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(new {
+        id              = l.Id,
+        name            = l.Name,
+        location        = l.Location,
+        city            = l.City,
+        pricePerNight   = l.PricePerNight,
+        ratingScore     = l.RatingScore,
+        imageUrl        = l.ImageUrl
+    }));
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="~/js/property.js"></script>
+</body>
+</html>
