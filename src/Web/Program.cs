@@ -1,7 +1,18 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
+
+// Session (stores JWT token from the Reservio API)
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = "Reservio.Session";
+    options.IdleTimeout = TimeSpan.FromDays(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -13,11 +24,15 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.SlidingExpiration = true;
     });
 
-builder.Services.AddSingleton<Web.Services.IUserStore, Web.Services.InMemoryUserStore>();
+builder.Services.AddHttpContextAccessor();
+
+// Reservio API client (replaces in-memory UserStore)
+builder.Services.AddHttpClient<IReservioApiClient, ReservioApiClient>();
 
 var app = builder.Build();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 

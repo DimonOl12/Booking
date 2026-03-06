@@ -19,7 +19,7 @@ public class GetCustomersInformationCommandHandler(
 		return await userManager.Users
 			.AsNoTracking()
 			.OfType<Customer>()
-			.Where(ñ => ñ.Id == currentUserService.GetRequiredUserId())
+			.Where(c => c.Id == currentUserService.GetRequiredUserId())
 			.ProjectTo<CustomersInformationVm>(mapper.ConfigurationProvider)
 			.FirstOrDefaultAsync(cancellationToken)
 			?? throw new NotFoundException(nameof(Customer), currentUserService.GetRequiredUserId());

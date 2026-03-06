@@ -58,8 +58,8 @@ public class DbInitializer(
 			?? throw new Exception("DefaultUserImageBase64 is not inicialized");
 
 		var admin = new Admin {
-			FirstName = "Îëåã",
-			LastName = "Îëüæè÷",
+			FirstName = "ĞĞ»ĞµĞ³",
+			LastName = "ĞĞ»ÑŒĞ¶Ğ¸Ñ‡",
 			Email = configuration["Admin:Email"]
 				?? throw new NullReferenceException("Admin:Email"),
 			UserName = "admin",

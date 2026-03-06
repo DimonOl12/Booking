@@ -67,6 +67,40 @@
                     <!-- Fields -->
                     <div class="auth-fields-group">
 
+                        <!-- First Name + Last Name -->
+                        <div class="auth-fields-row" style="display:flex;gap:12px;">
+                            <div class="auth-field" style="flex:1;">
+                                <div class="auth-field-label-row">
+                                    <label class="auth-field-label" for="FirstName">Ім'я</label>
+                                </div>
+                                <div class="auth-input-wrapper">
+                                    <input type="text"
+                                           class="auth-input-figma"
+                                           id="FirstName"
+                                           name="FirstName"
+                                           value="@Model?.FirstName"
+                                           placeholder="Ваше ім'я"
+                                           maxlength="50"
+                                           autocomplete="given-name" />
+                                </div>
+                            </div>
+                            <div class="auth-field" style="flex:1;">
+                                <div class="auth-field-label-row">
+                                    <label class="auth-field-label" for="LastName">Прізвище</label>
+                                </div>
+                                <div class="auth-input-wrapper">
+                                    <input type="text"
+                                           class="auth-input-figma"
+                                           id="LastName"
+                                           name="LastName"
+                                           value="@Model?.LastName"
+                                           placeholder="Ваше прізвище"
+                                           maxlength="50"
+                                           autocomplete="family-name" />
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Email -->
                         <div class="auth-field">
                             <div class="auth-field-label-row">

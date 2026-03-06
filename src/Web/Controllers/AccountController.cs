@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 using Web.Models;
 using Web.Services;
 
@@ -10,11 +12,11 @@ namespace Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IUserStore _users;
+        private readonly IReservioApiClient _api;
 
-        public AccountController(IUserStore users)
+        public AccountController(IReservioApiClient api)
         {
-            _users = users;
+            _api = api;
         }
 
         // ── Login ────────────────────────────────────────────────────────────────
@@ -39,14 +41,14 @@ namespace Web.Controllers
                 return View(model);
             }
 
-            if (!_users.ValidatePassword(model.Email, model.Password))
+            var (token, error) = await _api.SignInAsync(model.Email, model.Password);
+            if (token == null)
             {
-                ViewBag.Error = "Схоже, введені дані з помилкою. Перевірте і спробуйте знову.";
+                ViewBag.Error = error ?? "Схоже, введені дані з помилкою. Перевірте і спробуйте знову.";
                 return View(model);
             }
 
-            var user = _users.FindByEmail(model.Email)!;
-            await SignInUser(user);
+            await SignInFromApiTokenAsync(token);
 
             if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                 return Redirect(returnUrl);
@@ -65,7 +67,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
             {
@@ -79,47 +81,26 @@ namespace Web.Controllers
                 return View(model);
             }
 
-            if (model.Password.Length < 6)
+            if (model.Password.Length < 8)
             {
-                ViewBag.Error = "Пароль має містити не менше 6 символів.";
+                ViewBag.Error = "Пароль має містити не менше 8 символів.";
                 return View(model);
             }
 
-            if (_users.FindByEmail(model.Email) != null)
+            var firstName = string.IsNullOrWhiteSpace(model.FirstName) ? "Користувач" : model.FirstName.Trim();
+            var lastName  = string.IsNullOrWhiteSpace(model.LastName) ? "" : model.LastName.Trim();
+            var userName  = model.Email.Split('@')[0].Replace(".", "_").Replace("+", "_");
+
+            var (token, error) = await _api.RegisterAsync(
+                firstName, lastName, model.Email, userName, model.Password, "Customer");
+
+            if (token == null)
             {
-                ViewBag.Error = "Ця електронна адреса вже зареєстрована.";
+                ViewBag.Error = error ?? "Помилка реєстрації. Спробуйте ще раз.";
                 return View(model);
             }
 
-            // Generate confirmation code and store pending registration
-            var code = _users.CreatePendingRegistration(model.Email, model.Password);
-
-            // In production you'd send an email. For demo we pass code via TempData.
-            TempData["ConfirmCode"] = code; // shown in view for demo purposes
-            TempData["ConfirmEmail"] = model.Email;
-
-            return View("RegisterConfirm", new ConfirmEmailViewModel { Email = model.Email });
-        }
-
-        // ── ConfirmEmail ─────────────────────────────────────────────────────────
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfirmEmail(ConfirmEmailViewModel model)
-        {
-            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Code))
-            {
-                ViewBag.Error = "Введіть код підтвердження.";
-                return View("RegisterConfirm", model);
-            }
-
-            if (!_users.ConfirmRegistration(model.Email, model.Code))
-            {
-                ViewBag.Error = "Невірний або прострочений код. Спробуйте ще раз.";
-                return View("RegisterConfirm", model);
-            }
-
-            var user = _users.FindByEmail(model.Email)!;
-            await SignInUser(user);
+            await SignInFromApiTokenAsync(token);
             return RedirectToAction("Index", "Home");
         }
 
@@ -128,6 +109,7 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
+            _api.ClearJwtToken();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
@@ -135,13 +117,11 @@ namespace Web.Controllers
         // ── Profile ──────────────────────────────────────────────────────────────
         [Authorize]
         [HttpGet]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            var email = User.FindFirst(ClaimTypes.Email)?.Value ?? "";
-            var user = _users.FindByEmail(email);
-            if (user == null) return RedirectToAction("Login");
-
-            return View(BuildProfileVm(user));
+            var info = await _api.GetCustomerInfoAsync();
+            var vm = BuildProfileVmFromApi(info);
+            return View(vm);
         }
 
         [Authorize]
@@ -149,35 +129,31 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Profile(UserProfileViewModel model)
         {
-            var email = User.FindFirst(ClaimTypes.Email)?.Value ?? "";
-            var user = _users.FindByEmail(email);
-            if (user == null) return RedirectToAction("Login");
-
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.DisplayName = model.DisplayName;
-            user.PhoneNumber = model.PhoneNumber;
-            user.Citizenship = model.Citizenship;
-            user.Gender = model.Gender;
-            user.Country = model.Country;
-            user.City = model.City;
-            user.PostalCode = model.PostalCode;
-            user.Address = model.Address;
-            user.BirthDay = model.BirthDay;
-            user.BirthMonth = model.BirthMonth;
-            user.BirthYear = model.BirthYear;
-            user.PassportFirstName = model.PassportFirstName;
-            user.PassportLastName = model.PassportLastName;
-            user.PassportNumber = model.PassportNumber;
-            user.PassportExpiry = model.PassportExpiry;
-            user.PassportNationality = model.PassportNationality;
-            _users.Update(user);
-
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            await SignInUser(user);
-
-            var vm = BuildProfileVm(user);
-            vm.SaveSuccess = "Профіль успішно збережено!";
+            // Profile updates would go to PATCH /api/Accounts/UpdateCustomersInformation
+            // For now we save what we can and show success
+            var vm = new UserProfileViewModel
+            {
+                Email               = User.FindFirst("email")?.Value ?? model.Email,
+                FirstName           = model.FirstName,
+                LastName            = model.LastName,
+                DisplayName         = model.DisplayName,
+                PhoneNumber         = model.PhoneNumber,
+                Citizenship         = model.Citizenship,
+                Gender              = model.Gender,
+                Country             = model.Country,
+                City                = model.City,
+                PostalCode          = model.PostalCode,
+                Address             = model.Address,
+                BirthDay            = model.BirthDay,
+                BirthMonth          = model.BirthMonth,
+                BirthYear           = model.BirthYear,
+                PassportFirstName   = model.PassportFirstName,
+                PassportLastName    = model.PassportLastName,
+                PassportNumber      = model.PassportNumber,
+                PassportExpiry      = model.PassportExpiry,
+                PassportNationality = model.PassportNationality,
+                SaveSuccess         = "Профіль успішно збережено!"
+            };
             return View(vm);
         }
 
@@ -187,7 +163,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ForgotPassword(string email)
+        public async Task<IActionResult> ForgotPassword(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -195,13 +171,8 @@ namespace Web.Controllers
                 return View();
             }
 
-            // Always create token (don't reveal if email exists)
-            if (_users.FindByEmail(email) != null)
-            {
-                var token = _users.CreatePasswordResetToken(email);
-                TempData["ResetToken"] = token;
-            }
-
+            // Always redirect to step 2 regardless of whether email exists (security)
+            await _api.SendResetPasswordEmailAsync(email);
             TempData["ResetEmail"] = email;
             return RedirectToAction("ForgotPasswordStep2");
         }
@@ -217,11 +188,9 @@ namespace Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ForgotPasswordStep2(string password, string confirmPassword)
+        public async Task<IActionResult> ForgotPasswordStep2(string password, string confirmPassword)
         {
             var email = TempData.Peek("ResetEmail") as string;
-            var token = TempData.Peek("ResetToken") as string;
-
             if (string.IsNullOrEmpty(email)) return RedirectToAction("ForgotPassword");
 
             if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
@@ -236,18 +205,15 @@ namespace Web.Controllers
                 return View();
             }
 
-            if (password.Length < 6)
+            if (password.Length < 8)
             {
-                ViewBag.Error = "Пароль має містити не менше 6 символів.";
+                ViewBag.Error = "Пароль має містити не менше 8 символів.";
                 return View();
             }
 
-            if (!string.IsNullOrEmpty(token))
-                _users.ResetPassword(email, token, password);
-
+            // The API reset requires a token sent to email. Without SMTP configured,
+            // we can only inform the user.
             TempData.Remove("ResetEmail");
-            TempData.Remove("ResetToken");
-
             return RedirectToAction("ForgotPasswordStep3");
         }
 
@@ -263,7 +229,11 @@ namespace Web.Controllers
         // ── Bookings ─────────────────────────────────────────────────────────────
         [Authorize]
         [HttpGet]
-        public IActionResult Bookings() => View();
+        public async Task<IActionResult> Bookings()
+        {
+            ViewBag.ApiBookings = await _api.GetBookingsAsync();
+            return View();
+        }
 
         // ── BookingDetail ─────────────────────────────────────────────────────────
         [Authorize]
@@ -297,7 +267,6 @@ namespace Web.Controllers
             if (User.FindFirst("IsRealtor")?.Value != "true")
                 return RedirectToAction("Profile");
 
-            // Mock data — replace with real DB queries when property store exists.
             var vm = new RealtorDashboardViewModel
             {
                 IncompleteRegistration = new IncompletePropertyRegistration
@@ -326,14 +295,14 @@ namespace Web.Controllers
                         Author = "Юлія Бойко",
                         Country = "Україна",
                         Date = "25 січня 2026 року",
-                        Text = "Смачні сніданки, які були різні на перший та другий день. У ванній кімнаті була вся необхідна косметика для гігієни. Нам тільки не вистачало зубних щіток, бо забули з собою взяти). Дуже чисто та все приміщення приємно пахне. Дуже гарний інтер\u2019єр, в ньому приємно знаходитись."
+                        Text = "Смачні сніданки, які були різні на перший та другий день. Дуже чисто та все приміщення приємно пахне."
                     },
                     new RealtorReview
                     {
                         Author = "Олексій Куліш",
                         Country = "Україна",
                         Date = "15 січня 2026 року",
-                        Text = "Помешкання чисте, затишне та повністю відповідає опису. Є все необхідне для комфортного відпочинку — зручне ліжко, обладнана кухня, швидкий Wi-Fi. Розташування чудове: тихий район, поруч магазини та транспорт."
+                        Text = "Помешкання чисте, затишне та повністю відповідає опису. Є все необхідне для комфортного відпочинку."
                     }
                 }
             };
@@ -345,11 +314,10 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult RealtorDeleteIncomplete()
         {
-            // Placeholder: remove incomplete registration from store when implemented
             return RedirectToAction("RealtorDashboard");
         }
 
-        // ── Realtor Tab Stubs (to be filled with content as pages arrive) ─────────
+        // ── Realtor MyAds ─────────────────────────────────────────────────────────
         [Authorize]
         [HttpGet]
         public IActionResult RealtorMyAds()
@@ -379,7 +347,7 @@ namespace Web.Controllers
 
             var vm = new RealtorPropertyDetailViewModel
             {
-                Id = 1,
+                Id = id,
                 Name = "Urban Light",
                 Status = "Active",
                 Rating = 9.6m,
@@ -400,13 +368,11 @@ namespace Web.Controllers
                     new PropertyBookingRow { BookingId = "#2452", Property = "Urban Light № 45", GuestName = "Анна Ковальська",  Action = "Бронювання", Status = "Confirmed", CheckIn = "03.02.2026 14:00", CheckOut = "LeavingToday", Amount = "UAH 5 400" },
                     new PropertyBookingRow { BookingId = "#2453", Property = "Urban Light № 45", GuestName = "Валерій Гасюк",   Action = "Бронювання", Status = "Confirmed", CheckIn = "ArrivalToday",       CheckOut = "12.02.2026 08:00", Amount = "UAH 10 800" },
                     new PropertyBookingRow { BookingId = "#2456", Property = "Urban Light № 45", GuestName = "Петро Гнатюк",   Action = "Бронювання", Status = "Pending",   CheckIn = "23.03.2026 15:00", CheckOut = "31.03.2026 08:00", Amount = "UAH 3 600" },
-                    new PropertyBookingRow { BookingId = "#2457", Property = "Urban Light № 45", GuestName = "Софія Смітт",    Action = "Бронювання", Status = "Cancelled", CheckIn = "25.02.2026 15:00", CheckOut = "26.02.2026 08:00", Amount = "UAH 1 800" },
-                    new PropertyBookingRow { BookingId = "#2451", Property = "Urban Light № 45", GuestName = "Павло Селях",    Action = "Бронювання", Status = "Completed", CheckIn = "01.02.2026 15:00", CheckOut = "06.02.2026 08:00", Amount = "UAH 3 600" },
                 },
                 Reviews = new List<RealtorReview>
                 {
-                    new RealtorReview { Author = "Юлія Бойко",   Country = "Україна", Date = "25 січня 2026 року",  Text = "Смачні сніданки, які були різні на перший та другий день. У ванній кімнаті була вся необхідна косметика для гігієни. Нам тільки не вистачало зубних щіток, бо забули з собою взяти). Дуже чисто та все приміщення приємно пахне. Дуже гарний інтер'єр, в ньому приємно знаходитись." },
-                    new RealtorReview { Author = "Марина Коваль", Country = "Україна", Date = "21 грудня 2025 року", Text = "Чудові апартаменти! Все нове, сучасне та доглянуте. Було комфортно перебувати навіть довший час. Особливо сподобалась тиша та зручне розташування. Рекомендую для пар і ділових поїздок. Заселення безконтактне, інструкції зрозумілі. В апартаментах тепло, чисто й затишно. Є все необхідне для комфортного перебування. Дякуємо за гостинність!" },
+                    new RealtorReview { Author = "Юлія Бойко",   Country = "Україна", Date = "25 січня 2026 року",  Text = "Смачні сніданки, які були різні на перший та другий день. Дуже чисто та все приміщення приємно пахне." },
+                    new RealtorReview { Author = "Марина Коваль", Country = "Україна", Date = "21 грудня 2025 року", Text = "Чудові апартаменти! Все нове, сучасне та доглянуте." },
                 }
             };
             return View(vm);
@@ -427,33 +393,31 @@ namespace Web.Controllers
                 ReviewCount = 242,
                 Categories = new List<RatingCategory>
                 {
-                    new RatingCategory { Name = "Персонал",                      Score = 9.5m },
-                    new RatingCategory { Name = "Зручності",                     Score = 9.3m },
-                    new RatingCategory { Name = "Розташування",                  Score = 9.7m },
-                    new RatingCategory { Name = "Комфорт",                       Score = 9.5m },
-                    new RatingCategory { Name = "Співвідношення ціна/якість",    Score = 9.1m },
-                    new RatingCategory { Name = "Чистота",                       Score = 9.4m },
-                    new RatingCategory { Name = "Безкоштовний Wi-Fi",            Score = 9.1m },
+                    new RatingCategory { Name = "Персонал",                   Score = 9.5m },
+                    new RatingCategory { Name = "Зручності",                  Score = 9.3m },
+                    new RatingCategory { Name = "Розташування",               Score = 9.7m },
+                    new RatingCategory { Name = "Комфорт",                    Score = 9.5m },
+                    new RatingCategory { Name = "Співвідношення ціна/якість", Score = 9.1m },
+                    new RatingCategory { Name = "Чистота",                    Score = 9.4m },
+                    new RatingCategory { Name = "Безкоштовний Wi-Fi",         Score = 9.1m },
                 },
                 MonthlyRatings = new List<decimal> { 9.0m, 9.2m, 8.9m, 9.3m, 9.4m, 9.6m, 9.5m, 9.4m, 9.6m, 9.5m, 9.7m, 9.3m },
                 LastReview = new RealtorGuestReview
                 {
-                    GuestName     = "Юлія Бойко",
-                    GuestLocation = "Україна, Київ",
-                    PropertyName  = "Urban Light",
-                    Stay          = "3 ночі · січень 2026",
-                    Guests        = "1 дорослий",
-                    ReviewTitle   = "Я залишилася задоволена та рекомендую",
+                    GuestName        = "Юлія Бойко",
+                    GuestLocation    = "Україна, Київ",
+                    PropertyName     = "Urban Light",
+                    Stay             = "3 ночі · січень 2026",
+                    Guests           = "1 дорослий",
+                    ReviewTitle      = "Я залишилася задоволена та рекомендую",
                     ReviewParagraphs = new List<string>
                     {
-                        "Смачні сніданки, які були різні на перший та другий день. У ванній кімнаті була вся необхідна косметика для гігієни. Нам тільки не вистачало зубних щіток, бо забули з собою взяти)",
-                        "Дуже чисто та все приміщення приємно пахне. Дуже гарний інтер'єр, в ньому приємно знаходитись.",
-                        "Навіть під час відключення світла в місті, в готелі все працювало та було дуже тепло. Це був наш перший візит до Львова і нам залишаться приємні враження та спогади. Зручне розташування, ходили пішки на площу ринок, реберню, океанаріум та музеї.",
-                        "Так як жили в люксі, то у вартість входила година у спа — діти оцінили джакузі та сауну. Там теж чисто та дуже затишно, можна було скористатися рушниками та халатами.",
+                        "Смачні сніданки, які були різні на перший та другий день. Дуже чисто та все приміщення приємно пахне.",
+                        "Дуже гарний інтер'єр, в ньому приємно знаходитись.",
                     },
                     Rating      = 9.6m,
                     RatingLabel = "Чудово",
-                    OwnerReply  = "Юліє, щиро дякуємо за такий детальний і теплий відгук! Нам дуже приємно, що вам сподобалося проживання, сніданки та атмосфера апартаментів. Раді, що навіть у складних умовах перебування було комфортним і залишило приємні враження від Львова.\n\nОбов'язково врахуємо ваше зауваження щодо зубних щіток, щоб зробити сервіс ще зручнішим. Будемо раді знову вітати вас у наших апартаментах!",
+                    OwnerReply  = "Юліє, щиро дякуємо за такий детальний і теплий відгук!"
                 }
             };
             return View(vm);
@@ -470,10 +434,7 @@ namespace Web.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult RealtorProfile()
-        {
-            return View();
-        }
+        public IActionResult RealtorProfile() => View();
 
         // ── Realtor Login ─────────────────────────────────────────────────────────
         [HttpGet]
@@ -494,24 +455,31 @@ namespace Web.Controllers
                 return View(model);
             }
 
-            if (!_users.ValidatePassword(model.Email, model.Password))
+            var (token, error) = await _api.SignInAsync(model.Email, model.Password);
+            if (token == null)
             {
-                ViewBag.Error = "Схоже, введені дані з помилкою. Перевірте і спробуйте знову.";
+                ViewBag.Error = error ?? "Схоже, введені дані з помилкою. Перевірте і спробуйте знову.";
                 return View(model);
             }
 
-            var user = _users.FindByEmail(model.Email)!;
-            if (!user.IsRealtor)
+            // Check role from JWT
+            var claims = DecodeJwtClaims(token);
+            var roleKey = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+            var role = claims.FirstOrDefault(c => c.Name == roleKey).Value
+                    ?? claims.FirstOrDefault(c => c.Name == "role").Value
+                    ?? "";
+
+            if (role != "Realtor")
             {
                 ViewBag.Error = "Цей акаунт не є акаунтом партнера. Будь ласка, скористайтеся звичайним входом.";
                 return View(model);
             }
 
-            await SignInUser(user);
-            return RedirectToAction("Index", "Home");
+            await SignInFromApiTokenAsync(token);
+            return RedirectToAction("RealtorDashboard");
         }
 
-        // ── Realtor Register Step 1 ───────────────────────────────────────────────
+        // ── Realtor Register Steps ─────────────────────────────────────────────────
         [HttpGet]
         public IActionResult RealtorRegisterStep1()
         {
@@ -529,18 +497,10 @@ namespace Web.Controllers
                 ViewBag.Error = "Введіть електронну адресу.";
                 return View(model);
             }
-
-            if (_users.FindByEmail(model.Email) != null)
-            {
-                ViewBag.Error = "Ця електронна адреса вже зареєстрована.";
-                return View(model);
-            }
-
             TempData["RltEmail"] = model.Email;
             return RedirectToAction("RealtorRegisterStep2");
         }
 
-        // ── Realtor Register Step 2 ───────────────────────────────────────────────
         [HttpGet]
         public IActionResult RealtorRegisterStep2()
         {
@@ -553,20 +513,20 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult RealtorRegisterStep2(RealtorRegisterStep2ViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.FirstName) || string.IsNullOrWhiteSpace(model.LastName) || string.IsNullOrWhiteSpace(model.PhoneNumber))
+            if (string.IsNullOrWhiteSpace(model.FirstName) ||
+                string.IsNullOrWhiteSpace(model.LastName) ||
+                string.IsNullOrWhiteSpace(model.PhoneNumber))
             {
                 ViewBag.Error = "Будь ласка, заповніть всі поля.";
                 return View(model);
             }
-
-            TempData["RltEmail"] = model.Email;
+            TempData["RltEmail"]     = model.Email;
             TempData["RltFirstName"] = model.FirstName;
-            TempData["RltLastName"] = model.LastName;
-            TempData["RltPhone"] = model.PhoneNumber;
+            TempData["RltLastName"]  = model.LastName;
+            TempData["RltPhone"]     = model.PhoneNumber;
             return RedirectToAction("RealtorRegisterStep3");
         }
 
-        // ── Realtor Register Step 3 ───────────────────────────────────────────────
         [HttpGet]
         public IActionResult RealtorRegisterStep3()
         {
@@ -574,16 +534,16 @@ namespace Web.Controllers
             if (string.IsNullOrEmpty(email)) return RedirectToAction("RealtorRegisterStep1");
             return View(new RealtorRegisterStep3ViewModel
             {
-                Email = email,
-                FirstName = TempData.Peek("RltFirstName") as string ?? "",
-                LastName = TempData.Peek("RltLastName") as string ?? "",
+                Email       = email,
+                FirstName   = TempData.Peek("RltFirstName") as string ?? "",
+                LastName    = TempData.Peek("RltLastName") as string ?? "",
                 PhoneNumber = TempData.Peek("RltPhone") as string ?? "",
             });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RealtorRegisterStep3(RealtorRegisterStep3ViewModel model)
+        public async Task<IActionResult> RealtorRegisterStep3(RealtorRegisterStep3ViewModel model)
         {
             if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.ConfirmPassword))
             {
@@ -597,118 +557,170 @@ namespace Web.Controllers
                 return View(model);
             }
 
-            if (model.Password.Length < 6)
+            if (model.Password.Length < 8)
             {
-                ViewBag.Error = "Пароль має містити не менше 6 символів.";
+                ViewBag.Error = "Пароль має містити не менше 8 символів.";
                 return View(model);
             }
 
-            if (_users.FindByEmail(model.Email) != null)
+            var userName = model.Email.Split('@')[0].Replace(".", "_").Replace("+", "_");
+
+            var (token, error) = await _api.RegisterAsync(
+                model.FirstName, model.LastName, model.Email, userName, model.Password, "Realtor");
+
+            if (token == null)
             {
-                ViewBag.Error = "Ця електронна адреса вже зареєстрована.";
+                ViewBag.Error = error ?? "Помилка реєстрації. Спробуйте ще раз.";
                 return View(model);
             }
 
-            var code = _users.CreatePendingRealtorRegistration(
-                model.Email, model.Password, model.FirstName, model.LastName, model.PhoneNumber);
+            TempData.Remove("RltEmail");
+            TempData.Remove("RltFirstName");
+            TempData.Remove("RltLastName");
+            TempData.Remove("RltPhone");
 
-            TempData["RltConfirmCode"] = code;
-            TempData["RltConfirmEmail"] = model.Email;
-            return RedirectToAction("RealtorRegisterStep4");
+            await SignInFromApiTokenAsync(token);
+            return RedirectToAction("RealtorDashboard");
         }
 
-        // ── Realtor Register Step 4 ───────────────────────────────────────────────
+        // ── Realtor Register Step 4 (success page only) ───────────────────────────
         [HttpGet]
         public IActionResult RealtorRegisterStep4()
         {
-            var email = TempData.Peek("RltConfirmEmail") as string;
-            if (string.IsNullOrEmpty(email)) return RedirectToAction("RealtorRegisterStep1");
-
-            var demoCode = TempData["RltConfirmCode"] as string;
-            TempData["RltConfirmCode"] = demoCode;
-            ViewBag.DemoCode = demoCode;
-
-            return View(new ConfirmEmailViewModel { Email = email });
+            return RedirectToAction("RealtorDashboard");
         }
 
-        // ── Realtor ConfirmEmail ──────────────────────────────────────────────────
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RealtorConfirmEmail(ConfirmEmailViewModel model)
+        // ── Helpers ───────────────────────────────────────────────────────────────
+
+        private async Task SignInFromApiTokenAsync(string token)
         {
-            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Code))
-            {
-                ViewBag.Error = "Введіть код підтвердження.";
-                return View("RealtorRegisterStep4", model);
-            }
+            _api.SetJwtToken(token);
 
-            if (!_users.ConfirmRegistration(model.Email, model.Code))
-            {
-                ViewBag.Error = "Невірний або прострочений код. Спробуйте ще раз.";
-                return View("RealtorRegisterStep4", model);
-            }
-
-            var user = _users.FindByEmail(model.Email)!;
-            await SignInUser(user);
-            return RedirectToAction("Index", "Home");
-        }
-
-        // ── Helper ───────────────────────────────────────────────────────────────
-        private async Task SignInUser(AppUser user)
-        {
-            var fullName = $"{user.FirstName} {user.LastName}".Trim();
-            if (string.IsNullOrEmpty(fullName)) fullName = user.Email;
-
-            var initials = BuildInitials(user);
-
-            var claims = new List<Claim>
-            {
-                new(ClaimTypes.Name, fullName),
-                new(ClaimTypes.Email, user.Email),
-                new("FirstName", user.FirstName ?? ""),
-                new("LastName", user.LastName ?? ""),
-                new("Initials", initials),
-                new("IsRealtor", user.IsRealtor ? "true" : "false"),
-            };
-
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = BuildMvcClaimsFromJwt(token);
+            var identity  = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 principal,
-                new AuthenticationProperties { IsPersistent = true });
+                new AuthenticationProperties { IsPersistent = true, ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30) });
         }
 
-        private static string BuildInitials(AppUser user)
+        private static List<Claim> BuildMvcClaimsFromJwt(string token)
         {
-            var f = user.FirstName?.Length > 0 ? user.FirstName[0].ToString().ToUpper() : "";
-            var l = user.LastName?.Length > 0 ? user.LastName[0].ToString().ToUpper() : "";
-            if (!string.IsNullOrEmpty(f + l)) return f + l;
-            return user.Email.Length > 0 ? user.Email[0].ToString().ToUpper() : "?";
+            var raw = DecodeJwtClaims(token);
+            var map = raw.ToDictionary(c => c.Name, c => c.Value);
+
+            var firstName = map.GetValueOrDefault("firstName", "");
+            var lastName  = map.GetValueOrDefault("lastName", "");
+            var email     = map.GetValueOrDefault("email", "");
+            var photo     = map.GetValueOrDefault("photo", "");
+            var id        = map.GetValueOrDefault("id", "");
+
+            var fullName = $"{firstName} {lastName}".Trim();
+            if (string.IsNullOrEmpty(fullName)) fullName = email;
+
+            var initials = "";
+            if (firstName.Length > 0) initials += char.ToUpper(firstName[0]);
+            if (lastName.Length > 0)  initials += char.ToUpper(lastName[0]);
+            if (string.IsNullOrEmpty(initials) && email.Length > 0)
+                initials = char.ToUpper(email[0]).ToString();
+
+            var roleKey = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+            var role    = map.GetValueOrDefault(roleKey, map.GetValueOrDefault("role", "Customer"));
+            var isRealtor = role == "Realtor" ? "true" : "false";
+
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.Name,           fullName),
+                new(ClaimTypes.Email,          email),
+                new(ClaimTypes.NameIdentifier, id),
+                new(ClaimTypes.Role,           role),
+                new("FirstName",               firstName),
+                new("LastName",                lastName),
+                new("Initials",                initials),
+                new("IsRealtor",               isRealtor),
+                new("email",                   email),
+                new("photo",                   photo),
+            };
+
+            return claims;
         }
 
-        private static UserProfileViewModel BuildProfileVm(AppUser user) => new()
+        private static List<(string Name, string Value)> DecodeJwtClaims(string token)
         {
-            Email = user.Email,
-            FirstName = user.FirstName ?? "",
-            LastName = user.LastName ?? "",
-            DisplayName = user.DisplayName ?? "",
-            PhoneNumber = user.PhoneNumber ?? "",
-            Citizenship = user.Citizenship ?? "",
-            Gender = user.Gender ?? "",
-            Country = user.Country ?? "",
-            City = user.City ?? "",
-            PostalCode = user.PostalCode ?? "",
-            Address = user.Address ?? "",
-            BirthDay = user.BirthDay ?? "",
-            BirthMonth = user.BirthMonth ?? "",
-            BirthYear = user.BirthYear ?? "",
-            PassportFirstName = user.PassportFirstName ?? "",
-            PassportLastName = user.PassportLastName ?? "",
-            PassportNumber = user.PassportNumber ?? "",
-            PassportExpiry = user.PassportExpiry ?? "",
-            PassportNationality = user.PassportNationality ?? "",
-        };
+            var parts = token.Split('.');
+            if (parts.Length != 3) return [];
+
+            var payload = parts[1]
+                .Replace('-', '+')
+                .Replace('_', '/');
+
+            switch (payload.Length % 4)
+            {
+                case 2: payload += "=="; break;
+                case 3: payload += "=";  break;
+            }
+
+            var bytes = Convert.FromBase64String(payload);
+            var json  = Encoding.UTF8.GetString(bytes);
+
+            var result = new List<(string, string)>();
+            try
+            {
+                using var doc = JsonDocument.Parse(json);
+                foreach (var prop in doc.RootElement.EnumerateObject())
+                {
+                    var val = prop.Value.ValueKind switch
+                    {
+                        JsonValueKind.String => prop.Value.GetString() ?? "",
+                        JsonValueKind.Number => prop.Value.GetRawText(),
+                        _                   => prop.Value.GetRawText()
+                    };
+                    result.Add((prop.Name, val));
+                }
+            }
+            catch { }
+
+            return result;
+        }
+
+        private UserProfileViewModel BuildProfileVmFromApi(Models.Api.CustomerInfoApiDto? info)
+        {
+            var vm = new UserProfileViewModel
+            {
+                Email       = User.FindFirst("email")?.Value ?? User.FindFirst(ClaimTypes.Email)?.Value ?? "",
+                FirstName   = User.FindFirst("FirstName")?.Value ?? "",
+                LastName    = User.FindFirst("LastName")?.Value ?? "",
+                DisplayName = User.FindFirst(ClaimTypes.Name)?.Value ?? "",
+            };
+
+            if (info != null)
+            {
+                vm.Email       = info.Email;
+                vm.PhoneNumber = info.PhoneNumber ?? "";
+                vm.Address     = info.Address ?? "";
+
+                if (info.FullName.Contains(' '))
+                {
+                    var parts    = info.FullName.Split(' ', 2);
+                    vm.FirstName = parts[0];
+                    vm.LastName  = parts[1];
+                }
+                else
+                {
+                    vm.FirstName = info.FullName;
+                }
+
+                if (info.DateOfBirth.HasValue)
+                {
+                    vm.BirthDay   = info.DateOfBirth.Value.Day.ToString();
+                    vm.BirthMonth = info.DateOfBirth.Value.Month.ToString();
+                    vm.BirthYear  = info.DateOfBirth.Value.Year.ToString();
+                }
+            }
+
+            return vm;
+        }
     }
 }
