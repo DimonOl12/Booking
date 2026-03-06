@@ -475,7 +475,8 @@ if (sbGuestsField && guestsPopup) {
             const target = btn.dataset.target;
             const action = btn.dataset.action;
             const mins = { adults: 1, children: 0, rooms: 1 };
-            if (action === 'inc') guests[target]++;
+            const maxs = { adults: 16, children: 10, rooms: 8 };
+            if (action === 'inc' && guests[target] < maxs[target]) guests[target]++;
             if (action === 'dec' && guests[target] > mins[target]) guests[target]--;
             updateGuestsDisplay();
         });

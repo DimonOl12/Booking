@@ -462,6 +462,16 @@ img {
     background-color: #D4552A;
 }
 
+.search-tab-notice {
+    display: none;
+    text-align: center;
+    font-size: 13px;
+    color: var(--color-accent);
+    font-family: var(--font-body);
+    padding: 6px 0 2px;
+    letter-spacing: 0.01em;
+}
+
 /* ---- Section Containers ---- */
 .section {
     max-width: var(--container-max);

@@ -171,7 +171,7 @@
 
                         <!-- Input area -->
                         <div class="rmsg-input-wrap">
-                            <input type="text" class="rmsg-input" id="rmsgInput" placeholder="Написати повідомлення..." />
+                            <input type="text" class="rmsg-input" id="rmsgInput" placeholder="Написати повідомлення..." maxlength="1000" />
                             <button type="button" class="rmsg-send-btn" id="rmsgSend">Надіслати</button>
                         </div>
 
@@ -240,6 +240,18 @@
             messages.scrollTop = messages.scrollHeight;
         });
     });
+
+    // 3-dots chat menu
+    var menuBtn = document.querySelector('.rmsg-chat-menu-btn');
+    if (menuBtn) {
+        menuBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            menuBtn.classList.toggle('rmsg-chat-menu-btn--open');
+        });
+        document.addEventListener('click', function () {
+            menuBtn.classList.remove('rmsg-chat-menu-btn--open');
+        });
+    }
 
     // Send message
     function sendMessage() {

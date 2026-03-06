@@ -207,7 +207,7 @@
                         <div class="rprf-field">
                             <div class="rprf-label-row">
                                 <label class="rprf-label">Пароль</label>
-                                <a href="#" class="rprf-change-link">Змінити пароль</a>
+                                <a href="@Url.Action("ForgotPassword","Account")" class="rprf-change-link">Змінити пароль</a>
                             </div>
                             <div class="rprf-pass-wrap">
                                 <input type="password" class="rprf-input" value="password" />
@@ -337,9 +337,10 @@
             <div class="rprf-right">
                 <div class="rprf-card rprf-photo-card">
                     <div class="rprf-avatar-wrap">
-                        <img class="rprf-avatar-img" src="https://placehold.co/158x158/D9D9D9/555?text=@initials" alt="@(firstName + " " + lastName)" />
+                        <img class="rprf-avatar-img" id="rprfAvatarImg" src="https://placehold.co/158x158/D9D9D9/555?text=@initials" alt="@(firstName + " " + lastName)" />
                     </div>
-                    <button type="button" class="rprf-photo-btn">Змінити фото</button>
+                    <input type="file" id="rprfPhotoInput" accept="image/*" style="display:none" />
+                    <button type="button" class="rprf-photo-btn" id="rprfPhotoBtn">Змінити фото</button>
                 </div>
             </div>
 
@@ -385,6 +386,7 @@
 
 <script>
 (function () {
+    // Password eye toggle
     var eyeBtn = document.getElementById('rprf-eye');
     if (eyeBtn) {
         eyeBtn.addEventListener('click', function () {
@@ -393,10 +395,11 @@
         });
     }
 
-    var overlay  = document.getElementById('rprf-del-overlay');
-    var openBtn  = document.getElementById('rprf-del-btn');
-    var closeBtn = document.getElementById('rprf-del-close');
-    var cancelBtn= document.getElementById('rprf-del-cancel');
+    // Delete account modal
+    var overlay   = document.getElementById('rprf-del-overlay');
+    var openBtn   = document.getElementById('rprf-del-btn');
+    var closeBtn  = document.getElementById('rprf-del-close');
+    var cancelBtn = document.getElementById('rprf-del-cancel');
 
     function openModal()  { overlay.classList.add('open'); }
     function closeModal() { overlay.classList.remove('open'); }
@@ -407,6 +410,58 @@
     overlay.addEventListener('click', function (e) {
         if (e.target === overlay) closeModal();
     });
+
+    // Photo upload preview
+    var photoBtn = document.getElementById('rprfPhotoBtn');
+    var photoInput = document.getElementById('rprfPhotoInput');
+    var avatarImg = document.getElementById('rprfAvatarImg');
+    if (photoBtn && photoInput) {
+        photoBtn.addEventListener('click', function () { photoInput.click(); });
+        photoInput.addEventListener('change', function () {
+            var file = photoInput.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) { avatarImg.src = e.target.result; };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Cancel → go back
+    var cancelFormBtn = document.querySelector('.rprf-btn-cancel');
+    if (cancelFormBtn) {
+        cancelFormBtn.addEventListener('click', function () {
+            history.back();
+        });
+    }
+
+    // Save → show confirmation on button
+    var saveBtn = document.querySelector('.rprf-btn-save');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', function () {
+            var orig = saveBtn.textContent;
+            saveBtn.textContent = 'Збережено ✓';
+            saveBtn.disabled = true;
+            setTimeout(function () {
+                saveBtn.textContent = orig;
+                saveBtn.disabled = false;
+            }, 2500);
+        });
+    }
+
+    // Sessions logout
+    var sessionsLogoutBtn = document.querySelector('.rprf-action-btn--danger:not(#rprf-del-btn)');
+    if (sessionsLogoutBtn) {
+        sessionsLogoutBtn.addEventListener('click', function () {
+            if (confirm('Вийти зі всіх пристроїв?')) {
+                sessionsLogoutBtn.textContent = 'Виконується...';
+                sessionsLogoutBtn.disabled = true;
+                setTimeout(function () {
+                    sessionsLogoutBtn.textContent = 'Виконано';
+                }, 1500);
+            }
+        });
+    }
 })();
 </script>
 </body>

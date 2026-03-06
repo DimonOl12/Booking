@@ -52,7 +52,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    <input type="text" name="city" id="homeCity" placeholder="Куди ви вирушаєте?" autocomplete="off" />
+                    <input type="text" name="city" id="homeCity" placeholder="Куди ви вирушаєте?" autocomplete="off" maxlength="100" />
                     <input type="hidden" name="adults"   id="homeAdults"   value="2" />
                     <input type="hidden" name="children" id="homeChildren" value="0" />
                     <input type="hidden" name="rooms"    id="homeRooms"    value="1" />
@@ -148,14 +148,14 @@
             <div class="promo-card">
                 <div>
                     <span class="promo-tag">ВАШ НОВИЙ ОФІС</span>
-                    <h3 class="promo-title">Текст: Знижка -25% при бронюванні від 7 днів.</h3>
+                    <h3 class="promo-title">Знижка -25% при бронюванні від 7 днів</h3>
                     <ul class="promo-bullets">
                         <li>Безлімітна кава для драйву</li>
                         <li>Комфортна робоча зона</li>
                         <li>Стабільний Wi-Fi</li>
                     </ul>
                 </div>
-                <a href="#" class="btn-promo">
+                <a href="/Home/Search" class="btn-promo">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </a>
             </div>
@@ -166,7 +166,7 @@
                     <h3 class="promo-title">Знижка -15% при бронюванні за 30 днів до візиту</h3>
                     <p class="promo-desc">Зафіксуйте найкращу ціну сезону вже сьогодні!</p>
                 </div>
-                <a href="#" class="btn-promo">
+                <a href="/Home/Search" class="btn-promo">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </a>
             </div>
@@ -177,7 +177,7 @@
                     <h3 class="promo-title">Забронюйте 4 ночі &mdash; сплатіть лише за 3!</h3>
                     <p class="promo-desc">Обирайте тариф &laquo;Спецпропозиція 3+1&raquo; у меню бронювання</p>
                 </div>
-                <a href="#" class="btn-promo">
+                <a href="/Home/Search" class="btn-promo">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </a>
             </div>
@@ -617,35 +617,35 @@
         </div>
 
         <div class="traveler-cities-grid">
-            <a href="#" class="traveler-city-link">Готелі міста Львів</a>
-            <a href="#" class="traveler-city-link">Готелі міста Київ</a>
-            <a href="#" class="traveler-city-link">Готелі міста Буковель</a>
-            <a href="#" class="traveler-city-link">Готелі міста Дніпро</a>
-            <a href="#" class="traveler-city-link">Готелі міста Івано-Франківськ</a>
+            <a href="/Home/Search?city=Львів" class="traveler-city-link">Готелі міста Львів</a>
+            <a href="/Home/Search?city=Київ" class="traveler-city-link">Готелі міста Київ</a>
+            <a href="/Home/Search?city=Буковель" class="traveler-city-link">Готелі міста Буковель</a>
+            <a href="/Home/Search?city=Дніпро" class="traveler-city-link">Готелі міста Дніпро</a>
+            <a href="/Home/Search?city=Івано-Франківськ" class="traveler-city-link">Готелі міста Івано-Франківськ</a>
 
-            <a href="#" class="traveler-city-link">Готелі міста Яремче</a>
-            <a href="#" class="traveler-city-link">Готелі міста Чернівці</a>
-            <a href="#" class="traveler-city-link">Готелі міста Славське</a>
-            <a href="#" class="traveler-city-link">Готелі міста Суми</a>
-            <a href="#" class="traveler-city-link">Готелі міста Вінниця</a>
+            <a href="/Home/Search?city=Яремче" class="traveler-city-link">Готелі міста Яремче</a>
+            <a href="/Home/Search?city=Чернівці" class="traveler-city-link">Готелі міста Чернівці</a>
+            <a href="/Home/Search?city=Славське" class="traveler-city-link">Готелі міста Славське</a>
+            <a href="/Home/Search?city=Суми" class="traveler-city-link">Готелі міста Суми</a>
+            <a href="/Home/Search?city=Вінниця" class="traveler-city-link">Готелі міста Вінниця</a>
 
-            <a href="#" class="traveler-city-link">Готелі міста Луцьк</a>
-            <a href="#" class="traveler-city-link">Готелі міста Харків</a>
-            <a href="#" class="traveler-city-link">Готелі міста Трускавець</a>
-            <a href="#" class="traveler-city-link">Готелі міста Драгонбрат</a>
-            <a href="#" class="traveler-city-link">Готелі міста Мукачево</a>
+            <a href="/Home/Search?city=Луцьк" class="traveler-city-link">Готелі міста Луцьк</a>
+            <a href="/Home/Search?city=Харків" class="traveler-city-link">Готелі міста Харків</a>
+            <a href="/Home/Search?city=Трускавець" class="traveler-city-link">Готелі міста Трускавець</a>
+            <a href="/Home/Search?city=Драгонбрат" class="traveler-city-link">Готелі міста Драгонбрат</a>
+            <a href="/Home/Search?city=Мукачево" class="traveler-city-link">Готелі міста Мукачево</a>
 
-            <a href="#" class="traveler-city-link">Готелі міста Берегове</a>
-            <a href="#" class="traveler-city-link">Готелі міста Полтава</a>
-            <a href="#" class="traveler-city-link">Готелі міста Кам'янець-Подільський</a>
-            <a href="#" class="traveler-city-link">Готелі міста Тернопіль</a>
-            <a href="#" class="traveler-city-link">Готелі міста Хмельницький</a>
+            <a href="/Home/Search?city=Берегове" class="traveler-city-link">Готелі міста Берегове</a>
+            <a href="/Home/Search?city=Полтава" class="traveler-city-link">Готелі міста Полтава</a>
+            <a href="/Home/Search?city=Кам'янець-Подільський" class="traveler-city-link">Готелі міста Кам'янець-Подільський</a>
+            <a href="/Home/Search?city=Тернопіль" class="traveler-city-link">Готелі міста Тернопіль</a>
+            <a href="/Home/Search?city=Хмельницький" class="traveler-city-link">Готелі міста Хмельницький</a>
 
-            <a href="#" class="traveler-city-link">Готелі міста Біла Церква</a>
-            <a href="#" class="traveler-city-link">Готелі міста Черкаси</a>
-            <a href="#" class="traveler-city-link">Готелі міста Поляниця</a>
-            <a href="#" class="traveler-city-link">Готелі міста Ясіня</a>
-            <a href="#" class="traveler-city-link">Готелі міста Житомир</a>
+            <a href="/Home/Search?city=Біла+Церква" class="traveler-city-link">Готелі міста Біла Церква</a>
+            <a href="/Home/Search?city=Черкаси" class="traveler-city-link">Готелі міста Черкаси</a>
+            <a href="/Home/Search?city=Поляниця" class="traveler-city-link">Готелі міста Поляниця</a>
+            <a href="/Home/Search?city=Ясіня" class="traveler-city-link">Готелі міста Ясіня</a>
+            <a href="/Home/Search?city=Житомир" class="traveler-city-link">Готелі міста Житомир</a>
         </div>
     </div>
 

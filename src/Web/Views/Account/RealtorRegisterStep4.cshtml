@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/home.css" />
     <link rel="stylesheet" href="~/css/auth.css" />
 </head>
 <body>
@@ -21,28 +22,8 @@
     <div class="auth-hero-bg">
         <img src="~/images/Subtract.jpg" alt="" />
     </div>
+    @await Html.PartialAsync("_HomeNavbarGuest")
 
-    <nav class="auth-topbar">
-        <a href="/" class="auth-topbar-logo">
-            <img src="~/images/icons/Reservio.svg" alt="Reservio" />
-        </a>
-        <div class="auth-topbar-right">
-            <div class="auth-topbar-currency">UAH</div>
-            <div class="auth-topbar-flag">
-                <svg width="30" height="20" viewBox="0 0 30 20" fill="none">
-                    <rect width="30" height="10" fill="#0057B7"/>
-                    <rect y="10" width="30" height="10" fill="#FFD700"/>
-                </svg>
-            </div>
-            <a href="#" class="auth-topbar-help">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                    <line x1="12" y1="17" x2="12.01" y2="17"/>
-                </svg>
-            </a>
-        </div>
-    </nav>
 
     <main class="auth-main-figma">
         <form method="post" asp-action="RealtorConfirmEmail" asp-controller="Account" id="confirm-form">

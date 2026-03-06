@@ -34,11 +34,11 @@ else
     <nav class="breadcrumb">
         <a href="/">Головна</a>
         <span class="bc-sep">›</span>
-        <a href="#">Україна</a>
+        <a href="/Home/Search">Україна</a>
         @if (!string.IsNullOrEmpty(Model.City))
         {
             <span class="bc-sep">›</span>
-            <a href="#">@Model.City</a>
+            <a href="/Home/Search?city=@Model.City">@Model.City</a>
         }
         <span class="bc-sep">›</span>
         <span class="bc-current">Результати пошуку</span>
@@ -49,7 +49,7 @@ else
         <form class="search-bar" id="searchForm" method="get" action="/Home/Search">
             <div class="sb-field sb-city">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" name="city" id="sbCity" value="@Model.City" placeholder="Куди ви вирушаєте?" autocomplete="off" />
+                <input type="text" name="city" id="sbCity" value="@Model.City" placeholder="Куди ви вирушаєте?" autocomplete="off" maxlength="100" />
                 <input type="hidden" name="adults" id="hidAdults" value="@Model.Adults" />
                 <input type="hidden" name="children" id="hidChildren" value="@Model.Children" />
                 <input type="hidden" name="rooms" id="hidRooms" value="@Model.Rooms" />

@@ -1715,6 +1715,7 @@ button { cursor: pointer; font-family: var(--dsh-font); border: none; background
     flex-shrink: 0;
 }
 .set-btn-exit:hover { background: #fce8e8; }
+.set-session-row--ended { opacity: 0.4; pointer-events: none; }
 .set-danger-section { border-top: 1px solid var(--dsh-border); padding-top: 20px; }
 .set-danger-text { font-size: 15px; font-weight: 600; color: var(--dsh-primary); }
 

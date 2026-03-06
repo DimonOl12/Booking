@@ -131,7 +131,7 @@
                 <div class="msg-messages" id="msgMessages"></div>
 
                 <div class="msg-input-area">
-                    <input class="msg-text-input" type="text" placeholder="Написати повідомлення" id="msgInput" onkeydown="if(event.key==='Enter')sendMsg()"/>
+                    <input class="msg-text-input" type="text" placeholder="Написати повідомлення" id="msgInput" maxlength="1000" onkeydown="if(event.key==='Enter')sendMsg()"/>
                     <button class="msg-send-btn" onclick="sendMsg()">Надіслати</button>
                 </div>
             </div>

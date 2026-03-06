@@ -1416,7 +1416,9 @@
     flex: 1;
 }
 
-.rpd-chevron { color: #000; flex-shrink: 0; }
+.rpd-chevron { color: #000; flex-shrink: 0; transition: transform 0.2s; }
+.rpd-collapsible--open .rpd-chevron { transform: rotate(90deg); }
+.rpd-collapsible--open { background: #fff; border-color: var(--dsh-primary); }
 
 /* ── Revenue Statistics header ───────────────────────── */
 .rpd-chart-header {

@@ -1,10 +1,96 @@
-// Search tabs
-document.querySelectorAll('.search-tab').forEach(tab => {
-    tab.addEventListener('click', function() {
-        document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
+// Search tabs — change form content per tab
+const TAB_CONFIGS = {
+    'Помешкання': {
+        field1Icon: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+        field1Placeholder: 'Куди ви вирушаєте?',
+        showDate: true,
+        showGuests: true,
+        btnText: 'Шукати',
+        notice: null
+    },
+    'Переліт': {
+        field1Icon: '<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/><path d="M14.5 2.5c1.5 1.5 2 3.5 2 5.5m3.5-5.5c2 2 3 5 3 8"/>',
+        field1Placeholder: 'Звідки летіти?',
+        showDate: true,
+        showGuests: true,
+        btnText: 'Знайти рейс',
+        notice: 'Незабаром — пошук авіарейсів'
+    },
+    'Оренда авто': {
+        field1Icon: '<rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>',
+        field1Placeholder: 'Місто отримання авто',
+        showDate: true,
+        showGuests: true,
+        btnText: 'Знайти авто',
+        notice: 'Незабаром — оренда автомобілів'
+    },
+    'Дозвілля': {
+        field1Icon: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+        field1Placeholder: 'Місто або назва події',
+        showDate: true,
+        showGuests: true,
+        btnText: 'Знайти дозвілля',
+        notice: 'Незабаром — концерти, тури, атракції'
+    },
+    'Таксі з/до аеропорту': {
+        field1Icon: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+        field1Placeholder: 'Адреса подачі або аеропорт',
+        showDate: true,
+        showGuests: false,
+        btnText: 'Замовити таксі',
+        notice: 'Незабаром — таксі до аеропорту'
+    }
+};
+
+(function initSearchTabs() {
+    const cityInput      = document.getElementById('homeCity');
+    const field1         = cityInput && cityInput.closest('.search-input-group');
+    const dateField      = document.getElementById('homeDateField');
+    const guestsField    = document.getElementById('homeGuestsField');
+    const searchBtn      = document.querySelector('.search-btn');
+    const field1SvgEl    = field1 && field1.querySelector('svg');
+
+    // Notice element (injected once)
+    let noticeEl = document.getElementById('searchTabNotice');
+    if (!noticeEl) {
+        noticeEl = document.createElement('p');
+        noticeEl.id = 'searchTabNotice';
+        noticeEl.className = 'search-tab-notice';
+        const wrapper = document.querySelector('.search-btn-wrapper');
+        if (wrapper) wrapper.insertAdjacentElement('afterend', noticeEl);
+    }
+
+    function applyTabConfig(tabName) {
+        const cfg = TAB_CONFIGS[tabName] || TAB_CONFIGS['Помешкання'];
+
+        if (cityInput) cityInput.placeholder = cfg.field1Placeholder;
+
+        if (field1SvgEl) {
+            field1SvgEl.setAttribute('viewBox', '0 0 24 24');
+            field1SvgEl.innerHTML = cfg.field1Icon;
+        }
+
+        if (dateField) dateField.style.display = cfg.showDate ? '' : 'none';
+        if (guestsField) guestsField.style.display = cfg.showGuests ? '' : 'none';
+        if (searchBtn) searchBtn.textContent = cfg.btnText;
+
+        if (noticeEl) {
+            noticeEl.textContent = cfg.notice || '';
+            noticeEl.style.display = cfg.notice ? '' : 'none';
+        }
+    }
+
+    document.querySelectorAll('.search-tab').forEach(tab => {
+        tab.addEventListener('click', function () {
+            document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            applyTabConfig(this.textContent.trim());
+        });
     });
-});
+
+    // Init with active tab
+    applyTabConfig('Помешкання');
+})();
 
 // Category pills
 document.querySelectorAll('.category-pill').forEach(pill => {
@@ -252,8 +338,9 @@ if (homeGuestsField && homeGuestsPopup) {
             e.stopPropagation();
             const target = btn.dataset.target;
             const action = btn.dataset.action;
-            const mins   = { adults: 1, children: 0, rooms: 1 };
-            if (action === 'inc') hg[target]++;
+            const mins = { adults: 1, children: 0, rooms: 1 };
+            const maxs = { adults: 16, children: 10, rooms: 8 };
+            if (action === 'inc' && hg[target] < maxs[target]) hg[target]++;
             if (action === 'dec' && hg[target] > mins[target]) hg[target]--;
             updateHomeGuestsDisplay();
         });

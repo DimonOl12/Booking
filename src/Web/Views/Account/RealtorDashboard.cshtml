@@ -32,7 +32,7 @@
                 <h1 class="rdsh-title">Дашборд власника</h1>
                 <p class="rdsh-subtitle">Огляд об&rsquo;єктів, бронювань та доходів</p>
             </div>
-            <a href="#" class="rdsh-add-property-btn">Додати помешкання</a>
+            <a href="@Url.Action("RealtorRegisterStep1","Account")" class="rdsh-add-property-btn">Додати помешкання</a>
         </div>
 
         @* ── Incomplete registration card ── *@
@@ -71,7 +71,7 @@
                         </svg>
                         Видалити
                     </button>
-                    <a href="#" class="rdsh-continue-btn">Продовжити реєстрацію</a>
+                    <a href="@Url.Action("RealtorRegisterStep1","Account")" class="rdsh-continue-btn">Продовжити реєстрацію</a>
                 </div>
             </div>
         }
@@ -233,7 +233,7 @@
                 <div class="rdsh-white-card">
                     <div class="rdsh-reviews-header">
                         <h2 class="rdsh-reviews-title">Відгуки</h2>
-                        <a href="#" class="rdsh-viewall-btn">
+                        <a href="@Url.Action("RealtorRating","Account")" class="rdsh-viewall-btn">
                             Переглянути всі
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="9 18 15 12 9 6"/>
@@ -280,7 +280,7 @@
                             <p class="rdsh-empty-title">У вас ще немає доданих об'єктів</p>
                             <p class="rdsh-empty-sub">Додайте ваш перший об'єкт для здачі в оренду</p>
                         </div>
-                        <a href="#" class="rdsh-add-btn">Додати</a>
+                        <a href="@Url.Action("RealtorRegisterStep1","Account")" class="rdsh-add-btn">Додати</a>
                     </div>
 
                     <div class="rdsh-empty-card">
@@ -426,6 +426,13 @@
                 }
             }
         }
+    });
+
+    // Reply buttons → open messages
+    document.querySelectorAll('.rdsh-reply-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            window.location.href = '/Account/RealtorMessages';
+        });
     });
 
     // Tab switching

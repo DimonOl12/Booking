@@ -353,6 +353,23 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+// Collapsible sections
+document.querySelectorAll('.rpd-collapsible').forEach(function (row) {
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', function (e) {
+        if (e.target.closest('.rpd-edit-btn')) return;
+        row.classList.toggle('rpd-collapsible--open');
+    });
+});
+
+// Reply buttons → open RealtorMessages
+document.querySelectorAll('.rdsh-reply-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        window.location.href = '/Account/RealtorMessages';
+    });
+});
+</script>
+<script>
 (function () {
     const datasets = {
         month: {
