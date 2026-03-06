@@ -684,11 +684,14 @@ img {
 }
 
 .city-card {
+    display: block;
     position: relative;
     border-radius: var(--radius-card);
     overflow: hidden;
     height: 220px;
     cursor: pointer;
+    text-decoration: none;
+    color: inherit;
 }
 
 .city-card img {
@@ -742,11 +745,13 @@ img {
 }
 
 .dest-card {
+    display: block;
     position: relative;
     border-radius: var(--radius-card);
     overflow: hidden;
     height: 300px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .dest-card img {
@@ -963,12 +968,15 @@ img {
 }
 
 .type-card {
+    display: block;
     width: 230px;
     flex-shrink: 0;
     border-radius: var(--radius-card);
     overflow: hidden;
     cursor: pointer;
     background: #FAFAFA;
+    text-decoration: none;
+    color: inherit;
 }
 
 .type-card-img {

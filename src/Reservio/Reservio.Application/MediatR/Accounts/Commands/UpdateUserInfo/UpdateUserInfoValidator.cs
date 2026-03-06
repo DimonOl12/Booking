@@ -27,11 +27,11 @@ public class UpdateUserInfoValidator : AbstractValidator<UpdateUserInfoCommand> 
 			.MaximumLength(100)
 				.WithMessage("LastName is too long");
 
-		RuleFor(u => u.Photo)
-			.NotNull()
-				.WithMessage("Image is not selected")
-			.MustAsync(imageValidator.IsValidImageAsync)
-				.WithMessage("Image is not valid");
+		When(u => u.Photo != null, () => {
+			RuleFor(u => u.Photo)
+				.MustAsync(imageValidator.IsValidImageAsync!)
+					.WithMessage("Image is not valid");
+		});
 	}
 }
 

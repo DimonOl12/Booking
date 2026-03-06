@@ -11,6 +11,6 @@ public class UpdateUserInfoCommand : IRequest<JwtTokenVm> {
 
 	public string LastName { get; set; } = null!;
 
-	public IFormFile Photo { get; set; } = null!;
+	public IFormFile? Photo { get; set; }
 }
 

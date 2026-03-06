@@ -92,11 +92,29 @@ const TAB_CONFIGS = {
     applyTabConfig('Помешкання');
 })();
 
-// Category pills
+// Category pills — toggle active + filter city-grid cards
+const PILL_TYPE_MAP = {
+    'Місто': 'місто',
+    'Пляж': 'пляж',
+    'Активний відпочинок': 'активний',
+    'Спокійний відпочинок': 'спокійний',
+    'Романтика': 'романтика',
+    'Їжа': 'їжа'
+};
+
+function filterCityGrid(type) {
+    document.querySelectorAll('#cityGrid .city-card').forEach(card => {
+        const types = card.dataset.type || '';
+        card.style.display = types.split(' ').includes(type) ? '' : 'none';
+    });
+}
+
 document.querySelectorAll('.category-pill').forEach(pill => {
     pill.addEventListener('click', function() {
         document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
         this.classList.add('active');
+        const type = PILL_TYPE_MAP[this.textContent.trim()] || 'місто';
+        filterCityGrid(type);
     });
 });
 
@@ -362,4 +380,13 @@ document.addEventListener('click', () => {
 });
 [homeDatePopup, homeGuestsPopup].forEach(p => {
     if (p) p.addEventListener('click', e => e.stopPropagation());
+});
+
+// ── Property card clicks (popular + deals) ───────────────────────
+document.querySelectorAll('.property-card[data-id]').forEach(card => {
+    card.addEventListener('click', function(e) {
+        // Don't navigate if clicking the fav button
+        if (e.target.closest('.property-card-fav')) return;
+        window.location.href = '/Home/Property/' + this.dataset.id;
+    });
 });

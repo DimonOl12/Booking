@@ -71,7 +71,7 @@ function buildCardHtml(item) {
 
     return `
 <article class="listing-card" data-id="${item.id}" data-price="${item.pricePerNight}" data-rating="${item.ratingScore}" data-type="${item.type}">
-  <div class="lc-img-wrap"><img src="${item.imageUrl}" alt="${item.name}" loading="lazy" /></div>
+  <div class="lc-img-wrap"><img src="${item.imageUrl}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.src='/images/property-1.jpg'" /></div>
   <div class="lc-body">
     <div class="lc-rating-row">
       <div class="lc-badge">${rating}</div>

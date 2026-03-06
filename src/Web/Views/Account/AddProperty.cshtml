@@ -1,0 +1,649 @@
+@model Web.Models.AddPropertyViewModel
+@{
+    ViewData["Title"] = "Додати помешкання";
+    Layout = null;
+    var firstName = User.FindFirst("FirstName")?.Value ?? "";
+    var lastName  = User.FindFirst("LastName")?.Value ?? "";
+    var initials  = User.FindFirst("Initials")?.Value ?? "?";
+    var displayName = string.IsNullOrEmpty(firstName)
+        ? (User.Identity?.Name ?? "")
+        : $"{firstName} {lastName}".Trim();
+    bool hasError = !string.IsNullOrEmpty(Model.SaveError);
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Додати помешкання</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/add-property.css" />
+</head>
+<body>
+<div class="apw-page">
+
+    <!-- Background -->
+    <div class="apw-bg"><img src="~/images/bg_reg_acco.jpg" alt="" /></div>
+    <div class="apw-overlay"></div>
+
+    <!-- Navbar -->
+    <nav class="apw-navbar">
+        <a href="/" class="apw-logo"><span class="apw-logo-text">Reservio</span></a>
+        <div class="apw-user">
+            <span class="apw-user-currency">UAH</span>
+            <span class="apw-user-flag">🇺🇦</span>
+            <div class="apw-user-avatar">@initials</div>
+            <span class="apw-user-name">@displayName</span>
+        </div>
+    </nav>
+
+    <!-- Main form (single POST, all fields present) -->
+    <form method="post" asp-action="AddProperty" asp-controller="Account"
+          enctype="multipart/form-data" id="apwForm">
+        @Html.AntiForgeryToken()
+
+        <div class="apw-content">
+
+            <!-- ═══ STEP 0: Property type ═══ -->
+            <div class="apw-step apw-step-0-layout" id="step0">
+                <h1 class="apw-step-title-hero">
+                    Додайте своє житло на платформу Reservio та приймайте гостей
+                </h1>
+                <p class="apw-step-subtitle-hero">
+                    Щоб розпочати, оберіть тип помешкання, яке ви хочете розмістити
+                </p>
+                <div class="apw-type-grid">
+                    <div class="apw-type-card" onclick="pickType(this)">
+                        <div class="apw-type-card-info">
+                            <h3>Апартаменти</h3>
+                            <p>Помешкання з меблями і кухнею, яке гості бронюють цілком</p>
+                        </div>
+                        <span class="apw-type-card-arrow">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="apw-type-card" onclick="pickType(this)">
+                        <div class="apw-type-card-info">
+                            <h3>Будинки</h3>
+                            <p>Апартаменти, вілли, будинки для відпочинку та інше</p>
+                        </div>
+                        <span class="apw-type-card-arrow">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="apw-type-card" onclick="pickType(this)">
+                        <div class="apw-type-card-info">
+                            <h3>Готель</h3>
+                            <p>Готелі, апартаменти з обслуговуванням, хостели, апарт-готелі</p>
+                        </div>
+                        <span class="apw-type-card-arrow">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="apw-type-card" onclick="pickType(this)">
+                        <div class="apw-type-card-info">
+                            <h3>Альтернативні помешкання</h3>
+                            <p>Кемпінги, глемпінги, наметові, бортові та інші унікальні варіанти</p>
+                        </div>
+                        <span class="apw-type-card-arrow">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ STEP 1: Count ═══ -->
+            <div class="apw-step apw-step-layout" id="step1" hidden>
+                <div class="apw-left">
+                    <h2 class="apw-step-title">Скільки апартаментів ви реєструєте?</h2>
+                    <div class="apw-card">
+                        <div class="apw-option-card selected" id="optOne" onclick="pickOption('optOne','optMany')">
+                            <div class="apw-option-radio"><div class="apw-option-radio-dot"></div></div>
+                            <span class="apw-option-icon">🏠</span>
+                            <span class="apw-option-text">Одні апартаменти</span>
+                        </div>
+                        <div class="apw-option-card" id="optMany" onclick="pickOption('optMany','optOne')">
+                            <div class="apw-option-radio"><div class="apw-option-radio-dot"></div></div>
+                            <span class="apw-option-icon">🏢</span>
+                            <span class="apw-option-text">Декілька апартаментів</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="apw-right"></div>
+            </div>
+
+            <!-- ═══ STEP 2: Other platforms ═══ -->
+            <div class="apw-step apw-step-layout" id="step2" hidden>
+                <div class="apw-left">
+                    <h2 class="apw-step-title">Де ще зареєстровано ваше помешкання?</h2>
+                    <p class="apw-step-title-sub">Якщо ваше помешкання вже розміщено на інших платформах, ви можете прискорити його реєстрацію, імпортуючи дані.</p>
+                    <div class="apw-card">
+                        <div class="apw-check-item" onclick="toggleCheck(this)">
+                            <div class="apw-check-box"></div>
+                            <span class="apw-check-icon">✈️</span>
+                            <span class="apw-check-text">Airbnb</span>
+                        </div>
+                        <div class="apw-check-item" onclick="toggleCheck(this)">
+                            <div class="apw-check-box"></div>
+                            <span class="apw-check-icon">⭐</span>
+                            <span class="apw-check-text">TripAdvisor</span>
+                        </div>
+                        <div class="apw-check-item" onclick="toggleCheck(this)">
+                            <div class="apw-check-box"></div>
+                            <span class="apw-check-icon">—</span>
+                            <span class="apw-check-text">Vrbo</span>
+                        </div>
+                        <div class="apw-check-item" onclick="toggleCheck(this)">
+                            <div class="apw-check-box"></div>
+                            <span class="apw-check-icon">🌐</span>
+                            <span class="apw-check-text">Інший сайт</span>
+                        </div>
+                        <div class="apw-check-item" onclick="toggleCheck(this)">
+                            <div class="apw-check-box"></div>
+                            <span class="apw-check-text">Помешкання не зареєстроване на інших сайтах</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="apw-right"></div>
+            </div>
+
+            <!-- ═══ STEP 3: Name + Description + Category  [Stepper 1/3] ═══ -->
+            <div class="apw-step apw-step-layout" id="step3" hidden>
+                <div class="apw-left">
+                    <div class="apw-stepper">
+                        <div class="apw-step-item active">
+                            <span class="apw-step-num-label">1</span>
+                            <span class="apw-step-label-text">Загальна інформація</span>
+                            <div class="apw-step-dots">
+                                <div class="apw-dot active"></div>
+                                <div class="apw-dot"></div>
+                            </div>
+                        </div>
+                        <div class="apw-step-item">
+                            <span class="apw-step-num-label">2</span>
+                            <span class="apw-step-label-text">Деталі помешкання</span>
+                            <div class="apw-step-dots">
+                                <div class="apw-dot"></div>
+                                <div class="apw-dot"></div>
+                            </div>
+                        </div>
+                        <div class="apw-step-item">
+                            <span class="apw-step-num-label">3</span>
+                            <span class="apw-step-label-text">Фотографії</span>
+                            <div class="apw-step-dots">
+                                <div class="apw-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="apw-step-title">Як називається ваше помешкання?</h2>
+                    <div class="apw-card">
+                        <div class="apw-field">
+                            <label class="apw-label" for="Name">Назва помешкання <span class="apw-required">*</span></label>
+                            <input asp-for="Name" id="Name" class="apw-input" maxlength="150"
+                                   placeholder="Наприклад: Готель Атлас Делюкс"
+                                   oninput="syncCount(this,'nameCount',150)" />
+                            <span class="apw-char-count"><span id="nameCount">@(Model.Name?.Length ?? 0)</span>/150 символів</span>
+                        </div>
+                        <div class="apw-field">
+                            <label class="apw-label" for="Description">Опис <span class="apw-required">*</span></label>
+                            <textarea asp-for="Description" id="Description" class="apw-textarea" rows="4"
+                                      maxlength="4000"
+                                      placeholder="Розкажіть гостям про ваше помешкання — зручності, розташування, особливості..."
+                                      oninput="syncCount(this,'descCount',4000)"></textarea>
+                            <span class="apw-char-count"><span id="descCount">@(Model.Description?.Length ?? 0)</span>/4000 символів</span>
+                        </div>
+                        <div class="apw-field">
+                            <label class="apw-label" for="CategoryId">Категорія <span class="apw-required">*</span></label>
+                            <select asp-for="CategoryId" asp-items="Model.CategoryOptions" class="apw-select"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="apw-right"></div>
+            </div>
+
+            <!-- ═══ STEP 4: Address  [Stepper 1/3 dot 2] ═══ -->
+            <div class="apw-step apw-step-layout" id="step4" hidden>
+                <div class="apw-left">
+                    <div class="apw-stepper">
+                        <div class="apw-step-item active">
+                            <span class="apw-step-num-label">1</span>
+                            <span class="apw-step-label-text">Загальна інформація</span>
+                            <div class="apw-step-dots">
+                                <div class="apw-dot"></div>
+                                <div class="apw-dot active"></div>
+                            </div>
+                        </div>
+                        <div class="apw-step-item">
+                            <span class="apw-step-num-label">2</span>
+                            <span class="apw-step-label-text">Деталі помешкання</span>
+                            <div class="apw-step-dots">
+                                <div class="apw-dot"></div>
+                                <div class="apw-dot"></div>
+                            </div>
+                        </div>
+                        <div class="apw-step-item">
+                            <span class="apw-step-num-label">3</span>
+                            <span class="apw-step-label-text">Фотографії</span>
+                            <div class="apw-step-dots">
+                                <div class="apw-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="apw-step-title">Де розташоване ваше помешкання?</h2>
+                    <div class="apw-card">
+                        <div class="apw-field">
+                            <label class="apw-label">Місто <span class="apw-required">*</span></label>
+                            <select asp-for="CityId" asp-items="Model.CityOptions" class="apw-select"></select>
+                        </div>
+                        <div class="apw-field">
+                            <label class="apw-label">Вулиця <span class="apw-required">*</span></label>
+                            <input asp-for="Street" class="apw-input" placeholder="Зазначте назву вулиці" />
+                        </div>
+                        <div class="apw-row">
+                            <div class="apw-field">
+                                <label class="apw-label">Будинок <span class="apw-required">*</span></label>
+                                <input asp-for="HouseNumber" class="apw-input" placeholder="№" />
+                            </div>
+                            <div class="apw-field apw-field--short">
+                                <label class="apw-label">Квартира</label>
+                                <input asp-for="ApartmentNumber" class="apw-input" placeholder="Кв." />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="apw-right"></div>
+            </div>
+
+            <!-- ═══ STEP 5: Amenities  [Stepper 2/3 dot 1] ═══ -->
+            <div class="apw-step apw-step-layout" id="step5" hidden>
+                <div class="apw-left">
+                    <div class="apw-stepper">
+                        <div class="apw-step-item">
+                            <span class="apw-step-num-label">1</span>
+                            <span class="apw-step-label-text">Загальна інформація</span>
+                            <div class="apw-step-dots"><div class="apw-dot"></div><div class="apw-dot"></div></div>
+                        </div>
+                        <div class="apw-step-item active">
+                            <span class="apw-step-num-label">2</span>
+                            <span class="apw-step-label-text">Деталі помешкання</span>
+                            <div class="apw-step-dots">
+                                <div class="apw-dot active"></div>
+                                <div class="apw-dot"></div>
+                            </div>
+                        </div>
+                        <div class="apw-step-item">
+                            <span class="apw-step-num-label">3</span>
+                            <span class="apw-step-label-text">Фотографії</span>
+                            <div class="apw-step-dots"><div class="apw-dot"></div></div>
+                        </div>
+                    </div>
+                    <h2 class="apw-step-title">Чим можуть скористатися гості у вашому помешканні?</h2>
+                    <div class="apw-card">
+                        @if (Model.AmenityOptions.Any())
+                        {
+                            <div class="apw-amenities-list">
+                                @foreach (var a in Model.AmenityOptions)
+                                {
+                                    <label class="apw-amenity-row">
+                                        <input type="checkbox" name="SelectedAmenityIds" value="@a.Value"
+                                               @(Model.SelectedAmenityIds.Contains(long.Parse(a.Value)) ? "checked" : "") />
+                                        <div class="apw-am-check"></div>
+                                        <span>@a.Text</span>
+                                    </label>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="apw-card-note">Зручності будуть доступні після підключення до сервісу.</p>
+                        }
+                    </div>
+                </div>
+                <div class="apw-right"></div>
+            </div>
+
+            <!-- ═══ STEP 6: Check-in / Check-out times  [Stepper 2/3 dot 2] ═══ -->
+            <div class="apw-step apw-step-layout" id="step6" hidden>
+                <div class="apw-left">
+                    <div class="apw-stepper">
+                        <div class="apw-step-item">
+                            <span class="apw-step-num-label">1</span>
+                            <span class="apw-step-label-text">Загальна інформація</span>
+                            <div class="apw-step-dots"><div class="apw-dot"></div><div class="apw-dot"></div></div>
+                        </div>
+                        <div class="apw-step-item active">
+                            <span class="apw-step-num-label">2</span>
+                            <span class="apw-step-label-text">Деталі помешкання</span>
+                            <div class="apw-step-dots">
+                                <div class="apw-dot"></div>
+                                <div class="apw-dot active"></div>
+                            </div>
+                        </div>
+                        <div class="apw-step-item">
+                            <span class="apw-step-num-label">3</span>
+                            <span class="apw-step-label-text">Фотографії</span>
+                            <div class="apw-step-dots"><div class="apw-dot"></div></div>
+                        </div>
+                    </div>
+                    <h2 class="apw-step-title">Порядок проживання</h2>
+                    <div class="apw-card">
+                        <div class="apw-time-block">
+                            <p class="apw-time-block-title">Заїзд</p>
+                            <div class="apw-time-row">
+                                <span class="apw-time-lbl">Від</span>
+                                <select name="ArrivalFrom" class="apw-time-sel">
+                                    @for (int h = 0; h < 24; h++)
+                                    {
+                                        var v = $"{h:D2}:00";
+                                        <option value="@v" @(Model.ArrivalFrom == v ? "selected" : "")>@v</option>
+                                    }
+                                </select>
+                                <span class="apw-time-lbl">До</span>
+                                <select name="ArrivalTo" class="apw-time-sel">
+                                    @for (int h = 0; h < 24; h++)
+                                    {
+                                        var v = $"{h:D2}:00";
+                                        <option value="@v" @(Model.ArrivalTo == v ? "selected" : "")>@v</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="apw-time-block">
+                            <p class="apw-time-block-title">Виїзд</p>
+                            <div class="apw-time-row">
+                                <span class="apw-time-lbl">Від</span>
+                                <select name="DepartureFrom" class="apw-time-sel">
+                                    @for (int h = 0; h < 24; h++)
+                                    {
+                                        var v = $"{h:D2}:00";
+                                        <option value="@v" @(Model.DepartureFrom == v ? "selected" : "")>@v</option>
+                                    }
+                                </select>
+                                <span class="apw-time-lbl">До</span>
+                                <select name="DepartureTo" class="apw-time-sel">
+                                    @for (int h = 0; h < 24; h++)
+                                    {
+                                        var v = $"{h:D2}:00";
+                                        <option value="@v" @(Model.DepartureTo == v ? "selected" : "")>@v</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="apw-right"></div>
+            </div>
+
+            <!-- ═══ STEP 7: Photos  [Stepper 3/3] ═══ -->
+            <div class="apw-step apw-step-layout" id="step7" hidden>
+                <div class="apw-left">
+                    <div class="apw-stepper">
+                        <div class="apw-step-item">
+                            <span class="apw-step-num-label">1</span>
+                            <span class="apw-step-label-text">Загальна інформація</span>
+                            <div class="apw-step-dots"><div class="apw-dot"></div><div class="apw-dot"></div></div>
+                        </div>
+                        <div class="apw-step-item">
+                            <span class="apw-step-num-label">2</span>
+                            <span class="apw-step-label-text">Деталі помешкання</span>
+                            <div class="apw-step-dots"><div class="apw-dot"></div><div class="apw-dot"></div></div>
+                        </div>
+                        <div class="apw-step-item active">
+                            <span class="apw-step-num-label">3</span>
+                            <span class="apw-step-label-text">Фотографії</span>
+                            <div class="apw-step-dots"><div class="apw-dot active"></div></div>
+                        </div>
+                    </div>
+                    <h2 class="apw-step-title">Як виглядає ваше помешкання?</h2>
+                    <div class="apw-card">
+                        <p class="apw-card-note">
+                            Завантажте принаймні 5 фото вашого помешкання. Чим більше фотографій ви завантажите,
+                            тим більше шансів отримати більше бронювань. Ви завжди зможете додати більше фото згодом.
+                        </p>
+
+                        <!-- Main photo -->
+                        <div>
+                            <p class="apw-card-title">Основна фотографія</p>
+                            <div class="apw-photo-zone" id="mainZone">
+                                <input type="file" name="Photos" id="mainInput"
+                                       accept="image/jpeg,image/png,image/webp"
+                                       class="apw-photo-zone-input"
+                                       onchange="onMainChange(this)" />
+                                <div id="mainEmpty">
+                                    <p class="apw-photo-zone-text">Треба перетягнути фотографії сюди або</p>
+                                    <button type="button" class="apw-photo-upload-btn"
+                                            onclick="document.getElementById('mainInput').click();event.stopPropagation()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                            <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                                        </svg>
+                                        Завантажити фотографії
+                                    </button>
+                                    <p class="apw-photo-zone-sub">Допустимі формати: jpg/png; розмір не більше 4 МБ</p>
+                                </div>
+                                <div id="mainPreview" class="apw-photo-preview" style="display:none"></div>
+                            </div>
+                        </div>
+
+                        <!-- Extra photos -->
+                        <div>
+                            <p class="apw-card-title">Додаткові фотографії</p>
+                            <div class="apw-photo-zone" id="extraZone">
+                                <input type="file" name="Photos" id="extraInput"
+                                       accept="image/jpeg,image/png,image/webp"
+                                       multiple class="apw-photo-zone-input"
+                                       onchange="onExtraChange(this)" />
+                                <div id="extraEmpty">
+                                    <p class="apw-photo-zone-text">Треба перетягнути фотографії сюди або</p>
+                                    <button type="button" class="apw-photo-upload-btn"
+                                            onclick="document.getElementById('extraInput').click();event.stopPropagation()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                            <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                                        </svg>
+                                        Завантажити фотографії
+                                    </button>
+                                    <p class="apw-photo-zone-sub">Допустимі формати: jpg/png; розмір не більше 4 МБ</p>
+                                </div>
+                                <div id="extraPreview" class="apw-photo-preview" style="display:none"></div>
+                            </div>
+                        </div>
+
+                        @if (hasError)
+                        {
+                            <div class="apw-error-msg">@Model.SaveError</div>
+                        }
+                        @if (TempData["PropertyAdded"] != null)
+                        {
+                            <div class="apw-success-msg">Помешкання успішно додано та надіслано на модерацію!</div>
+                        }
+                    </div>
+                </div>
+                <div class="apw-right"></div>
+            </div>
+
+        </div><!-- /apw-content -->
+
+        <!-- Bottom navigation bar -->
+        <div class="apw-bottom-bar" id="apwBar" style="display:none">
+            <button type="button" class="apw-back-btn" id="apwBack" onclick="goBack()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+            </button>
+            <button type="button" class="apw-continue-btn" id="apwContinue" onclick="goNext()">Продовжити</button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+var TOTAL = 8; // steps 0..7
+var cur = 0;
+
+function showStep(n) {
+    for (var i = 0; i < TOTAL; i++) {
+        var el = document.getElementById('step' + i);
+        if (el) el.hidden = (i !== n);
+    }
+    cur = n;
+
+    var bar = document.getElementById('apwBar');
+    var btn = document.getElementById('apwContinue');
+    if (n === 0) {
+        bar.style.display = 'none';
+    } else {
+        bar.style.display = 'flex';
+        btn.textContent = (n === TOTAL - 1) ? 'Додати помешкання' : 'Продовжити';
+        btn.onclick = (n === TOTAL - 1) ? doSubmit : goNext;
+    }
+
+    window.scrollTo(0, 0);
+}
+
+function goNext() {
+    if (validate(cur)) showStep(cur + 1);
+}
+function goBack() {
+    if (cur > 0) showStep(cur - 1);
+}
+function doSubmit() {
+    if (validate(cur)) document.getElementById('apwForm').submit();
+}
+
+function validate(n) {
+    if (n === 3) {
+        var name = document.getElementById('Name').value.trim();
+        if (!name) { alert('Введіть назву помешкання.'); return false; }
+        var desc = document.getElementById('Description').value.trim();
+        if (!desc) { alert('Введіть опис помешкання.'); return false; }
+        var cat = document.querySelector('select[name="CategoryId"]');
+        if (!cat || !cat.value || cat.value === '0') { alert('Оберіть категорію.'); return false; }
+    }
+    if (n === 4) {
+        var city = document.querySelector('select[name="CityId"]');
+        if (!city || !city.value || city.value === '0') { alert('Оберіть місто.'); return false; }
+        var street = document.querySelector('input[name="Street"]');
+        if (!street || !street.value.trim()) { alert('Введіть назву вулиці.'); return false; }
+        var house = document.querySelector('input[name="HouseNumber"]');
+        if (!house || !house.value.trim()) { alert('Введіть номер будинку.'); return false; }
+    }
+    if (n === 7) {
+        var main = document.getElementById('mainInput');
+        if (!main || main.files.length === 0) { alert('Додайте головне фото помешкання.'); return false; }
+    }
+    return true;
+}
+
+/* Step 0: pick type and auto-advance */
+function pickType(card) {
+    document.querySelectorAll('.apw-type-card').forEach(function(c) { c.classList.remove('selected'); });
+    card.classList.add('selected');
+    setTimeout(function() { showStep(1); }, 160);
+}
+
+/* Radio option toggle */
+function pickOption(activeId, otherId) {
+    document.getElementById(activeId).classList.add('selected');
+    document.getElementById(otherId).classList.remove('selected');
+}
+
+/* Checkbox toggle */
+function toggleCheck(el) { el.classList.toggle('selected'); }
+
+/* Character counter */
+function syncCount(el, spanId, max) {
+    document.getElementById(spanId).textContent = el.value.length;
+}
+
+/* ── Main photo ── */
+function onMainChange(input) {
+    if (!input.files.length) return;
+    var preview = document.getElementById('mainPreview');
+    var empty   = document.getElementById('mainEmpty');
+    preview.innerHTML = '';
+    preview.style.display = 'flex';
+    empty.style.display   = 'none';
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var wrap  = document.createElement('div');
+        wrap.className = 'apw-photo-thumb apw-photo-thumb--main';
+        var badge = document.createElement('span');
+        badge.className   = 'apw-photo-main-badge';
+        badge.textContent = 'Головне';
+        var img = document.createElement('img');
+        img.src = e.target.result;
+        wrap.appendChild(badge);
+        wrap.appendChild(img);
+        preview.appendChild(wrap);
+    };
+    reader.readAsDataURL(input.files[0]);
+}
+
+/* ── Extra photos ── */
+function onExtraChange(input) {
+    if (!input.files.length) return;
+    var preview = document.getElementById('extraPreview');
+    var empty   = document.getElementById('extraEmpty');
+    preview.innerHTML = '';
+    preview.style.display = 'flex';
+    empty.style.display   = 'none';
+
+    Array.from(input.files).slice(0, 9).forEach(function(file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var wrap = document.createElement('div');
+            wrap.className = 'apw-photo-thumb';
+            var img = document.createElement('img');
+            img.src = e.target.result;
+            wrap.appendChild(img);
+            preview.appendChild(wrap);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+/* ── Drag & drop ── */
+['mainZone','extraZone'].forEach(function(zid) {
+    var zone = document.getElementById(zid);
+    if (!zone) return;
+    zone.addEventListener('dragover',  function(e) { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', function()  { zone.classList.remove('drag-over'); });
+    zone.addEventListener('drop',      function(e) {
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        var inp = zone.querySelector('input[type="file"]');
+        var dt  = new DataTransfer();
+        Array.from(e.dataTransfer.files).forEach(function(f) { dt.items.add(f); });
+        inp.files = dt.files;
+        inp.dispatchEvent(new Event('change'));
+    });
+});
+
+/* ── Amenity checkboxes ── */
+document.querySelectorAll('.apw-amenity-row').forEach(function(row) {
+    var cb = row.querySelector('input[type="checkbox"]');
+    if (cb && cb.checked) row.classList.add('checked');
+    row.addEventListener('click', function() {
+        cb.checked = !cb.checked;
+        row.classList.toggle('checked', cb.checked);
+    });
+});
+
+/* ── Init ── */
+showStep(@(hasError ? 7 : 0));
+</script>
+</body>
+</html>

@@ -21,15 +21,18 @@ public class UpdateUserInfoCommandHandler(
 		user.FirstName = request.FirstName;
 		user.LastName = request.LastName;
 
-		var oldPhoto = user.Photo;
-		user.Photo = await imageService.SaveImageAsync(request.Photo);
+		string? oldPhoto = null;
+		if (request.Photo != null) {
+			oldPhoto = user.Photo;
+			user.Photo = await imageService.SaveImageAsync(request.Photo);
+		}
 
 		var identityResult = await userManager.UpdateAsync(user);
 		if (identityResult.Succeeded) {
-			imageService.DeleteImageIfExists(oldPhoto);
+			if (oldPhoto != null) imageService.DeleteImageIfExists(oldPhoto);
 		}
 		else {
-			imageService.DeleteImageIfExists(user.Photo);
+			if (request.Photo != null) imageService.DeleteImageIfExists(user.Photo);
 			throw new IdentityException(identityResult);
 		}
 

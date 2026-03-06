@@ -49,7 +49,7 @@
                             <p class="rdsh-empty-title">У вас ще немає доданих об'єктів</p>
                             <p class="rdsh-empty-sub">Додайте ваш перший об'єкт для здачі в оренду</p>
                         </div>
-                        <a href="@Url.Action("RealtorRegisterStep1","Account")" class="rdsh-add-btn">Додати</a>
+                        <a href="@Url.Action("AddProperty","Account")" class="rdsh-add-btn">Додати</a>
                     </div>
                     <div class="rdsh-empty-card">
                         <div class="rdsh-illus">
@@ -76,7 +76,7 @@
                     <h1 class="rdsh-title">Мої оголошення</h1>
                     <p class="rdsh-subtitle">Керуйте своїми помешканнями та бронюваннями</p>
                 </div>
-                <a href="@Url.Action("RealtorRegisterStep1","Account")" class="rdsh-add-property-btn">Додати помешкання</a>
+                <a href="@Url.Action("AddProperty","Account")" class="rdsh-add-property-btn">Додати помешкання</a>
             </div>
 
             <!-- Sort filter -->
@@ -123,7 +123,7 @@
                     };
                     <div class="rmads-card">
                         <div class="rmads-img">
-                            <img src="https://placehold.co/350x222/D9D9D9/999999?text=Фото" alt="@p.Name" />
+                            <img src="/images/property-@((p.Id % 5) + 1).jpg" alt="@p.Name" onerror="this.onerror=null;this.src='/images/property-1.jpg'" />
                         </div>
                         <div class="rmads-info">
                             <div class="rmads-info-top">

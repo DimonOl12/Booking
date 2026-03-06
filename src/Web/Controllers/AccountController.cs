@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Web.Models;
 using Web.Services;
 
@@ -35,16 +37,28 @@ namespace Web.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
 
-            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
+            if (string.IsNullOrWhiteSpace(model.Email))
             {
-                ViewBag.Error = "Будь ласка, заповніть всі поля.";
+                ViewBag.Error = "Введіть електронну адресу.";
                 return View(model);
             }
 
-            var (token, error) = await _api.SignInAsync(model.Email, model.Password);
+            if (!IsValidEmail(model.Email))
+            {
+                ViewBag.Error = "Невірний формат email. Перевірте і спробуйте знову.";
+                return View(model);
+            }
+
+            if (string.IsNullOrWhiteSpace(model.Password))
+            {
+                ViewBag.Error = "Введіть пароль.";
+                return View(model);
+            }
+
+            var (token, error) = await _api.SignInAsync(model.Email.Trim(), model.Password);
             if (token == null)
             {
-                ViewBag.Error = error ?? "Схоже, введені дані з помилкою. Перевірте і спробуйте знову.";
+                ViewBag.Error = error ?? "Невірний email або пароль.";
                 return View(model);
             }
 
@@ -69,30 +83,73 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
+            // Email
+            if (string.IsNullOrWhiteSpace(model.Email))
             {
-                ViewBag.Error = "Будь ласка, заповніть всі поля.";
+                ViewBag.Error = "Введіть електронну адресу.";
+                return View(model);
+            }
+            if (!IsValidEmail(model.Email))
+            {
+                ViewBag.Error = "Невірний формат email. Наприклад: name@example.com";
+                return View(model);
+            }
+            if (model.Email.Length > 100)
+            {
+                ViewBag.Error = "Email занадто довгий (максимум 100 символів).";
                 return View(model);
             }
 
+            // First/Last name
+            if (string.IsNullOrWhiteSpace(model.FirstName))
+            {
+                ViewBag.Error = "Введіть ім'я.";
+                return View(model);
+            }
+            if (!IsValidName(model.FirstName))
+            {
+                ViewBag.Error = "Ім'я може містити лише літери, пробіли та дефіси.";
+                return View(model);
+            }
+            if (!string.IsNullOrWhiteSpace(model.LastName) && !IsValidName(model.LastName))
+            {
+                ViewBag.Error = "Прізвище може містити лише літери, пробіли та дефіси.";
+                return View(model);
+            }
+
+            // Password
+            if (string.IsNullOrWhiteSpace(model.Password))
+            {
+                ViewBag.Error = "Введіть пароль.";
+                return View(model);
+            }
+            if (model.Password.Length < 8)
+            {
+                ViewBag.Error = "Пароль має містити мінімум 8 символів.";
+                return View(model);
+            }
+            if (model.Password.Length > 128)
+            {
+                ViewBag.Error = "Пароль занадто довгий (максимум 128 символів).";
+                return View(model);
+            }
+            if (string.IsNullOrWhiteSpace(model.ConfirmPassword))
+            {
+                ViewBag.Error = "Підтвердіть пароль.";
+                return View(model);
+            }
             if (model.Password != model.ConfirmPassword)
             {
                 ViewBag.Error = "Паролі не співпадають.";
                 return View(model);
             }
 
-            if (model.Password.Length < 8)
-            {
-                ViewBag.Error = "Пароль має містити не менше 8 символів.";
-                return View(model);
-            }
-
-            var firstName = string.IsNullOrWhiteSpace(model.FirstName) ? "Користувач" : model.FirstName.Trim();
+            var firstName = model.FirstName.Trim();
             var lastName  = string.IsNullOrWhiteSpace(model.LastName) ? "" : model.LastName.Trim();
-            var userName  = model.Email.Split('@')[0].Replace(".", "_").Replace("+", "_");
+            var userName  = GenerateUniqueUserName(model.Email);
 
             var (token, error) = await _api.RegisterAsync(
-                firstName, lastName, model.Email, userName, model.Password, "Customer");
+                firstName, lastName, model.Email.Trim(), userName, model.Password, "Customer");
 
             if (token == null)
             {
@@ -119,8 +176,16 @@ namespace Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            var info = await _api.GetCustomerInfoAsync();
-            var vm = BuildProfileVmFromApi(info);
+            var infoTask  = _api.GetCustomerInfoAsync();
+            var gendersTask = _api.GetGendersAsync();
+            var citizenTask = _api.GetCitizenshipsAsync();
+            var citiesTask  = _api.GetCitiesAsync();
+            await Task.WhenAll(infoTask, gendersTask, citizenTask, citiesTask);
+
+            var vm = BuildProfileVmFromApi(infoTask.Result);
+            vm.GenderOptions      = BuildSelectList(gendersTask.Result, vm.GenderId);
+            vm.CitizenshipOptions = BuildSelectList(citizenTask.Result, vm.CitizenshipId);
+            vm.CityOptions        = BuildCitySelectList(citiesTask.Result, vm.CityId);
             return View(vm);
         }
 
@@ -129,32 +194,67 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Profile(UserProfileViewModel model)
         {
-            // Profile updates would go to PATCH /api/Accounts/UpdateCustomersInformation
-            // For now we save what we can and show success
-            var vm = new UserProfileViewModel
+            // Reload dropdown options for re-display
+            var genders      = await _api.GetGendersAsync();
+            var citizenships = await _api.GetCitizenshipsAsync();
+            var cities       = await _api.GetCitiesAsync();
+            model.GenderOptions      = BuildSelectList(genders, model.GenderId);
+            model.CitizenshipOptions = BuildSelectList(citizenships, model.CitizenshipId);
+            model.CityOptions        = BuildCitySelectList(cities, model.CityId);
+            model.Email              = User.FindFirst("email")?.Value ?? model.Email;
+
+            var errors = new List<string>();
+
+            // 1. Update FirstName / LastName via UpdateUserInfo
+            var firstName = model.FirstName?.Trim() ?? "";
+            var lastName  = model.LastName?.Trim() ?? "";
+            if (string.IsNullOrWhiteSpace(firstName))
             {
-                Email               = User.FindFirst("email")?.Value ?? model.Email,
-                FirstName           = model.FirstName,
-                LastName            = model.LastName,
-                DisplayName         = model.DisplayName,
-                PhoneNumber         = model.PhoneNumber,
-                Citizenship         = model.Citizenship,
-                Gender              = model.Gender,
-                Country             = model.Country,
-                City                = model.City,
-                PostalCode          = model.PostalCode,
-                Address             = model.Address,
-                BirthDay            = model.BirthDay,
-                BirthMonth          = model.BirthMonth,
-                BirthYear           = model.BirthYear,
-                PassportFirstName   = model.PassportFirstName,
-                PassportLastName    = model.PassportLastName,
-                PassportNumber      = model.PassportNumber,
-                PassportExpiry      = model.PassportExpiry,
-                PassportNationality = model.PassportNationality,
-                SaveSuccess         = "Профіль успішно збережено!"
-            };
-            return View(vm);
+                model.SaveError = "Ім'я не може бути порожнім.";
+                return View(model);
+            }
+
+            var (newToken, nameError) = await _api.UpdateUserInfoAsync(
+                firstName, string.IsNullOrWhiteSpace(lastName) ? "-" : lastName, model.Email);
+
+            if (newToken != null)
+            {
+                // Re-sign in with updated token so claims reflect new name
+                await SignInFromApiTokenAsync(newToken);
+                model.Email = User.FindFirst("email")?.Value ?? model.Email;
+            }
+            else if (nameError != null)
+            {
+                errors.Add(nameError);
+            }
+
+            // 2. Update customer-specific info (phone, dob, address, city, gender, citizenship)
+            int? bd = int.TryParse(model.BirthDay,   out var d) ? d : null;
+            int? bm = int.TryParse(model.BirthMonth, out var m) ? m : null;
+            int? by = int.TryParse(model.BirthYear,  out var y) ? y : null;
+
+            if (model.CitizenshipId > 0 || model.GenderId > 0 || model.CityId > 0
+                || !string.IsNullOrWhiteSpace(model.PhoneNumber)
+                || !string.IsNullOrWhiteSpace(model.Address))
+            {
+                var (ok, infoError) = await _api.UpdateCustomerInfoAsync(
+                    model.PhoneNumber ?? "",
+                    model.Address ?? "",
+                    model.CitizenshipId,
+                    model.GenderId,
+                    model.CityId,
+                    bd, bm, by);
+
+                if (!ok && infoError != null)
+                    errors.Add(infoError);
+            }
+
+            if (errors.Count > 0)
+                model.SaveError = string.Join(" ", errors);
+            else
+                model.SaveSuccess = "Профіль успішно збережено!";
+
+            return View(model);
         }
 
         // ── ForgotPassword Step 1 ─────────────────────────────────────────────────
@@ -449,13 +549,23 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RealtorLogin(LoginViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
+            if (string.IsNullOrWhiteSpace(model.Email))
             {
-                ViewBag.Error = "Будь ласка, заповніть всі поля.";
+                ViewBag.Error = "Введіть електронну адресу.";
+                return View(model);
+            }
+            if (!IsValidEmail(model.Email))
+            {
+                ViewBag.Error = "Невірний формат email.";
+                return View(model);
+            }
+            if (string.IsNullOrWhiteSpace(model.Password))
+            {
+                ViewBag.Error = "Введіть пароль.";
                 return View(model);
             }
 
-            var (token, error) = await _api.SignInAsync(model.Email, model.Password);
+            var (token, error) = await _api.SignInAsync(model.Email.Trim(), model.Password);
             if (token == null)
             {
                 ViewBag.Error = error ?? "Схоже, введені дані з помилкою. Перевірте і спробуйте знову.";
@@ -479,6 +589,125 @@ namespace Web.Controllers
             return RedirectToAction("RealtorDashboard");
         }
 
+        // ── Add Property ──────────────────────────────────────────────────────────
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> AddProperty()
+        {
+            if (User.FindFirst("IsRealtor")?.Value != "true")
+                return RedirectToAction("RealtorDashboard");
+
+            var catsTask  = _api.GetHotelCategoriesAsync();
+            var amensTask = _api.GetHotelAmenitiesAsync();
+            var citiesTask = _api.GetCitiesAsync();
+            await Task.WhenAll(catsTask, amensTask, citiesTask);
+
+            var vm = new AddPropertyViewModel
+            {
+                CategoryOptions = BuildSelectList(catsTask.Result, 0),
+                AmenityOptions  = amensTask.Result
+                    .Select(a => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem(a.Name, a.Id.ToString()))
+                    .ToList(),
+                CityOptions = BuildCitySelectList(citiesTask.Result, 0),
+            };
+            return View(vm);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddProperty(AddPropertyViewModel model)
+        {
+            if (User.FindFirst("IsRealtor")?.Value != "true")
+                return RedirectToAction("RealtorDashboard");
+
+            async Task<AddPropertyViewModel> Reload()
+            {
+                var cT = _api.GetHotelCategoriesAsync();
+                var aT = _api.GetHotelAmenitiesAsync();
+                var ciT = _api.GetCitiesAsync();
+                await Task.WhenAll(cT, aT, ciT);
+                model.CategoryOptions = BuildSelectList(cT.Result, model.CategoryId);
+                model.AmenityOptions  = aT.Result
+                    .Select(a => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem(a.Name, a.Id.ToString()))
+                    .ToList();
+                model.CityOptions = BuildCitySelectList(ciT.Result, model.CityId);
+                return model;
+            }
+
+            if (string.IsNullOrWhiteSpace(model.Name))
+            {
+                model.SaveError = "Введіть назву помешкання.";
+                return View(await Reload());
+            }
+            if (string.IsNullOrWhiteSpace(model.Description))
+            {
+                model.SaveError = "Введіть опис помешкання.";
+                return View(await Reload());
+            }
+            if (model.CategoryId <= 0)
+            {
+                model.SaveError = "Оберіть категорію.";
+                return View(await Reload());
+            }
+            if (model.CityId <= 0)
+            {
+                model.SaveError = "Оберіть місто.";
+                return View(await Reload());
+            }
+            if (string.IsNullOrWhiteSpace(model.Street))
+            {
+                model.SaveError = "Введіть назву вулиці.";
+                return View(await Reload());
+            }
+            if (string.IsNullOrWhiteSpace(model.HouseNumber))
+            {
+                model.SaveError = "Введіть номер будинку.";
+                return View(await Reload());
+            }
+            if (model.Photos == null || model.Photos.Count == 0)
+            {
+                model.SaveError = "Додайте хоча б одне фото.";
+                return View(await Reload());
+            }
+
+            var req = new Models.Api.CreateHotelRequest
+            {
+                Name             = model.Name.Trim(),
+                Description      = model.Description?.Trim() ?? "",
+                CategoryId       = model.CategoryId,
+                ArrivalFrom      = TimeToSeconds(model.ArrivalFrom),
+                ArrivalTo        = TimeToSeconds(model.ArrivalTo),
+                DepartureFrom    = TimeToSeconds(model.DepartureFrom),
+                DepartureTo      = TimeToSeconds(model.DepartureTo),
+                Street           = model.Street.Trim(),
+                HouseNumber      = model.HouseNumber.Trim(),
+                ApartmentNumber  = model.ApartmentNumber?.Trim(),
+                CityId           = model.CityId,
+                AmenityIds       = model.SelectedAmenityIds ?? [],
+                Photos           = model.Photos ?? [],
+            };
+
+            var (id, error) = await _api.CreateHotelAsync(req);
+            if (id == null)
+            {
+                model.SaveError = error ?? "Помилка створення помешкання.";
+                return View(await Reload());
+            }
+
+            TempData["PropertyAdded"] = "true";
+            return RedirectToAction("RealtorMyAds");
+        }
+
+        private static string TimeToSeconds(string hhmm)
+        {
+            // accepts "14:00" → "14:00:00" for TimeOnly parsing on backend
+            if (string.IsNullOrWhiteSpace(hhmm)) return "00:00:00";
+            return hhmm.Contains(':') && hhmm.Split(':').Length == 2
+                ? hhmm + ":00"
+                : hhmm;
+        }
+
         // ── Realtor Register Steps ─────────────────────────────────────────────────
         [HttpGet]
         public IActionResult RealtorRegisterStep1()
@@ -497,7 +726,17 @@ namespace Web.Controllers
                 ViewBag.Error = "Введіть електронну адресу.";
                 return View(model);
             }
-            TempData["RltEmail"] = model.Email;
+            if (!IsValidEmail(model.Email))
+            {
+                ViewBag.Error = "Невірний формат email. Наприклад: name@example.com";
+                return View(model);
+            }
+            if (model.Email.Length > 100)
+            {
+                ViewBag.Error = "Email занадто довгий (максимум 100 символів).";
+                return View(model);
+            }
+            TempData["RltEmail"] = model.Email.Trim();
             return RedirectToAction("RealtorRegisterStep2");
         }
 
@@ -513,11 +752,34 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult RealtorRegisterStep2(RealtorRegisterStep2ViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.FirstName) ||
-                string.IsNullOrWhiteSpace(model.LastName) ||
-                string.IsNullOrWhiteSpace(model.PhoneNumber))
+            if (string.IsNullOrWhiteSpace(model.FirstName))
             {
-                ViewBag.Error = "Будь ласка, заповніть всі поля.";
+                ViewBag.Error = "Введіть ім'я.";
+                return View(model);
+            }
+            if (!IsValidName(model.FirstName))
+            {
+                ViewBag.Error = "Ім'я може містити лише літери, пробіли та дефіси.";
+                return View(model);
+            }
+            if (string.IsNullOrWhiteSpace(model.LastName))
+            {
+                ViewBag.Error = "Введіть прізвище.";
+                return View(model);
+            }
+            if (!IsValidName(model.LastName))
+            {
+                ViewBag.Error = "Прізвище може містити лише літери, пробіли та дефіси.";
+                return View(model);
+            }
+            if (string.IsNullOrWhiteSpace(model.PhoneNumber))
+            {
+                ViewBag.Error = "Введіть номер телефону.";
+                return View(model);
+            }
+            if (!IsValidPhone(model.PhoneNumber))
+            {
+                ViewBag.Error = "Невірний формат номера телефону. Наприклад: +380501234567";
                 return View(model);
             }
             TempData["RltEmail"]     = model.Email;
@@ -545,25 +807,33 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RealtorRegisterStep3(RealtorRegisterStep3ViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.ConfirmPassword))
+            if (string.IsNullOrWhiteSpace(model.Password))
             {
-                ViewBag.Error = "Будь ласка, заповніть всі поля.";
+                ViewBag.Error = "Введіть пароль.";
                 return View(model);
             }
-
+            if (model.Password.Length < 8)
+            {
+                ViewBag.Error = "Пароль має містити мінімум 8 символів.";
+                return View(model);
+            }
+            if (model.Password.Length > 128)
+            {
+                ViewBag.Error = "Пароль занадто довгий (максимум 128 символів).";
+                return View(model);
+            }
+            if (string.IsNullOrWhiteSpace(model.ConfirmPassword))
+            {
+                ViewBag.Error = "Підтвердіть пароль.";
+                return View(model);
+            }
             if (model.Password != model.ConfirmPassword)
             {
                 ViewBag.Error = "Паролі не співпадають.";
                 return View(model);
             }
 
-            if (model.Password.Length < 8)
-            {
-                ViewBag.Error = "Пароль має містити не менше 8 символів.";
-                return View(model);
-            }
-
-            var userName = model.Email.Split('@')[0].Replace(".", "_").Replace("+", "_");
+            var userName = GenerateUniqueUserName(model.Email);
 
             var (token, error) = await _api.RegisterAsync(
                 model.FirstName, model.LastName, model.Email, userName, model.Password, "Realtor");
@@ -685,14 +955,54 @@ namespace Web.Controllers
             return result;
         }
 
+        // ── Validation Helpers ────────────────────────────────────────────────────
+
+        private static string GenerateUniqueUserName(string email)
+        {
+            var local = email.Split('@')[0]
+                .Replace(".", "_")
+                .Replace("+", "_")
+                .Replace("-", "_");
+            // Add 4-digit random suffix to avoid clashes with existing or seeded users
+            var suffix = Random.Shared.Next(1000, 9999).ToString();
+            return $"{local}_{suffix}";
+        }
+
+        private static bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return false;
+            var trimmed = email.Trim();
+            // Basic email regex: must have one @ with non-empty local and domain parts containing a dot
+            return Regex.IsMatch(trimmed,
+                @"^[^@\s]+@[^@\s]+\.[^@\s]{2,}$",
+                RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+        }
+
+        private static bool IsValidName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return false;
+            // Allow unicode letters, spaces, hyphens, apostrophes
+            return Regex.IsMatch(name.Trim(),
+                @"^[\p{L}\s'\-]+$",
+                RegexOptions.None, TimeSpan.FromSeconds(1));
+        }
+
+        private static bool IsValidPhone(string phone)
+        {
+            if (string.IsNullOrWhiteSpace(phone)) return false;
+            // Allow +, digits, spaces, dashes, parentheses; min 7 digits
+            var digits = Regex.Replace(phone, @"\D", "");
+            return digits.Length >= 7 && digits.Length <= 15 &&
+                   Regex.IsMatch(phone.Trim(), @"^[+\d\s\-\(\)]+$");
+        }
+
         private UserProfileViewModel BuildProfileVmFromApi(Models.Api.CustomerInfoApiDto? info)
         {
             var vm = new UserProfileViewModel
             {
-                Email       = User.FindFirst("email")?.Value ?? User.FindFirst(ClaimTypes.Email)?.Value ?? "",
-                FirstName   = User.FindFirst("FirstName")?.Value ?? "",
-                LastName    = User.FindFirst("LastName")?.Value ?? "",
-                DisplayName = User.FindFirst(ClaimTypes.Name)?.Value ?? "",
+                Email     = User.FindFirst("email")?.Value ?? User.FindFirst(ClaimTypes.Email)?.Value ?? "",
+                FirstName = User.FindFirst("FirstName")?.Value ?? "",
+                LastName  = User.FindFirst("LastName")?.Value ?? "",
             };
 
             if (info != null)
@@ -701,26 +1011,50 @@ namespace Web.Controllers
                 vm.PhoneNumber = info.PhoneNumber ?? "";
                 vm.Address     = info.Address ?? "";
 
-                if (info.FullName.Contains(' '))
+                if (!string.IsNullOrWhiteSpace(info.FullName))
                 {
                     var parts    = info.FullName.Split(' ', 2);
                     vm.FirstName = parts[0];
-                    vm.LastName  = parts[1];
-                }
-                else
-                {
-                    vm.FirstName = info.FullName;
+                    vm.LastName  = parts.Length > 1 ? parts[1] : "";
                 }
 
-                if (info.DateOfBirth.HasValue)
+                if (info.DateOfBirth.HasValue && info.DateOfBirth.Value.Year > 1)
                 {
                     vm.BirthDay   = info.DateOfBirth.Value.Day.ToString();
                     vm.BirthMonth = info.DateOfBirth.Value.Month.ToString();
                     vm.BirthYear  = info.DateOfBirth.Value.Year.ToString();
                 }
+
+                vm.GenderId      = info.Gender?.Id ?? 0;
+                vm.CitizenshipId = info.Citizenship?.Id ?? 0;
+                vm.CityId        = info.City?.Id ?? 0;
             }
 
             return vm;
+        }
+
+        private static List<SelectListItem> BuildSelectList(
+            List<Models.Api.RefItemDto> items, long selectedId)
+        {
+            var list = new List<SelectListItem>
+            {
+                new SelectListItem("— не вибрано —", "0", selectedId == 0)
+            };
+            list.AddRange(items.Select(i =>
+                new SelectListItem(i.Name, i.Id.ToString(), i.Id == selectedId)));
+            return list;
+        }
+
+        private static List<SelectListItem> BuildCitySelectList(
+            List<Models.Api.RefCityDto> items, long selectedId)
+        {
+            var list = new List<SelectListItem>
+            {
+                new SelectListItem("— не вибрано —", "0", selectedId == 0)
+            };
+            list.AddRange(items.Select(i =>
+                new SelectListItem($"{i.Name} ({i.Country.Name})", i.Id.ToString(), i.Id == selectedId)));
+            return list;
         }
     }
 }

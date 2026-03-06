@@ -9,47 +9,6 @@
     var initials = fInit + lInit;
     if (string.IsNullOrEmpty(initials))
         initials = Model.Email.Length > 0 ? Model.Email[0].ToString().ToUpper() : "?";
-
-    var citizenshipOptions = new List<SelectListItem>
-    {
-        new("Виберіть країну/регіон", ""),
-        new("Україна", "Україна"),
-        new("Польща", "Польща"),
-        new("Німеччина", "Німеччина"),
-        new("США", "США"),
-        new("Велика Британія", "Велика Британія"),
-        new("Франція", "Франція"),
-        new("Інше", "Інше"),
-    };
-
-    var countryOptions = new List<SelectListItem>
-    {
-        new("Оберіть країну/регіон", ""),
-        new("Україна", "Україна"),
-        new("Польща", "Польща"),
-        new("Німеччина", "Німеччина"),
-        new("США", "США"),
-        new("Велика Британія", "Велика Британія"),
-        new("Франція", "Франція"),
-        new("Інше", "Інше"),
-    };
-
-    var genderOptions = new List<SelectListItem>
-    {
-        new("Виберіть стать", ""),
-        new("Чоловіча", "Чоловіча"),
-        new("Жіноча", "Жіноча"),
-        new("Інше", "Інше"),
-        new("Не вказувати", "Не вказувати"),
-    };
-
-    var nationalityOptions = new List<SelectListItem>
-    {
-        new("Виберіть країну", ""),
-        new("Україна", "Україна"),
-        new("Польща", "Польща"),
-        new("Інше", "Інше"),
-    };
 }
 <!DOCTYPE html>
 <html lang="uk">
@@ -152,8 +111,12 @@
     {
         <div class="pr-success-msg visible" id="successMsg">@Model.SaveSuccess</div>
     }
+    @if (!string.IsNullOrEmpty(Model.SaveError))
+    {
+        <div class="pr-error-msg visible" id="errorMsg">@Model.SaveError</div>
+    }
 
-    <form method="post" asp-action="Profile" asp-controller="Account">
+    <form method="post" asp-action="Profile" asp-controller="Account" id="profileForm">
         @Html.AntiForgeryToken()
 
         <div class="pr-main-row">
@@ -163,25 +126,31 @@
 
                 <!-- Card 1: Особиста інформація -->
                 <div class="pr-card">
-                    <h2 class="pr-card-title">Особиста інформація</h2>
+                    <div class="pr-card-head">
+                        <h2 class="pr-card-title">Особиста інформація</h2>
+                        <button type="button" class="pr-edit-btn" id="editBtn" onclick="startEdit()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            Редагувати
+                        </button>
+                    </div>
 
                     <div class="pr-form-row">
                         <div class="pr-field">
                             <label class="pr-field-label" for="FirstName">Ім'я</label>
-                            <input asp-for="FirstName" class="pr-input" placeholder="Введіть своє ім'я" />
+                            <input asp-for="FirstName" class="pr-input pr-field-input" placeholder="Введіть своє ім'я" readonly />
                         </div>
                         <div class="pr-field">
                             <label class="pr-field-label" for="LastName">Прізвище</label>
-                            <input asp-for="LastName" class="pr-input" placeholder="Введіть своє прізвище" />
+                            <input asp-for="LastName" class="pr-input pr-field-input" placeholder="Введіть своє прізвище" readonly />
                         </div>
                     </div>
 
                     <div class="pr-field">
                         <label class="pr-field-label" for="DisplayName">Відображуване ім'я</label>
-                        <input asp-for="DisplayName" class="pr-input" placeholder="Оберіть відображуване ім'я" />
+                        <input asp-for="DisplayName" class="pr-input pr-field-input" placeholder="Оберіть відображуване ім'я" readonly />
                     </div>
 
-                    <!-- Email (read-only) -->
+                    <!-- Email (always read-only) -->
                     <div class="pr-field">
                         <label class="pr-field-label">Email</label>
                         <div class="pr-email-wrap">
@@ -203,7 +172,7 @@
                                 <span>+380</span>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                             </div>
-                            <input asp-for="PhoneNumber" class="pr-phone-input" placeholder="Введіть свій номер телефону" />
+                            <input asp-for="PhoneNumber" class="pr-phone-input pr-field-input" placeholder="Введіть свій номер телефону" readonly />
                         </div>
                     </div>
 
@@ -211,21 +180,21 @@
                     <div class="pr-field">
                         <label class="pr-field-label">Дата народження</label>
                         <div class="pr-bday-wrap">
-                            <input asp-for="BirthDay" class="pr-bday-seg" placeholder="ДД" maxlength="2" />
-                            <input asp-for="BirthMonth" class="pr-bday-seg" placeholder="ММ" maxlength="2" />
-                            <input asp-for="BirthYear" class="pr-bday-seg" placeholder="РРРР" maxlength="4" />
+                            <input asp-for="BirthDay" class="pr-bday-seg pr-field-input" placeholder="ДД" maxlength="2" readonly />
+                            <input asp-for="BirthMonth" class="pr-bday-seg pr-field-input" placeholder="ММ" maxlength="2" readonly />
+                            <input asp-for="BirthYear" class="pr-bday-seg pr-field-input" placeholder="РРРР" maxlength="4" readonly />
                         </div>
                     </div>
 
                     <!-- Citizenship + Gender -->
                     <div class="pr-form-row">
                         <div class="pr-field">
-                            <label class="pr-field-label" for="Citizenship">Громадянство</label>
-                            <select asp-for="Citizenship" asp-items="citizenshipOptions" class="pr-select"></select>
+                            <label class="pr-field-label" for="CitizenshipId">Громадянство</label>
+                            <select asp-for="CitizenshipId" asp-items="Model.CitizenshipOptions" class="pr-select pr-field-select" disabled></select>
                         </div>
                         <div class="pr-field">
-                            <label class="pr-field-label" for="Gender">Стать</label>
-                            <select asp-for="Gender" asp-items="genderOptions" class="pr-select"></select>
+                            <label class="pr-field-label" for="GenderId">Стать</label>
+                            <select asp-for="GenderId" asp-items="Model.GenderOptions" class="pr-select pr-field-select" disabled></select>
                         </div>
                     </div>
                 </div>
@@ -236,73 +205,21 @@
 
                     <div class="pr-form-row">
                         <div class="pr-field">
-                            <label class="pr-field-label" for="Country">Країна/регіон</label>
-                            <select asp-for="Country" asp-items="countryOptions" class="pr-select"></select>
-                        </div>
-                        <div class="pr-field">
-                            <label class="pr-field-label" for="City">Місто</label>
-                            <input asp-for="City" class="pr-input" placeholder="Назва вашого міста" />
-                        </div>
-                        <div class="pr-field" style="max-width:180px;">
-                            <label class="pr-field-label" for="PostalCode">Індекс</label>
-                            <input asp-for="PostalCode" class="pr-input" placeholder="_________" />
+                            <label class="pr-field-label" for="CityId">Місто</label>
+                            <select asp-for="CityId" asp-items="Model.CityOptions" class="pr-select pr-field-select" disabled></select>
                         </div>
                     </div>
 
                     <div class="pr-field">
-                        <label class="pr-field-label" for="Address">Адреса</label>
-                        <input asp-for="Address" class="pr-input" placeholder="Назва вашої вулиці та номер будинку/квартири" />
+                        <label class="pr-field-label" for="Address">Адреса (вулиця, будинок)</label>
+                        <input asp-for="Address" class="pr-input pr-field-input" placeholder="Назва вашої вулиці та номер будинку/квартири" readonly />
                     </div>
                 </div>
 
-                <!-- Card 3: Паспортні дані -->
-                <div class="pr-card">
-                    <h2 class="pr-card-title">Паспортні дані</h2>
-
-                    <div>
-                        <div class="pr-form-row">
-                            <div class="pr-field">
-                                <label class="pr-field-label" for="PassportFirstName">Ім'я</label>
-                                <input asp-for="PassportFirstName" class="pr-input" placeholder="Введіть ім'я" />
-                            </div>
-                            <div class="pr-field">
-                                <label class="pr-field-label" for="PassportLastName">Прізвище</label>
-                                <input asp-for="PassportLastName" class="pr-input" placeholder="Введіть прізвище" />
-                            </div>
-                        </div>
-                        <p class="pr-passport-hint" style="margin-top:8px;">
-                            Будь ласка, вкажіть ім'я точно так, як воно написане в паспорті або іншому офіційному проїзному документі.
-                        </p>
-                    </div>
-
-                    <div class="pr-form-row">
-                        <div class="pr-field">
-                            <label class="pr-field-label" for="PassportNationality">Громадянство</label>
-                            <select asp-for="PassportNationality" asp-items="nationalityOptions" class="pr-select"></select>
-                        </div>
-                        <div class="pr-field">
-                            <label class="pr-field-label" for="PassportNumber">Номер документа</label>
-                            <input asp-for="PassportNumber" class="pr-input" placeholder="EB123456" />
-                        </div>
-                        <div class="pr-field">
-                            <label class="pr-field-label" for="PassportExpiry">Термін дії</label>
-                            <input asp-for="PassportExpiry" class="pr-input" placeholder="ДД/ММ/РРРР" />
-                        </div>
-                    </div>
-
-                    <!-- Consent checkbox -->
-                    <div class="pr-consent-row">
-                        <label class="pr-consent-label">
-                            <input type="checkbox" class="pr-consent-check" />
-                            В цьому атрибуті Reservio зберігає мої паспортні дані відповідно до
-                            <a href="#" style="color:#0F90F3;">Положення про конфіденційність</a>.
-                        </label>
-                    </div>
-
-                    <!-- Save row -->
-                    <div class="pr-save-row">
-                        <button type="submit" class="pr-save-btn">Зберегти</button>
-                    </div>
+                <!-- Save row (hidden until edit mode) -->
+                <div class="pr-save-row" id="saveRow" style="margin-top:0; display:none;">
+                    <button type="button" class="pr-cancel-btn" onclick="cancelEdit()">Скасувати</button>
+                    <button type="submit" class="pr-save-btn">Зберегти зміни</button>
                 </div>
 
             </div>
@@ -356,6 +273,39 @@
             month.addEventListener('input', function () { if (this.value.length === 2) year.focus(); });
         }
     })();
+
+    // ── Edit / Save / Cancel ──────────────────────────────────────────────────
+    var _savedValues = {};
+
+    function startEdit() {
+        // Snapshot current values for cancel
+        document.querySelectorAll('.pr-field-input').forEach(function (el) {
+            _savedValues[el.id || el.name] = el.value;
+            el.removeAttribute('readonly');
+        });
+        document.querySelectorAll('.pr-field-select').forEach(function (el) {
+            _savedValues[el.id || el.name] = el.value;
+            el.disabled = false;
+        });
+        document.getElementById('editBtn').style.display = 'none';
+        document.getElementById('saveRow').style.display = 'flex';
+    }
+
+    function cancelEdit() {
+        // Restore values and go back to readonly
+        document.querySelectorAll('.pr-field-input').forEach(function (el) {
+            var key = el.id || el.name;
+            if (key in _savedValues) el.value = _savedValues[key];
+            el.setAttribute('readonly', '');
+        });
+        document.querySelectorAll('.pr-field-select').forEach(function (el) {
+            var key = el.id || el.name;
+            if (key in _savedValues) el.value = _savedValues[key];
+            el.disabled = true;
+        });
+        document.getElementById('editBtn').style.display = '';
+        document.getElementById('saveRow').style.display = 'none';
+    }
 </script>
 </body>
 </html>

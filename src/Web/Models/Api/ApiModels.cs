@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace Web.Models.Api;
 
 public class JwtResponse
@@ -163,4 +165,40 @@ public class CustomerInfoApiDto
     public string? PhoneNumber { get; set; }
     public DateOnly? DateOfBirth { get; set; }
     public string? Address { get; set; }
+    public RefItemDto? Citizenship { get; set; }
+    public RefItemDto? Gender { get; set; }
+    public RefItemDto? Country { get; set; }
+    public RefCityDto? City { get; set; }
+}
+
+// ─── Hotel creation request ────────────────────────────────────────────────
+public class CreateHotelRequest
+{
+    public string Name { get; set; } = "";
+    public string Description { get; set; } = "";
+    public long CategoryId { get; set; }
+    public string ArrivalFrom { get; set; } = "14:00:00";
+    public string ArrivalTo { get; set; } = "22:00:00";
+    public string DepartureFrom { get; set; } = "08:00:00";
+    public string DepartureTo { get; set; } = "12:00:00";
+    public string Street { get; set; } = "";
+    public string HouseNumber { get; set; } = "";
+    public string? ApartmentNumber { get; set; }
+    public long CityId { get; set; }
+    public List<long> AmenityIds { get; set; } = [];
+    public List<IFormFile> Photos { get; set; } = [];
+}
+
+// ─── Reference data DTOs ───────────────────────────────────────────────────
+public class RefItemDto
+{
+    public long Id { get; set; }
+    public string Name { get; set; } = "";
+}
+
+public class RefCityDto
+{
+    public long Id { get; set; }
+    public string Name { get; set; } = "";
+    public RefItemDto Country { get; set; } = new();
 }

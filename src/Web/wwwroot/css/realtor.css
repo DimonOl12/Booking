@@ -14,8 +14,8 @@
     --font-body: 'Rubik', sans-serif;
     --radius-card: 28px;
     --radius-button: 20px;
-    --container-max: 1520px;
-    --container-padding: 200px;
+    --container-max: 1200px;
+    --container-padding: 24px;
 }
 
 *, *::before, *::after {
@@ -47,8 +47,9 @@ img {
     position: relative;
     z-index: 50;
     display: flex;
-    width: 1520px;
-    padding: 8px;
+    width: 100%;
+    max-width: var(--container-max);
+    padding: 6px 24px;
     justify-content: space-between;
     align-items: center;
     border-radius: 0 0 28px 28px;
@@ -907,6 +908,57 @@ img {
     text-align: right;
 }
 
+/* ---- Calculator select styling ---- */
+.realtor-calc-select-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.realtor-calc-select-field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #F4F4F4;
+    border-radius: var(--radius-card);
+    border: 1px solid #D9D9D9;
+}
+
+.realtor-calc-select-field svg {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.realtor-calc-select {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.realtor-calc-select:disabled {
+    color: var(--color-muted);
+    cursor: not-allowed;
+}
+
+.realtor-calc-select option[value=""] {
+    color: var(--color-muted);
+}
+
+.realtor-calc-result-block--idle .realtor-calc-result-value {
+    color: var(--color-muted);
+    font-size: 20px;
+}
+
 /* ---- Testimonials Section ---- */
 .realtor-testimonials-header {
     display: flex;
@@ -1286,15 +1338,9 @@ img {
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 1600px) {
-    :root {
-        --container-padding: 80px;
-    }
-}
-
 @media (max-width: 1200px) {
     :root {
-        --container-padding: 40px;
+        --container-padding: 24px;
     }
 
     .realtor-features-grid,
@@ -1339,7 +1385,7 @@ img {
 
 @media (max-width: 768px) {
     :root {
-        --container-padding: 24px;
+        --container-padding: 16px;
     }
 
     .realtor-hero-title {

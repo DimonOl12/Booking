@@ -58,7 +58,7 @@
                 var photo = hotel.Photos?.OrderBy(p => p.Priority).FirstOrDefault()?.Name;
                 var imgUrl = string.IsNullOrEmpty(photo)
                     ? "~/images/property-1.jpg"
-                    : $"http://localhost:5292/images/{photo}";
+                    : $"/images/{photo}";
                 var roomName = bk.BookingRoomVariants?.FirstOrDefault()?.RoomVariant?.GuestInfo is { } gi
                     ? $"{gi.AdultCount} дорослих · {gi.ChildCount} дітей"
                     : "—";
@@ -67,7 +67,7 @@
                 var statusLabel = bk.DateTo < now ? "Завершено" : "Заброньовано";
                 var statusCss   = bk.DateTo < now ? "paid" : "booked";
                 <div class="bk-card" data-status="@statusLabel">
-                    <img class="bk-card-img" src="@imgUrl" alt="@hotel.Name" />
+                    <img class="bk-card-img" src="@imgUrl" alt="@hotel.Name" onerror="this.onerror=null;this.src='/images/property-1.jpg'" />
                     <div class="bk-card-body">
                         <div class="bk-hotel-name">@hotel.Name</div>
                         <div class="bk-hotel-city">

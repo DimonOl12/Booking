@@ -513,6 +513,73 @@ img { display: block; max-width: 100%; }
 
 .pr-success-msg.visible { display: block; }
 
+.pr-error-msg {
+    font-size: 15px;
+    font-weight: 500;
+    color: #b71c1c;
+    background: #ffebee;
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: none;
+    margin-bottom: 16px;
+}
+.pr-error-msg.visible { display: block; }
+
+.pr-save-row { margin-top: 24px; }
+
+/* ---- Card head (title + edit button) ---- */
+.pr-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.pr-edit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    background: var(--pr-primary);
+    color: var(--pr-cream);
+    border: none;
+    border-radius: var(--pr-radius-btn);
+    font-family: var(--pr-font-body);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.pr-edit-btn:hover { opacity: 0.85; }
+
+.pr-cancel-btn {
+    padding: 14px 28px;
+    background: none;
+    border: 1.5px solid var(--pr-primary);
+    border-radius: var(--pr-radius-btn);
+    font-family: var(--pr-font-body);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--pr-primary);
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.pr-cancel-btn:hover { background: rgba(34,51,0,0.06); }
+
+/* Readonly input visual cue */
+.pr-input[readonly], .pr-phone-input[readonly], .pr-bday-seg[readonly] {
+    cursor: default;
+    color: var(--pr-muted);
+    background: var(--pr-input-bg);
+}
+.pr-select:disabled {
+    cursor: default;
+    color: var(--pr-muted);
+    opacity: 1;
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 900px) {
     .pr-main-row { flex-direction: column-reverse; }

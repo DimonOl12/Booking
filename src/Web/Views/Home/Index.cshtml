@@ -141,7 +141,7 @@
     </div><!-- /search-bg -->
 
 
-    <div class="section">
+    <div class="section section--promo">
         <h2 class="section-title">Акції на проживання</h2>
 
         <div class="promo-grid">
@@ -232,39 +232,141 @@
             </div>
         </div>
 
-        <div class="city-grid">
-            <div class="city-card">
+        <div class="city-grid" id="cityGrid">
+            <!-- Місто -->
+            <a href="/Home/Search?city=Львів" class="city-card" data-type="місто романтика їжа">
                 <img src="/images/lviv.jpg" alt="Львів" />
                 <div class="city-card-overlay"></div>
                 <div class="city-card-info">
                     <div class="city-card-name">Львів</div>
                     <div class="city-card-distance">350+ місць</div>
                 </div>
-            </div>
-            <div class="city-card">
+            </a>
+            <a href="/Home/Search?city=Кам%27янець-Подільський" class="city-card" data-type="місто романтика активний">
                 <img src="/images/kamianets.jpg" alt="Кам'янець-Подільський" />
                 <div class="city-card-overlay"></div>
                 <div class="city-card-info">
                     <div class="city-card-name">Кам'янець-Подільський</div>
                     <div class="city-card-distance">45+ місць</div>
                 </div>
-            </div>
-            <div class="city-card">
+            </a>
+            <a href="/Home/Search?city=Київ" class="city-card" data-type="місто їжа">
                 <img src="/images/kyiv.jpg" alt="Київ" />
                 <div class="city-card-overlay"></div>
                 <div class="city-card-info">
                     <div class="city-card-name">Київ</div>
                     <div class="city-card-distance">500+ місць</div>
                 </div>
-            </div>
-            <div class="city-card">
+            </a>
+            <a href="/Home/Search?city=Закопане" class="city-card" data-type="місто активний спокійний">
                 <img src="/images/zhytomyr.jpg" alt="Закопане" />
                 <div class="city-card-overlay"></div>
                 <div class="city-card-info">
                     <div class="city-card-name">Закопане</div>
                     <div class="city-card-distance">100+ місць</div>
                 </div>
-            </div>
+            </a>
+            <!-- Пляж -->
+            <a href="/Home/Search?city=Одеса" class="city-card" data-type="пляж їжа" style="display:none">
+                <img src="/images/warsaw.jpg" alt="Одеса" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&q=80'" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Одеса</div>
+                    <div class="city-card-distance">280+ місць</div>
+                </div>
+            </a>
+            <a href="/Home/Search?city=Бердянськ" class="city-card" data-type="пляж спокійний" style="display:none">
+                <img src="/images/chisinau.jpg" alt="Бердянськ" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&q=80'" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Бердянськ</div>
+                    <div class="city-card-distance">60+ місць</div>
+                </div>
+            </a>
+            <a href="/Home/Search?city=Кирилівка" class="city-card" data-type="пляж" style="display:none">
+                <img src="/images/warsaw.jpg" alt="Кирилівка" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&q=80'" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Кирилівка</div>
+                    <div class="city-card-distance">35+ місць</div>
+                </div>
+            </a>
+            <a href="/Home/Search?city=Залізний+Порт" class="city-card" data-type="пляж" style="display:none">
+                <img src="/images/kyiv.jpg" alt="Залізний Порт" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&q=80'" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Залізний Порт</div>
+                    <div class="city-card-distance">25+ місць</div>
+                </div>
+            </a>
+            <!-- Активний відпочинок -->
+            <a href="/Home/Search?city=Буковель" class="city-card" data-type="активний" style="display:none">
+                <img src="/images/lviv.jpg" alt="Буковель" onerror="this.src='https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&q=80'" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Буковель</div>
+                    <div class="city-card-distance">150+ місць</div>
+                </div>
+            </a>
+            <a href="/Home/Search?city=Яремче" class="city-card" data-type="активний спокійний" style="display:none">
+                <img src="/images/kyiv.jpg" alt="Яремче" onerror="this.src='https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&q=80'" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Яремче</div>
+                    <div class="city-card-distance">90+ місць</div>
+                </div>
+            </a>
+            <a href="/Home/Search?city=Славське" class="city-card" data-type="активний" style="display:none">
+                <img src="/images/kamianets.jpg" alt="Славське" onerror="this.src='https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=500&q=80'" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Славське</div>
+                    <div class="city-card-distance">50+ місць</div>
+                </div>
+            </a>
+            <!-- Спокійний відпочинок -->
+            <a href="/Home/Search?city=Трускавець" class="city-card" data-type="спокійний" style="display:none">
+                <img src="/images/lviv.jpg" alt="Трускавець" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80'" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Трускавець</div>
+                    <div class="city-card-distance">70+ місць</div>
+                </div>
+            </a>
+            <a href="/Home/Search?city=Берегове" class="city-card" data-type="спокійний романтика" style="display:none">
+                <img src="/images/kamianets.jpg" alt="Берегове" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80'" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Берегове</div>
+                    <div class="city-card-distance">30+ місць</div>
+                </div>
+            </a>
+            <!-- Романтика -->
+            <a href="/Home/Search?city=Чернівці" class="city-card" data-type="романтика їжа" style="display:none">
+                <img src="/images/kyiv.jpg" alt="Чернівці" onerror="this.src='https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=500&q=80'" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Чернівці</div>
+                    <div class="city-card-distance">80+ місць</div>
+                </div>
+            </a>
+            <a href="/Home/Search?city=Ужгород" class="city-card" data-type="романтика спокійний" style="display:none">
+                <img src="/images/zhytomyr.jpg" alt="Ужгород" onerror="this.src='https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=500&q=80'" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Ужгород</div>
+                    <div class="city-card-distance">65+ місць</div>
+                </div>
+            </a>
+            <!-- Їжа -->
+            <a href="/Home/Search?city=Харків" class="city-card" data-type="їжа місто" style="display:none">
+                <img src="/images/kyiv.jpg" alt="Харків" onerror="this.src='https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500&q=80'" />
+                <div class="city-card-overlay"></div>
+                <div class="city-card-info">
+                    <div class="city-card-name">Харків</div>
+                    <div class="city-card-distance">200+ місць</div>
+                </div>
+            </a>
         </div>
     </div>
 
@@ -274,16 +376,16 @@
         <h2 class="section-title">Популярні напрямки</h2>
 
         <div class="dest-grid">
-            <div class="dest-card">
+            <a href="/Home/Search?city=Варшава" class="dest-card">
                 <img src="/images/warsaw.jpg" alt="Варшава" />
                 <div class="dest-card-overlay"></div>
                 <div class="dest-card-name">Варшава</div>
-            </div>
-            <div class="dest-card">
+            </a>
+            <a href="/Home/Search?city=Кишинів" class="dest-card">
                 <img src="/images/chisinau.jpg" alt="Кишинів" />
                 <div class="dest-card-overlay"></div>
                 <div class="dest-card-name">Кишинів</div>
-            </div>
+            </a>
         </div>
     </div>
 
@@ -302,7 +404,7 @@
         </div>
 
         <div class="property-scroll">
-            <div class="property-card">
+            <div class="property-card" data-id="1" style="cursor:pointer">
                 <div class="property-card-img">
                     <img src="/images/property-1.jpg" alt="Domki wierszyki Shelters" />
                     <button class="property-card-fav" aria-label="Обране">
@@ -326,7 +428,7 @@
                 </div>
             </div>
 
-            <div class="property-card">
+            <div class="property-card" data-id="2" style="cursor:pointer">
                 <div class="property-card-img">
                     <img src="/images/property-2.jpg" alt="Tiny House Dreishwesternz" />
                     <button class="property-card-fav" aria-label="Обране">
@@ -350,7 +452,7 @@
                 </div>
             </div>
 
-            <div class="property-card">
+            <div class="property-card" data-id="3" style="cursor:pointer">
                 <div class="property-card-img">
                     <img src="/images/property-3.jpg" alt="Das rote Haus Hinterm Deich" />
                     <button class="property-card-fav" aria-label="Обране">
@@ -374,7 +476,7 @@
                 </div>
             </div>
 
-            <div class="property-card">
+            <div class="property-card" data-id="4" style="cursor:pointer">
                 <div class="property-card-img">
                     <img src="/images/property-4.jpg" alt="Lofthus Camping" />
                     <button class="property-card-fav" aria-label="Обране">
@@ -398,7 +500,7 @@
                 </div>
             </div>
 
-            <div class="property-card">
+            <div class="property-card" data-id="5" style="cursor:pointer">
                 <div class="property-card-img">
                     <img src="/images/property-5.jpg" alt="Mini Hotel Übernachten Im Gurkenfass" />
                     <button class="property-card-fav" aria-label="Обране">
@@ -421,6 +523,78 @@
                     </div>
                 </div>
             </div>
+
+            <div class="property-card" data-id="1" style="cursor:pointer">
+                <div class="property-card-img">
+                    <img src="/images/property-1.jpg" alt="Апартаменти біля ратуші" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500&q=80'" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Апартаменти біля ратуші</div>
+                    <div class="property-card-location">Україна, Львів</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">9,4</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Відмінно</span>
+                            <span class="rating-reviews">78 відгуків</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-from">Від</span>
+                        <span class="price-value">UAH 3 200</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card" data-id="2" style="cursor:pointer">
+                <div class="property-card-img">
+                    <img src="/images/property-2.jpg" alt="Панорамні апартаменти" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&q=80'" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Панорамні апартаменти Kyiv Sky</div>
+                    <div class="property-card-location">Україна, Київ</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">9,8</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Відмінно</span>
+                            <span class="rating-reviews">134 відгуки</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-from">Від</span>
+                        <span class="price-value">UAH 6 500</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card" data-id="3" style="cursor:pointer">
+                <div class="property-card-img">
+                    <img src="/images/property-3.jpg" alt="Котедж у Карпатах" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=500&q=80'" />
+                    <button class="property-card-fav" aria-label="Обране">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="property-card-body">
+                    <div class="property-card-name">Котедж з каміном у Карпатах</div>
+                    <div class="property-card-location">Україна, Яремче</div>
+                    <div class="property-rating">
+                        <span class="rating-badge">9,6</span>
+                        <div class="rating-info">
+                            <span class="rating-text">Відмінно</span>
+                            <span class="rating-reviews">55 відгуків</span>
+                        </div>
+                    </div>
+                    <div class="property-price">
+                        <span class="price-from">Від</span>
+                        <span class="price-value">UAH 8 100</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -439,26 +613,38 @@
         </div>
 
         <div class="types-grid">
-            <div class="type-card">
+            <a href="/Home/Search?filterType=Готель" class="type-card">
                 <div class="type-card-img"><img src="/images/type-hotel.jpg" alt="Готелі" /></div>
                 <div class="type-card-name">Готелі</div>
-            </div>
-            <div class="type-card">
+            </a>
+            <a href="/Home/Search?filterType=Апартаменти" class="type-card">
                 <div class="type-card-img"><img src="/images/type-apartment.jpg" alt="Апартаменти" /></div>
                 <div class="type-card-name">Апартаменти</div>
-            </div>
-            <div class="type-card">
+            </a>
+            <a href="/Home/Search?filterType=Вілла" class="type-card">
                 <div class="type-card-img"><img src="/images/type-villa.jpg" alt="Вілли" /></div>
                 <div class="type-card-name">Вілли</div>
-            </div>
-            <div class="type-card">
+            </a>
+            <a href="/Home/Search?filterType=Курортний+готель" class="type-card">
                 <div class="type-card-img"><img src="/images/type-resort.jpg" alt="Курортні-готелі" /></div>
                 <div class="type-card-name">Курортні-готелі</div>
-            </div>
-            <div class="type-card">
+            </a>
+            <a href="/Home/Search?filterType=Хостел" class="type-card">
                 <div class="type-card-img"><img src="/images/type-business.jpg" alt="Хостели" /></div>
                 <div class="type-card-name">Хостели</div>
-            </div>
+            </a>
+            <a href="/Home/Search?filterType=Котедж" class="type-card">
+                <div class="type-card-img"><img src="/images/type-hotel.jpg" alt="Котеджі" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=300&q=80'" /></div>
+                <div class="type-card-name">Котеджі</div>
+            </a>
+            <a href="/Home/Search?filterType=Глемпінг" class="type-card">
+                <div class="type-card-img"><img src="/images/type-villa.jpg" alt="Глемпінг" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?w=300&q=80'" /></div>
+                <div class="type-card-name">Глемпінг</div>
+            </a>
+            <a href="/Home/Search?filterType=Будинок" class="type-card">
+                <div class="type-card-img"><img src="/images/type-apartment.jpg" alt="Будинки" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80'" /></div>
+                <div class="type-card-name">Будинки</div>
+            </a>
         </div>
     </div>
 
@@ -477,7 +663,7 @@
         </div>
 
         <div class="property-scroll">
-            <div class="property-card">
+            <div class="property-card" data-id="1" style="cursor:pointer">
                 <div class="property-card-img">
                     <img src="/images/deal-1.jpg" alt="Apartments on Velyka Vasylkivska 47" />
                     <button class="property-card-fav" aria-label="Обране">
@@ -502,7 +688,7 @@
                 </div>
             </div>
 
-            <div class="property-card">
+            <div class="property-card" data-id="2" style="cursor:pointer">
                 <div class="property-card-img">
                     <img src="/images/deal-2.jpg" alt="Chornovola str in Lviv" />
                     <button class="property-card-fav" aria-label="Обране">
@@ -527,7 +713,7 @@
                 </div>
             </div>
 
-            <div class="property-card">
+            <div class="property-card" data-id="3" style="cursor:pointer">
                 <div class="property-card-img">
                     <img src="/images/deal-3.jpg" alt="Апартаменти з теплом від MYFREEDOM" />
                     <button class="property-card-fav" aria-label="Обране">
@@ -552,7 +738,7 @@
                 </div>
             </div>
 
-            <div class="property-card">
+            <div class="property-card" data-id="4" style="cursor:pointer">
                 <div class="property-card-img">
                     <img src="/images/deal-4.jpg" alt="Freeman-4b" />
                     <button class="property-card-fav" aria-label="Обране">
@@ -577,7 +763,7 @@
                 </div>
             </div>
 
-            <div class="property-card">
+            <div class="property-card" data-id="5" style="cursor:pointer">
                 <div class="property-card-img">
                     <img src="/images/deal-5.jpg" alt="Pryme rest apartaments" />
                     <button class="property-card-fav" aria-label="Обране">
