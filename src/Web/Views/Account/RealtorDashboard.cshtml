@@ -1,0 +1,446 @@
+@model Web.Models.RealtorDashboardViewModel
+@{
+    ViewData["Title"] = "Дашборд власника";
+    Layout = null;
+    ViewBag.ActiveTab = "Dashboard";
+    var pending = Model?.IncompleteRegistration;
+    var stats = Model?.Stats;
+    var reviews = Model?.Reviews ?? new List<Web.Models.RealtorReview>();
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Дашборд власника</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+    <link rel="stylesheet" href="~/css/realtor-dashboard.css" />
+</head>
+<body>
+<div class="rdsh-page">
+
+    @await Html.PartialAsync("_RealtorDashboardHero")
+
+    <main class="rdsh-main">
+
+        <!-- Header -->
+        <div class="rdsh-header">
+            <div class="rdsh-header-info">
+                <h1 class="rdsh-title">Дашборд власника</h1>
+                <p class="rdsh-subtitle">Огляд об&rsquo;єктів, бронювань та доходів</p>
+            </div>
+            <a href="#" class="rdsh-add-property-btn">Додати помешкання</a>
+        </div>
+
+        @* ── Incomplete registration card ── *@
+        @if (pending != null)
+        {
+            <div class="rdsh-pending-card">
+                <div class="rdsh-pending-head">
+                    <h2 class="rdsh-pending-title">Помешкання ще не зареєстроване на Reservio</h2>
+                    <p class="rdsh-pending-sub">Розширюйте свій бізнес, додавши ці помешкання</p>
+                </div>
+
+                <div class="rdsh-pending-rows">
+                    <div class="rdsh-pending-row">
+                        <span class="rdsh-pending-label">Назва</span>
+                        <span class="rdsh-pending-value">@pending.Name</span>
+                    </div>
+                    <div class="rdsh-pending-row">
+                        <span class="rdsh-pending-label">Розташування</span>
+                        <span class="rdsh-pending-value rdsh-pending-value--medium">@pending.Address</span>
+                    </div>
+                    <div class="rdsh-pending-row">
+                        <span class="rdsh-pending-label">Процес реєстрації</span>
+                        <div class="rdsh-progress-wrap">
+                            <div class="rdsh-progress-track">
+                                <div class="rdsh-progress-fill" style="width:@(pending.ProgressPercent)%"></div>
+                            </div>
+                            <span class="rdsh-progress-pct">@(pending.ProgressPercent)%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rdsh-pending-actions">
+                    <button type="button" class="rdsh-delete-btn" id="btnDeletePending">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+                        </svg>
+                        Видалити
+                    </button>
+                    <a href="#" class="rdsh-continue-btn">Продовжити реєстрацію</a>
+                </div>
+            </div>
+        }
+
+        @if (stats != null)
+        {
+            @* ── Stats (both rows in one card) ── *@
+            <div class="rdsh-white-card rdsh-stats-wrap">
+                <div class="rdsh-stats-grid">
+                    <div class="rdsh-stat-card">
+                        <div class="rdsh-stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                <polyline points="9 22 9 12 15 12 15 22"/>
+                            </svg>
+                        </div>
+                        <div class="rdsh-stat-text">
+                            <span class="rdsh-stat-value">@stats.ActiveProperties</span>
+                            <span class="rdsh-stat-label">Активних об&rsquo;єктів</span>
+                        </div>
+                    </div>
+                    <div class="rdsh-stat-card">
+                        <div class="rdsh-stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 8v4l3 3"/>
+                            </svg>
+                        </div>
+                        <div class="rdsh-stat-text">
+                            <span class="rdsh-stat-value">@stats.Bookings</span>
+                            <span class="rdsh-stat-label">Бронювань</span>
+                        </div>
+                    </div>
+                    <div class="rdsh-stat-card">
+                        <div class="rdsh-stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                <line x1="9" y1="9" x2="15" y2="15"/>
+                            </svg>
+                        </div>
+                        <div class="rdsh-stat-text">
+                            <span class="rdsh-stat-value">@stats.Cancellations</span>
+                            <span class="rdsh-stat-label">Скасувань</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="rdsh-stats-grid">
+                    <div class="rdsh-stat-card">
+                        <div class="rdsh-stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                                <polyline points="10 17 15 12 10 7"/>
+                                <line x1="15" y1="12" x2="3" y2="12"/>
+                            </svg>
+                        </div>
+                        <div class="rdsh-stat-text">
+                            <span class="rdsh-stat-value">@stats.CheckIns</span>
+                            <span class="rdsh-stat-label">Заїздів</span>
+                        </div>
+                    </div>
+                    <div class="rdsh-stat-card">
+                        <div class="rdsh-stat-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16 17 21 12 16 7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                        </div>
+                        <div class="rdsh-stat-text">
+                            <span class="rdsh-stat-value">@stats.CheckOuts</span>
+                            <span class="rdsh-stat-label">Виїздів</span>
+                        </div>
+                    </div>
+                    <div class="rdsh-stat-card rdsh-stat-card--rating">
+                        <div class="rdsh-rating-badge">@stats.Rating.ToString("0.0")</div>
+                        <div class="rdsh-stat-text">
+                            <span class="rdsh-rating-label">@stats.RatingLabel</span>
+                            <span class="rdsh-stat-label">@stats.ReviewCount відгуків</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* ── Income cards ── *@
+            <div class="rdsh-income-row">
+                <div class="rdsh-income-card">
+                    <span class="rdsh-income-label">Сьогоднішній дохід</span>
+                    <div class="rdsh-income-inner">
+                        <span class="rdsh-income-amount">UAH&nbsp;3&nbsp;085</span>
+                        <span class="rdsh-income-sub">За сьогодні</span>
+                    </div>
+                </div>
+                <div class="rdsh-income-card">
+                    <span class="rdsh-income-label">Загальний баланс</span>
+                    <div class="rdsh-income-inner">
+                        <span class="rdsh-income-amount">UAH&nbsp;1&nbsp;220&nbsp;128</span>
+                        <span class="rdsh-income-sub">Зароблено на платформі</span>
+                    </div>
+                </div>
+            </div>
+
+            @* ── Revenue statistics ── *@
+            <div class="rdsh-white-card rdsh-chart-section">
+                <div class="rdsh-chart-header">
+                    <h2 class="rdsh-chart-title">Статистика доходів</h2>
+                    <div class="rdsh-chart-tabs">
+                        <button class="rdsh-chart-tab active" data-period="month">Місяць</button>
+                        <button class="rdsh-chart-tab" data-period="quarter">Квартал</button>
+                        <button class="rdsh-chart-tab" data-period="year">Рік</button>
+                    </div>
+                </div>
+                <div class="rdsh-chart-body">
+                    <div class="rdsh-chart-left">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                    <div class="rdsh-chart-right">
+                        <div class="rdsh-period-cards">
+                            <div class="rdsh-period-card">
+                                <span class="rdsh-period-amount">UAH 93&nbsp;856</span>
+                                <span class="rdsh-period-label">Місяць</span>
+                            </div>
+                            <div class="rdsh-period-card">
+                                <span class="rdsh-period-amount">UAH 281&nbsp;575</span>
+                                <span class="rdsh-period-label">Квартал</span>
+                            </div>
+                            <div class="rdsh-period-card">
+                                <span class="rdsh-period-amount">UAH 1&nbsp;126&nbsp;300</span>
+                                <span class="rdsh-period-label">Рік</span>
+                            </div>
+                        </div>
+                        <div class="rdsh-dynamic-card">
+                            <div class="rdsh-dynamic-header">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="6" y="3" width="12" height="18" rx="1"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/>
+                                </svg>
+                                <span class="rdsh-dynamic-title">Динамічне ціноутворення</span>
+                            </div>
+                            <p class="rdsh-dynamic-sub">Переглянте ціни перед святами, подіями та у високий сезон.</p>
+                            <ul class="rdsh-dynamic-list">
+                                <li>+15-39% у період високого попиту</li>
+                                <li>знижка в низький сезон для збереження заповнюваності</li>
+                            </ul>
+                        </div>
+                        <div class="rdsh-info-card">
+                            <div class="rdsh-info-text">
+                                <p class="rdsh-info-title">Як формується статистика доходів?</p>
+                                <p class="rdsh-info-sub">Дані відображають завершені бронювання з урахуванням комісії платформи та підтверджених оплат за обраний період.</p>
+                            </div>
+                            <div class="rdsh-info-mascot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* ── Reviews ── *@
+            @if (reviews.Count > 0)
+            {
+                <div class="rdsh-white-card">
+                    <div class="rdsh-reviews-header">
+                        <h2 class="rdsh-reviews-title">Відгуки</h2>
+                        <a href="#" class="rdsh-viewall-btn">
+                            Переглянути всі
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </a>
+                    </div>
+                    @foreach (var review in reviews)
+                    {
+                        <div class="rdsh-review-card">
+                            <p class="rdsh-review-text">@review.Text</p>
+                            <div class="rdsh-review-footer">
+                                <div class="rdsh-review-author">
+                                    <div class="rdsh-review-avatar"></div>
+                                    <div class="rdsh-review-meta">
+                                        <span class="rdsh-review-name">@review.Author</span>
+                                        <span class="rdsh-review-country">@review.Country</span>
+                                        <span class="rdsh-review-date">@review.Date</span>
+                                    </div>
+                                </div>
+                                <button type="button" class="rdsh-reply-btn">Відповісти</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            @* ── Empty state grid ── *@
+            <div class="rdsh-white-card">
+                <div class="rdsh-empty-grid">
+
+                    <div class="rdsh-empty-card">
+                        <div class="rdsh-illus">
+                            <div class="rdsh-illus-circle rdsh-illus-circle--green">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                    <line x1="12" y1="10" x2="12" y2="16"/>
+                                    <line x1="9" y1="13" x2="15" y2="13"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rdsh-empty-info">
+                            <p class="rdsh-empty-title">У вас ще немає доданих об'єктів</p>
+                            <p class="rdsh-empty-sub">Додайте ваш перший об'єкт для здачі в оренду</p>
+                        </div>
+                        <a href="#" class="rdsh-add-btn">Додати</a>
+                    </div>
+
+                    <div class="rdsh-empty-card">
+                        <div class="rdsh-illus">
+                            <div class="rdsh-illus-circle rdsh-illus-circle--orange">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rdsh-empty-info">
+                            <p class="rdsh-empty-title">Поки ще немає активних бронювань</p>
+                            <p class="rdsh-empty-sub">Заповніть профіль об'єкта для кращої видимості</p>
+                        </div>
+                    </div>
+
+                    <div class="rdsh-empty-card">
+                        <div class="rdsh-illus">
+                            <div class="rdsh-illus-circle rdsh-illus-circle--dark">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rdsh-empty-info">
+                            <p class="rdsh-empty-title">Відгуків поки, що нема</p>
+                            <p class="rdsh-empty-sub">Перші відгуки з'являться після проживання гостей</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </main>
+
+    @await Html.PartialAsync("_DashboardFooter")
+
+</div>
+
+@* ── Delete confirmation modal ── *@
+<div class="rdsh-modal-overlay" id="deleteModal">
+    <div class="rdsh-modal">
+        <p class="rdsh-modal-title">Видалити незавершену реєстрацію?</p>
+        <p class="rdsh-modal-text">Всі введені дані будуть втрачені. Цю дію не можна скасувати.</p>
+        <div class="rdsh-modal-btns">
+            <button type="button" class="rdsh-modal-cancel" id="btnCancelDelete">Скасувати</button>
+            <form method="post" asp-action="RealtorDeleteIncomplete" asp-controller="Account" style="margin:0">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="rdsh-modal-confirm">Видалити</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script>
+(function () {
+    // ── Delete modal ──────────────────────────────────────────────
+    var overlay  = document.getElementById('deleteModal');
+    var btnOpen  = document.getElementById('btnDeletePending');
+    var btnClose = document.getElementById('btnCancelDelete');
+    if (btnOpen)  btnOpen.addEventListener('click',  function () { overlay.classList.add('open'); });
+    if (btnClose) btnClose.addEventListener('click', function () { overlay.classList.remove('open'); });
+    if (overlay)  overlay.addEventListener('click',  function (e) { if (e.target === overlay) overlay.classList.remove('open'); });
+
+    // ── Revenue chart ─────────────────────────────────────────────
+    var canvas = document.getElementById('revenueChart');
+    if (!canvas) return;
+
+    var chartData = {
+        month: {
+            labels: ['Січ', 'Лют', 'Бер', 'Кві', 'Тра', 'Чер', 'Лип', 'Сер', 'Вер', 'Жов', 'Лис', 'Гру'],
+            data:   [65, 72, 81, 87, 94, 95, 98, 101, 97, 89, 82, 78]
+        },
+        quarter: {
+            labels: ['Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025'],
+            data:   [218, 276, 296, 249]
+        },
+        year: {
+            labels: ['2022', '2023', '2024', '2025', '2026'],
+            data:   [820, 940, 1040, 1090, 1126]
+        }
+    };
+
+    var ctx = canvas.getContext('2d');
+
+    function makeGradient() {
+        var g = ctx.createLinearGradient(0, 0, 0, canvas.offsetHeight || 200);
+        g.addColorStop(0,   'rgba(34,51,0,0.55)');
+        g.addColorStop(1,   'rgba(242,242,242,0.10)');
+        return g;
+    }
+
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chartData.month.labels,
+            datasets: [{
+                data: chartData.month.data,
+                borderColor: '#223300',
+                borderWidth: 2,
+                pointBackgroundColor: '#223300',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                fill: true,
+                backgroundColor: makeGradient(),
+                tension: 0.35
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(c) { return ' UAH ' + (c.parsed.y * 1000).toLocaleString('uk-UA'); }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { color: '#C1C6B8' },
+                    ticks: { font: { family: 'Rubik', size: 12 }, color: '#000' }
+                },
+                y: {
+                    grid: { color: '#C1C6B8' },
+                    ticks: {
+                        font: { family: 'Rubik', size: 12 },
+                        color: '#777',
+                        callback: function(v) { return v; }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Тис, ₴',
+                        font: { family: 'Rubik', size: 11 },
+                        color: '#777'
+                    }
+                }
+            }
+        }
+    });
+
+    // Tab switching
+    document.querySelectorAll('.rdsh-chart-tab').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.rdsh-chart-tab').forEach(function(b) { b.classList.remove('active'); });
+            this.classList.add('active');
+            var period = this.dataset.period;
+            chart.data.labels = chartData[period].labels;
+            chart.data.datasets[0].data = chartData[period].data;
+            chart.data.datasets[0].backgroundColor = makeGradient();
+            chart.update();
+        });
+    });
+})();
+</script>
+</body>
+</html>

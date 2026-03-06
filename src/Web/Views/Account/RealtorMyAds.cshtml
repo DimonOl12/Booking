@@ -1,0 +1,182 @@
+@model Web.Models.RealtorMyAdsViewModel
+@{
+    ViewData["Title"] = "Мої оголошення";
+    Layout = null;
+    ViewBag.ActiveTab = "MyAds";
+    var listings = Model?.Listings ?? new List<Web.Models.RealtorPropertyListing>();
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Мої оголошення</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+    <link rel="stylesheet" href="~/css/realtor-dashboard.css" />
+</head>
+<body>
+<div class="rdsh-page">
+
+    @await Html.PartialAsync("_RealtorDashboardHero")
+
+    <main class="rdsh-main">
+
+        @if (listings.Count == 0)
+        {
+            <!-- Empty state header -->
+            <div class="rdsh-myads-header">
+                <h1 class="rdsh-title">Мої оголошення</h1>
+                <p class="rdsh-myads-empty-title">У вас ще немає оголошень</p>
+                <p class="rdsh-subtitle">Створіть своє перше оголошення та почніть приймати бронювання від мандрівників з усього світу</p>
+            </div>
+
+            <div class="rdsh-white-card rdsh-myads-card">
+                <div class="rdsh-myads-grid">
+                    <div class="rdsh-empty-card">
+                        <div class="rdsh-illus">
+                            <div class="rdsh-illus-circle rdsh-illus-circle--green">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                    <line x1="12" y1="10" x2="12" y2="16"/>
+                                    <line x1="9" y1="13" x2="15" y2="13"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rdsh-empty-info">
+                            <p class="rdsh-empty-title">У вас ще немає доданих об'єктів</p>
+                            <p class="rdsh-empty-sub">Додайте ваш перший об'єкт для здачі в оренду</p>
+                        </div>
+                        <a href="#" class="rdsh-add-btn">Додати</a>
+                    </div>
+                    <div class="rdsh-empty-card">
+                        <div class="rdsh-illus">
+                            <div class="rdsh-illus-circle rdsh-illus-circle--orange">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                    <path d="M8 21h8m-4-4v4"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rdsh-empty-info">
+                            <p class="rdsh-empty-title">Поки ще немає активних бронювань</p>
+                            <p class="rdsh-empty-sub">Заповніть профіль об'єкта для кращої видимості</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- Populated header -->
+            <div class="rdsh-header">
+                <div class="rdsh-header-info">
+                    <h1 class="rdsh-title">Мої оголошення</h1>
+                    <p class="rdsh-subtitle">Керуйте своїми помешканнями та бронюваннями</p>
+                </div>
+                <a href="#" class="rdsh-add-property-btn">Додати помешкання</a>
+            </div>
+
+            <!-- Sort filter -->
+            <div class="rmads-sort-wrap">
+                <button type="button" class="rmads-sort-btn">
+                    Відсортувати за: Усі помешкання
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Listings -->
+            <div class="rmads-list">
+                @foreach (var p in listings)
+                {
+                    var statusLabel = p.Status switch {
+                        "Active"       => "Активне",
+                        "Available"    => "Вільно",
+                        "Occupied"     => "Заселено",
+                        "OnModeration" => "На модерації",
+                        "Rejected"     => "Відхилене",
+                        _              => p.Status
+                    };
+                    var statusDot = p.Status switch {
+                        "Active"       => "#6C9D0B",
+                        "Available"    => "#6C9D0B",
+                        "Occupied"     => "#FCD53F",
+                        "OnModeration" => "#FCD53F",
+                        "Rejected"     => "#B3261E",
+                        _              => "#777"
+                    };
+                    var secondLabel = p.SecondStatus switch {
+                        "Occupied"  => "Заселено",
+                        "Available" => "Вільно",
+                        null        => null,
+                        _           => p.SecondStatus
+                    };
+                    var secondDot = p.SecondStatus switch {
+                        "Occupied"  => "#FCD53F",
+                        "Available" => "#6C9D0B",
+                        null        => null,
+                        _           => "#777"
+                    };
+                    <div class="rmads-card">
+                        <div class="rmads-img">
+                            <img src="https://placehold.co/350x222/D9D9D9/999999?text=Фото" alt="@p.Name" />
+                        </div>
+                        <div class="rmads-info">
+                            <div class="rmads-info-top">
+                                <div class="rmads-name-col">
+                                    <h2 class="rmads-name">@p.Name</h2>
+                                    <p class="rmads-address">@p.Address</p>
+                                </div>
+                                <div class="rmads-rating">
+                                    <div class="rmads-rating-badge">@p.Rating.ToString("0.0")</div>
+                                    <div class="rmads-rating-text">
+                                        <span class="rmads-rating-label">@p.RatingLabel</span>
+                                        <span class="rmads-rating-count">@p.ReviewCount відгуки</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rmads-info-bottom">
+                                <div class="rmads-badges">
+                                    <div class="rmads-status-badge">
+                                        <span class="rmads-dot" style="background:@statusDot"></span>
+                                        @statusLabel
+                                    </div>
+                                    @if (secondLabel != null)
+                                    {
+                                        <div class="rmads-status-badge">
+                                            <span class="rmads-dot" style="background:@secondDot"></span>
+                                            @secondLabel
+                                        </div>
+                                    }
+                                    <div class="rmads-counter">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                                        </svg>
+                                        @p.BookingsCount
+                                    </div>
+                                    <div class="rmads-counter">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                                        </svg>
+                                        @p.MessagesCount
+                                    </div>
+                                </div>
+                                <a href="@Url.Action("RealtorPropertyDetail","Account",new{id=p.Id})" class="rmads-view-btn">Переглянути</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+    </main>
+
+    @await Html.PartialAsync("_DashboardFooter")
+
+</div>
+</body>
+</html>

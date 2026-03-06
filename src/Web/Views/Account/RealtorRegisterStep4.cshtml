@@ -1,0 +1,155 @@
+@model Web.Models.ConfirmEmailViewModel
+@{
+    ViewData["Title"] = "Підтвердження акаунту партнера";
+    Layout = null;
+    var demoCode = ViewBag.DemoCode as string;
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Підтвердження акаунту</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/auth.css" />
+</head>
+<body>
+<div class="auth-page-figma">
+
+    <div class="auth-hero-bg">
+        <img src="~/images/Subtract.jpg" alt="" />
+    </div>
+
+    <nav class="auth-topbar">
+        <a href="/" class="auth-topbar-logo">
+            <img src="~/images/icons/Reservio.svg" alt="Reservio" />
+        </a>
+        <div class="auth-topbar-right">
+            <div class="auth-topbar-currency">UAH</div>
+            <div class="auth-topbar-flag">
+                <svg width="30" height="20" viewBox="0 0 30 20" fill="none">
+                    <rect width="30" height="10" fill="#0057B7"/>
+                    <rect y="10" width="30" height="10" fill="#FFD700"/>
+                </svg>
+            </div>
+            <a href="#" class="auth-topbar-help">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <main class="auth-main-figma">
+        <form method="post" asp-action="RealtorConfirmEmail" asp-controller="Account" id="confirm-form">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="Email" value="@Model.Email" />
+            <input type="hidden" name="Code" id="otp-hidden" value="" />
+
+            <div class="auth-card-figma">
+
+                <div class="auth-form-content">
+
+                    <!-- Step Indicator -->
+                    <div class="rlt-steps">
+                        <div class="rlt-step rlt-step-done">1</div>
+                        <div class="rlt-step-sep"></div>
+                        <div class="rlt-step rlt-step-done">2</div>
+                        <div class="rlt-step-sep"></div>
+                        <div class="rlt-step rlt-step-done">3</div>
+                        <div class="rlt-step-sep"></div>
+                        <div class="rlt-step active">4</div>
+                    </div>
+
+                    <h1 class="auth-heading-figma" style="text-align:center;">Підтвердьте свій акаунт</h1>
+
+                    <p class="auth-subheading-figma" style="text-align:center;">
+                        Коли ви вперше створили акаунт, ми надіслали лист з посиланням для підтвердження на email.<br><br>
+                        Щоб підтвердити свій акаунт, перейдіть за посиланням у тому email, де вказана адреса електронної пошти від Reservio.
+                    </p>
+
+                    @if (!string.IsNullOrEmpty(demoCode))
+                    {
+                        <div style="background:#e8f5e9;border:1px solid #4caf50;border-radius:12px;padding:10px 16px;font-size:13px;color:#2e7d32;width:100%;max-width:400px;text-align:center;">
+                            <strong>Demo:</strong> Ваш код підтвердження: <strong style="letter-spacing:4px;font-size:16px;">@demoCode</strong>
+                        </div>
+                    }
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="auth-error-box">
+                            <span class="auth-error-box-text">@ViewBag.Error</span>
+                        </div>
+                    }
+
+                    <div class="auth-otp-group" id="otp-group">
+                        <input class="auth-otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code" data-idx="0" />
+                        <input class="auth-otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="1" />
+                        <input class="auth-otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="2" />
+                        <input class="auth-otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="3" />
+                        <input class="auth-otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="4" />
+                        <input class="auth-otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" data-idx="5" />
+                    </div>
+
+                    <button type="submit" class="auth-submit-btn" id="confirm-btn">Підтвердити</button>
+                </div>
+
+                <div class="auth-footer-figma" style="margin-top:16px;">
+                    <p class="auth-footer-text">
+                        Входячи в акаунт або створюючи новий, ви погоджуєтеся з нашими
+                        <a href="#">Правилами й умовами</a> та <a href="#">Політикою конфіденційності</a>
+                    </p>
+                    <p class="auth-footer-copy">Усі права захищено.</p>
+                    <p class="auth-footer-copy">Copyright (2006 - 2026) - Reservio&#8482;</p>
+                </div>
+
+            </div>
+        </form>
+    </main>
+
+</div>
+
+<script>
+(function () {
+    var inputs = document.querySelectorAll('.auth-otp-input');
+    var hidden = document.getElementById('otp-hidden');
+
+    inputs.forEach(function (inp, i) {
+        inp.addEventListener('input', function () {
+            inp.value = inp.value.replace(/\D/g, '');
+            if (inp.value.length === 1 && i < inputs.length - 1) inputs[i + 1].focus();
+            updateHidden();
+        });
+        inp.addEventListener('keydown', function (e) {
+            if (e.key === 'Backspace' && inp.value === '' && i > 0) inputs[i - 1].focus();
+        });
+        inp.addEventListener('paste', function (e) {
+            e.preventDefault();
+            var text = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+            for (var j = 0; j < Math.min(text.length, inputs.length); j++) inputs[j].value = text[j];
+            inputs[Math.min(text.length, inputs.length - 1)].focus();
+            updateHidden();
+        });
+    });
+
+    function updateHidden() {
+        var code = '';
+        inputs.forEach(function (inp) { code += inp.value; });
+        hidden.value = code;
+    }
+
+    document.getElementById('confirm-btn').addEventListener('click', function (e) {
+        updateHidden();
+        if (hidden.value.length < 6) {
+            e.preventDefault();
+            alert('Введіть 6-значний код підтвердження.');
+        }
+    });
+})();
+</script>
+</body>
+</html>

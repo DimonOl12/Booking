@@ -1,0 +1,179 @@
+@model Web.Models.RealtorRegisterStep3ViewModel
+@{
+    ViewData["Title"] = "Реєстрація партнера — Крок 3";
+    Layout = null;
+    var hasError = ViewBag.Error != null;
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Реєстрація партнера</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/auth.css" />
+</head>
+<body>
+<div class="auth-page-figma">
+
+    <div class="auth-hero-bg">
+        <img src="~/images/Subtract.jpg" alt="" />
+    </div>
+
+    <nav class="auth-topbar">
+        <a href="/" class="auth-topbar-logo">
+            <img src="~/images/icons/Reservio.svg" alt="Reservio" />
+        </a>
+        <div class="auth-topbar-right">
+            <div class="auth-topbar-currency">UAH</div>
+            <div class="auth-topbar-flag">
+                <svg width="30" height="20" viewBox="0 0 30 20" fill="none">
+                    <rect width="30" height="10" fill="#0057B7"/>
+                    <rect y="10" width="30" height="10" fill="#FFD700"/>
+                </svg>
+            </div>
+            <a href="#" class="auth-topbar-help">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <main class="auth-main-figma">
+        <form method="post" asp-action="RealtorRegisterStep3" asp-controller="Account">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="Email" value="@Model?.Email" />
+            <input type="hidden" name="FirstName" value="@Model?.FirstName" />
+            <input type="hidden" name="LastName" value="@Model?.LastName" />
+            <input type="hidden" name="PhoneNumber" value="@Model?.PhoneNumber" />
+            <div class="auth-card-figma">
+
+                <div class="auth-form-content">
+
+                    <!-- Step Indicator -->
+                    <div class="rlt-steps">
+                        <div class="rlt-step rlt-step-done">1</div>
+                        <div class="rlt-step-sep"></div>
+                        <div class="rlt-step rlt-step-done">2</div>
+                        <div class="rlt-step-sep"></div>
+                        <div class="rlt-step active">3</div>
+                        <div class="rlt-step-sep"></div>
+                        <div class="rlt-step">4</div>
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;">
+                        <h1 class="auth-heading-figma" style="text-align:center;">Створіть пароль</h1>
+                        <p class="auth-subheading-figma" style="text-align:center;">
+                            Пароль має складатися з принаймні 6 символів і містити букви та цифри.
+                        </p>
+                    </div>
+
+                    <div class="auth-fields-group">
+
+                        <div class="auth-field">
+                            <div class="auth-field-label-row">
+                                <label class="auth-field-label" for="Password">Пароль</label>
+                            </div>
+                            <div class="auth-input-wrapper @(hasError ? "field-error" : "")">
+                                <input type="password"
+                                       class="auth-input-figma"
+                                       id="Password"
+                                       name="Password"
+                                       placeholder="Введіть пароль"
+                                       autocomplete="new-password" />
+                                @if (!hasError)
+                                {
+                                    <button type="button" class="auth-eye-toggle" data-target="Password" aria-label="Показати/Сховати пароль">
+                                        <svg id="eye-icon-Password" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                                            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                                            <line x1="1" y1="1" x2="23" y2="23"/>
+                                        </svg>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="auth-field">
+                            <div class="auth-field-label-row">
+                                <label class="auth-field-label" for="ConfirmPassword">Пароль</label>
+                            </div>
+                            <div class="auth-input-wrapper @(hasError ? "field-error" : "")">
+                                <input type="password"
+                                       class="auth-input-figma"
+                                       id="ConfirmPassword"
+                                       name="ConfirmPassword"
+                                       placeholder="Підтвердіть свій пароль"
+                                       autocomplete="new-password" />
+                                @if (!hasError)
+                                {
+                                    <button type="button" class="auth-eye-toggle" data-target="ConfirmPassword" aria-label="Показати/Сховати пароль">
+                                        <svg id="eye-icon-ConfirmPassword" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                                            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                                            <line x1="1" y1="1" x2="23" y2="23"/>
+                                        </svg>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (hasError)
+                    {
+                        <div class="auth-error-box">
+                            <span class="auth-error-box-text">@ViewBag.Error</span>
+                        </div>
+                    }
+
+                    <div class="rlt-actions">
+                        <a href="@Url.Action("RealtorRegisterStep2", "Account")" class="rlt-back-btn" aria-label="Назад">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 16l-6-6 6-6"/>
+                            </svg>
+                        </a>
+                        <button type="submit" class="auth-submit-btn rlt-submit-full">Далі</button>
+                    </div>
+                </div>
+
+                <div class="auth-footer-figma" style="margin-top:16px;">
+                    <p class="auth-footer-text">
+                        Входячи в акаунт або створюючи новий, ви погоджуєтеся з нашими
+                        <a href="#">Правилами й умовами</a> та <a href="#">Політикою конфіденційності</a>
+                    </p>
+                    <p class="auth-footer-copy">Усі права захищено.</p>
+                    <p class="auth-footer-copy">Copyright (2006 - 2026) - Reservio&#8482;</p>
+                </div>
+
+            </div>
+        </form>
+    </main>
+
+</div>
+
+<script>
+(function () {
+    document.querySelectorAll('.auth-eye-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var targetId = btn.getAttribute('data-target');
+            var input = document.getElementById(targetId);
+            var icon = document.getElementById('eye-icon-' + targetId);
+            if (!input) return;
+            var isPass = input.type === 'password';
+            input.type = isPass ? 'text' : 'password';
+            if (icon) {
+                icon.innerHTML = isPass
+                    ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
+                    : '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
+            }
+        });
+    });
+})();
+</script>
+</body>
+</html>

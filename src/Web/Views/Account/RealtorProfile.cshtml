@@ -1,0 +1,413 @@
+@{
+    ViewData["Title"] = "Особисті дані";
+    Layout = null;
+    ViewBag.ActiveTab = "RealtorProfile";
+
+    var firstName  = User.FindFirst("FirstName")?.Value ?? "Марія";
+    var lastName   = User.FindFirst("LastName")?.Value  ?? "Коваленко";
+    var initials   = User.FindFirst("Initials")?.Value  ?? "МК";
+    var email      = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Особисті дані</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+    <link rel="stylesheet" href="~/css/realtor-dashboard.css" />
+</head>
+<body>
+<div class="rdsh-page">
+
+    @await Html.PartialAsync("_RealtorDashboardHero")
+
+    <main class="rdsh-main">
+        <div class="rprf-outer">
+
+            <!-- ══ LEFT COLUMN ══════════════════════════════════════════════════ -->
+            <div class="rprf-left">
+
+                <!-- ── Особиста інформація ── -->
+                <div class="rprf-card">
+                    <h2 class="rprf-card-title">Особиста інформація</h2>
+                    <div class="rprf-row">
+                        <div class="rprf-field">
+                            <label class="rprf-label">Ім'я</label>
+                            <input type="text" class="rprf-input" value="@firstName" />
+                        </div>
+                        <div class="rprf-field">
+                            <label class="rprf-label">Прізвище</label>
+                            <input type="text" class="rprf-input" value="@lastName" />
+                        </div>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Відображуване ім'я</label>
+                        <input type="text" class="rprf-input" value="@(firstName + " " + lastName)" />
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Мова спілкування</label>
+                        <input type="text" class="rprf-input" value="Українська, англійська" />
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Дата народження</label>
+                        <div class="rprf-dob-wrap">
+                            <div class="rprf-dob-part rprf-dob-start">
+                                <input type="text" class="rprf-dob-input" placeholder="ДД" value="08" />
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                            <div class="rprf-dob-part rprf-dob-mid">
+                                <input type="text" class="rprf-dob-input" placeholder="Місяць" value="Грудень" />
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                            <div class="rprf-dob-part rprf-dob-end">
+                                <input type="text" class="rprf-dob-input" placeholder="Рік" value="1996" />
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rprf-row">
+                        <div class="rprf-field">
+                            <label class="rprf-label">Громадянство</label>
+                            <div class="rprf-select-wrap">
+                                <input type="text" class="rprf-input" value="Україна" readonly />
+                                <svg class="rprf-select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                        </div>
+                        <div class="rprf-field">
+                            <label class="rprf-label">Стать</label>
+                            <div class="rprf-select-wrap">
+                                <input type="text" class="rprf-input" value="Жінка" readonly />
+                                <svg class="rprf-select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Контактна інформація ── -->
+                <div class="rprf-card">
+                    <div class="rprf-field">
+                        <h2 class="rprf-card-title">Контактна інформація</h2>
+                        <p class="rprf-card-sub">Ці дані використовуються для зв'язку з гостями та службою підтримки</p>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Email</label>
+                        <div class="rprf-select-wrap">
+                            <input type="email" class="rprf-input" value="kovalenko.maria@reservio.com" />
+                            <svg class="rprf-select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Номер телефону</label>
+                        <div class="rprf-phone-wrap">
+                            <div class="rprf-phone-prefix">
+                                <svg width="28" height="18" viewBox="0 0 28 18" fill="none"><rect width="28" height="9" fill="#0057B7"/><rect y="9" width="28" height="9" fill="#FFD700"/></svg>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                                <span class="rprf-phone-code-ok">+380</span>
+                            </div>
+                            <input type="tel" class="rprf-input rprf-phone-input" value="98 854 3674" />
+                        </div>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Бажаний спосіб зв'язку</label>
+                        <div class="rprf-select-wrap">
+                            <input type="text" class="rprf-input" value="Повідомлення на платформі / телефон" readonly />
+                            <svg class="rprf-select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Час доступності</label>
+                        <div class="rprf-row rprf-row--gap">
+                            <div class="rprf-time-wrap">
+                                <div class="rprf-time-labels">
+                                    <span>Від</span><span>До</span>
+                                </div>
+                                <div class="rprf-dob-wrap">
+                                    <div class="rprf-dob-part rprf-dob-start">
+                                        <input type="text" class="rprf-dob-input" value="09:00" />
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                                    </div>
+                                    <div class="rprf-dob-part rprf-dob-end">
+                                        <input type="text" class="rprf-dob-input" value="18:00" />
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rprf-select-wrap rprf-workdays">
+                                <input type="text" class="rprf-input" value="Робочі дні: Пн-Пт" readonly />
+                                <svg class="rprf-select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Професійна інформація ── -->
+                <div class="rprf-card">
+                    <h2 class="rprf-card-title">Професійна інформація</h2>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Роль на платформі</label>
+                        <div class="rprf-select-wrap">
+                            <input type="text" class="rprf-input" value="Рієлтор" readonly />
+                            <svg class="rprf-select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Досвід роботи</label>
+                        <div class="rprf-select-wrap">
+                            <input type="text" class="rprf-input" value="6 років" readonly />
+                            <svg class="rprf-select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Кількість об'єктів у керуванні</label>
+                        <input type="text" class="rprf-input" value="4 апартаменти" />
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Місто / регіон роботи</label>
+                        <input type="text" class="rprf-input" value="Львів, Львівська область" />
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Спеціалізація</label>
+                        <input type="text" class="rprf-input" value="Апартаменти для короткострокової оренди" />
+                    </div>
+                </div>
+
+                <!-- ── Інформація для платформи ── -->
+                <div class="rprf-card">
+                    <h2 class="rprf-card-title">Інформація для платформи <span class="rprf-card-title-sub">(службова)</span></h2>
+                    <div class="rprf-row">
+                        <div class="rprf-field">
+                            <label class="rprf-label">ID рієлтора</label>
+                            <input type="text" class="rprf-input rprf-input--readonly" value="RL-02841" readonly />
+                        </div>
+                        <div class="rprf-field">
+                            <label class="rprf-label">Дата реєстрації</label>
+                            <input type="text" class="rprf-input rprf-input--readonly" value="12 березня 2019" readonly />
+                        </div>
+                    </div>
+                    <div class="rprf-row">
+                        <div class="rprf-field">
+                            <label class="rprf-label">Статус акаунта</label>
+                            <input type="text" class="rprf-input rprf-input--readonly" value="Активний" readonly />
+                        </div>
+                        <div class="rprf-field">
+                            <label class="rprf-label">Рейтинг рієлтора</label>
+                            <input type="text" class="rprf-input rprf-input--readonly" value="9,6 / 10" readonly />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Безпека та доступ ── -->
+                <div class="rprf-card">
+                    <h2 class="rprf-card-title">Безпека та доступ</h2>
+                    <div class="rprf-row">
+                        <div class="rprf-field">
+                            <div class="rprf-label-row">
+                                <label class="rprf-label">Пароль</label>
+                                <a href="#" class="rprf-change-link">Змінити пароль</a>
+                            </div>
+                            <div class="rprf-pass-wrap">
+                                <input type="password" class="rprf-input" value="password" />
+                                <button type="button" class="rprf-eye-btn" id="rprf-eye">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="rprf-field">
+                            <label class="rprf-label">Останній вхід</label>
+                            <input type="text" class="rprf-input rprf-input--readonly" value="8 лютого 2026, 14:32" readonly />
+                        </div>
+                    </div>
+                    <!-- Confirmed status -->
+                    <div class="rprf-status-list">
+                        <div class="rprf-status-item rprf-status-item--ok">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6C9D0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+                            Email підтверджено
+                        </div>
+                        <div class="rprf-status-item rprf-status-item--ok">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6C9D0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+                            Телефон підтверджено
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Параметри налаштувань ── -->
+                <div class="rprf-card">
+                    <h2 class="rprf-card-title">Параметри налаштувань</h2>
+                    <div class="rprf-row">
+                        <div class="rprf-field">
+                            <label class="rprf-label">Мова інтерфейсу</label>
+                            <div class="rprf-select-wrap">
+                                <input type="text" class="rprf-input" value="Українська" readonly />
+                                <svg class="rprf-select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                        </div>
+                        <div class="rprf-field">
+                            <label class="rprf-label">Часовий пояс</label>
+                            <div class="rprf-select-wrap">
+                                <input type="text" class="rprf-input" value="GMT +2 (Київ)" readonly />
+                                <svg class="rprf-select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Валюта</label>
+                        <div class="rprf-select-wrap">
+                            <input type="text" class="rprf-input" value="UAH Ukraine Hryvnia" readonly />
+                            <svg class="rprf-select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Сповіщення</label>
+                        <div class="rprf-checks">
+                            <label class="rprf-check-row">
+                                <input type="checkbox" class="rprf-check" checked />
+                                <span>Нові бронювання</span>
+                            </label>
+                            <label class="rprf-check-row">
+                                <input type="checkbox" class="rprf-check" checked />
+                                <span>Повідомлення від гостей</span>
+                            </label>
+                            <label class="rprf-check-row">
+                                <input type="checkbox" class="rprf-check" checked />
+                                <span>Нові відгуки</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Налаштування конфіденційності ── -->
+                <div class="rprf-card">
+                    <h2 class="rprf-card-title">Налаштування конфіденційності</h2>
+                    <p class="rprf-card-sub">Скористайтеся своїми правами на конфіденційність, контролюйте свої дані й експортуйте їх.</p>
+                    <div class="rprf-action-row">
+                        <span class="rprf-action-text">Виберіть "Керувати", щоб змінити налаштування конфіденційності та скористатися своїми правами за допомогою нашої форми запиту.</span>
+                        <button type="button" class="rprf-action-btn rprf-action-btn--primary">Керувати</button>
+                    </div>
+                </div>
+
+                <!-- ── Налаштування безпеки ── -->
+                <div class="rprf-card">
+                    <div class="rprf-field">
+                        <h2 class="rprf-card-title">Налаштування безпеки</h2>
+                        <p class="rprf-card-sub">Змініть ваші параметри безпеки, налаштуйте надійну автентифікацію або видаліть свій акаунт.</p>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Ключі доступу</label>
+                        <div class="rprf-action-row">
+                            <span class="rprf-action-text">Легко та безпечно отримуйте доступ у свій акаунт, не запам'ятовуючи старі паролі.</span>
+                            <button type="button" class="rprf-action-btn rprf-action-btn--primary">Налаштувати</button>
+                        </div>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Двофакторна автентифікація</label>
+                        <div class="rprf-action-row">
+                            <span class="rprf-action-text">Налаштуйте двофакторну автентифікацію, щоб надійніше захистити свій акаунт.</span>
+                            <button type="button" class="rprf-action-btn rprf-action-btn--primary">Налаштувати</button>
+                        </div>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Активні сеанси</label>
+                        <div class="rprf-action-row">
+                            <span class="rprf-action-text">Натиснувши "Вийти", ви протягом 10 хвилин вийдете зі свого акаунта на всіх пристроях, крім цього.</span>
+                            <button type="button" class="rprf-action-btn rprf-action-btn--danger">Вийти</button>
+                        </div>
+                    </div>
+                    <div class="rprf-field">
+                        <label class="rprf-label">Видалення акаунта</label>
+                        <div class="rprf-action-row">
+                            <span class="rprf-action-text">Видаліть акаунт Reservio назавжди</span>
+                            <button type="button" class="rprf-action-btn rprf-action-btn--danger" id="rprf-del-btn">Видалити</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Footer buttons ── -->
+                <div class="rprf-footer-btns">
+                    <button type="button" class="rprf-btn-cancel">Скасувати</button>
+                    <button type="button" class="rprf-btn-save">Зберегти зміни</button>
+                </div>
+
+            </div><!-- /rprf-left -->
+
+            <!-- ══ RIGHT COLUMN ════════════════════════════════════════════════ -->
+            <div class="rprf-right">
+                <div class="rprf-card rprf-photo-card">
+                    <div class="rprf-avatar-wrap">
+                        <img class="rprf-avatar-img" src="https://placehold.co/158x158/D9D9D9/555?text=@initials" alt="@(firstName + " " + lastName)" />
+                    </div>
+                    <button type="button" class="rprf-photo-btn">Змінити фото</button>
+                </div>
+            </div>
+
+        </div><!-- /rprf-outer -->
+    </main>
+
+    @await Html.PartialAsync("_DashboardFooter")
+
+</div>
+
+<!-- ── Delete account confirmation modal ── -->
+<div class="rprf-modal-overlay" id="rprf-del-overlay">
+    <div class="rprf-modal">
+        <div class="rprf-modal-head">
+            <h2 class="rprf-modal-title">Видалити акаунт?</h2>
+            <button type="button" class="rprf-modal-close" id="rprf-del-close">
+                <img src="~/images/icons/close.svg" alt="Закрити" width="28" height="28" />
+            </button>
+        </div>
+        <hr class="rprf-modal-divider" />
+        <div class="rprf-modal-body">
+            <div class="rprf-modal-mascot">
+                <img src="~/images/icons/MeowChik.svg" alt="MeowChik" />
+            </div>
+            <div class="rprf-modal-content">
+                <p class="rprf-modal-warning">Ви впевнені, що хочете видалити акаунт рієлтора?<br><strong>Цю дію неможливо буде скасувати.</strong></p>
+                <p class="rprf-modal-list-label">Після видалення акаунту:</p>
+                <ul class="rprf-modal-list">
+                    <li>Усі ваші оголошення буде безповоротно видалено з платформи</li>
+                    <li>Активні бронювання буде скасовано</li>
+                    <li>Рейтинг та відгуки буде втрачено</li>
+                    <li>Дані профілю буде видалено назавжди</li>
+                </ul>
+                <p class="rprf-modal-note">Якщо ви хочете тимчасово припинити роботу, рекомендуємо деактивувати оголошення замість видалення акаунту.</p>
+            </div>
+        </div>
+        <div class="rprf-modal-footer">
+            <button type="button" class="rprf-modal-cancel" id="rprf-del-cancel">Скасувати</button>
+            <button type="button" class="rprf-modal-confirm">Видалити акаунт і всі оголошення</button>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    var eyeBtn = document.getElementById('rprf-eye');
+    if (eyeBtn) {
+        eyeBtn.addEventListener('click', function () {
+            var inp = eyeBtn.previousElementSibling;
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+        });
+    }
+
+    var overlay  = document.getElementById('rprf-del-overlay');
+    var openBtn  = document.getElementById('rprf-del-btn');
+    var closeBtn = document.getElementById('rprf-del-close');
+    var cancelBtn= document.getElementById('rprf-del-cancel');
+
+    function openModal()  { overlay.classList.add('open'); }
+    function closeModal() { overlay.classList.remove('open'); }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeModal();
+    });
+})();
+</script>
+</body>
+</html>

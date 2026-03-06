@@ -8,6 +8,7 @@ namespace Web.Services
     {
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
+        public bool IsRealtor { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string? DisplayName { get; set; }
@@ -34,6 +35,11 @@ namespace Web.Services
         public string PasswordHash { get; set; } = string.Empty;
         public string Code { get; set; } = string.Empty;
         public DateTime ExpiresAt { get; set; }
+        // Realtor-specific extra fields
+        public bool IsRealtor { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? PhoneNumber { get; set; }
     }
 
     public class PasswordResetToken
@@ -52,6 +58,7 @@ namespace Web.Services
 
         // Pending registration (email confirmation)
         string CreatePendingRegistration(string email, string password);
+        string CreatePendingRealtorRegistration(string email, string password, string firstName, string lastName, string phone);
         PendingRegistration? GetPendingRegistration(string email);
         bool ConfirmRegistration(string email, string code);
 
@@ -112,6 +119,24 @@ namespace Web.Services
         public PendingRegistration? GetPendingRegistration(string email) =>
             _pending.TryGetValue(email, out var p) ? p : null;
 
+        public string CreatePendingRealtorRegistration(string email, string password, string firstName, string lastName, string phone)
+        {
+            var code = GenerateCode();
+            var pending = new PendingRegistration
+            {
+                Email = email,
+                PasswordHash = Hash(password),
+                Code = code,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(15),
+                IsRealtor = true,
+                FirstName = firstName,
+                LastName = lastName,
+                PhoneNumber = phone,
+            };
+            _pending[email] = pending;
+            return code;
+        }
+
         public bool ConfirmRegistration(string email, string code)
         {
             if (!_pending.TryGetValue(email, out var pending)) return false;
@@ -122,6 +147,10 @@ namespace Web.Services
             {
                 Email = email,
                 PasswordHash = pending.PasswordHash,
+                IsRealtor = pending.IsRealtor,
+                FirstName = pending.FirstName ?? "",
+                LastName = pending.LastName ?? "",
+                PhoneNumber = pending.PhoneNumber,
             };
             if (!_users.TryAdd(email, user)) return false;
             _pending.TryRemove(email, out _);

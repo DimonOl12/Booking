@@ -66,10 +66,10 @@
 
                     <div class="realtor-reg-continue">
                         <span class="realtor-reg-continue-hint">Розпочали реєстрацію?</span>
-                        <a href="#" class="realtor-reg-continue-link">Продовжити реєстрацію</a>
+                        <a href="@Url.Action("RealtorLogin", "Account")" class="realtor-reg-continue-link">Продовжити реєстрацію</a>
                     </div>
 
-                    <a href="#" class="btn-realtor-hero">
+                    <a href="@Url.Action("RealtorRegisterStep1", "Account")" class="btn-realtor-hero">
                         Почати заробляти
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
@@ -205,7 +205,7 @@
                     <p class="stat">Вже <strong>12 000+</strong> господарів довіряють нам</p>
                     <p class="timing">Займе ~5 хвилин. Перші бронювання &mdash; без комісії*</p>
                 </div>
-                <a href="#" class="btn-green-primary">Додати помешкання безкоштовно</a>
+                <a href="@Url.Action("RealtorRegisterStep1", "Account")" class="btn-green-primary">Додати помешкання безкоштовно</a>
             </div>
         </div>
     </div>
@@ -271,7 +271,7 @@
         </div>
 
         <div>
-            <a href="#" class="btn-accent-large">Почати заробляти</a>
+            <a href="@Url.Action("RealtorRegisterStep1", "Account")" class="btn-accent-large">Почати заробляти</a>
         </div>
     </div>
 

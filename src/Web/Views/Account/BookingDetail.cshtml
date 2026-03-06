@@ -1,0 +1,332 @@
+@{
+    ViewData["Title"] = "Інформація про бронювання";
+    Layout = null;
+    ViewBag.ActiveTab = "Bookings";
+    int bookingId = ViewBag.BookingId ?? 1;
+
+    var bookings = new[] {
+        new { Id=1, Num="1234", Hotel="Атлас Делюкс", City="Львів", Addr="Шевченка Проспект 27, Львів, 79006, Україна",
+              Room="Стандартний двомісний номер або номер Твін",
+              CheckInLabel="пн. 10 лют. 2026", CheckOutLabel="сб. 11 лют. 2026",
+              CheckInFull="10 – 11 лютого 2026", Nights="1 ніч",
+              Adults=2, Children=0, Rooms=1,
+              Bed="1 двоспальне ліжко", BookNote="Ваш номер буде готовий до заїзду з 14:00",
+              RoomCode="1234",
+              Rating="9.4", RatingLabel="Відмінно", Reviews=248,
+              BasePrice=3998, Discount=0, BookingPos=3597, Tax=234, CityTax=65,
+              OldTotal=3950, FinalTotal=3591,
+              StatusCss="paid", StatusLabel="Оплачено",
+              Img="property-1.jpg", RoomImg="property-2.jpg" },
+        new { Id=2, Num="1235", Hotel="Готель Швейцарський", City="Львів", Addr="Кн. Романа Вул.20, Львів, 79005, Україна",
+              Room="Покращений сімейний номер",
+              CheckInLabel="вт. 22 тра. 2026", CheckOutLabel="чт. 23 тра. 2026",
+              CheckInFull="22 – 23 травня 2026", Nights="1 ніч",
+              Adults=2, Children=0, Rooms=1,
+              Bed="1 сімейне ліжко", BookNote="Ваш номер буде готовий до заїзду з 14:00",
+              RoomCode="1231",
+              Rating="8.9", RatingLabel="Чудово", Reviews=182,
+              BasePrice=4479, Discount=229, BookingPos=3965, Tax=285, CityTax=0,
+              OldTotal=4479, FinalTotal=4250,
+              StatusCss="booked", StatusLabel="Заброньовано",
+              Img="property-2.jpg", RoomImg="property-3.jpg" },
+        new { Id=3, Num="1236", Hotel="PANORAMA Lviv Hotel", City="Львів", Addr="Проспект свободи 45, Львів, 79007, Україна",
+              Room="Люкс",
+              CheckInLabel="ср. 18 лют. 2026", CheckOutLabel="чт. 19 лют. 2026",
+              CheckInFull="18 – 19 лютого 2026", Nights="1 ніч",
+              Adults=2, Children=0, Rooms=1,
+              Bed="2 двоспальних ліжка", BookNote="Ваш номер буде готовий до заїзду з 14:00",
+              RoomCode="1232",
+              Rating="9.1", RatingLabel="Відмінно", Reviews=315,
+              BasePrice=9600, Discount=0, BookingPos=9600, Tax=672, CityTax=0,
+              OldTotal=9600, FinalTotal=9600,
+              StatusCss="booked", StatusLabel="Заброньовано",
+              Img="property-3.jpg", RoomImg="property-4.jpg" },
+    };
+    var bk = bookings.FirstOrDefault(b => b.Id == bookingId) ?? bookings[0];
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — @bk.Hotel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+</head>
+<body class="bd-page-body">
+
+<div class="bd-page-wrap">
+
+    <div class="bd-page-card">
+
+        <!-- ── Page header ── -->
+        <div class="bd-page-header">
+            <div>
+                <div class="bd-page-title">Інформація про бронювання</div>
+                <div class="bd-page-sub">
+                    Бронювання № @bk.Num
+                    <span class="bd-badge @bk.StatusCss">
+                        <span class="bd-badge-dot"></span>@bk.StatusLabel
+                    </span>
+                </div>
+            </div>
+            <a href="@Url.Action("Bookings","Account")" class="bd-close-btn" title="Закрити">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </a>
+        </div>
+
+        <!-- ── Gallery ── -->
+        <div class="bd-gallery-wrap">
+            <img class="bd-gallery-img" id="bdMainImg" src="~/images/@bk.Img" alt="@bk.Hotel" />
+            <button class="bd-gal-prev" onclick="prevImg()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="bd-gal-next" onclick="nextImg()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+        </div>
+
+        <!-- ── Hotel info ── -->
+        <div class="bd-hotel-block">
+            <div class="bd-hotel-left">
+                <div class="bd-hotel-name">@bk.Hotel</div>
+                <div class="bd-hotel-city">@bk.City</div>
+                <div class="bd-hotel-addr">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    @bk.Addr
+                </div>
+                <div class="bd-rating-row">
+                    <div class="bd-rating-score">@bk.Rating</div>
+                    <div>
+                        <div class="bd-rating-grade">@bk.RatingLabel</div>
+                        <div class="bd-rating-cnt">@bk.Reviews відгуки</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="bd-route-btn">Прокласти маршрут</a>
+        </div>
+
+        <!-- ── Booking info ── -->
+        <div class="bd-section-card">
+            <div class="bd-section-title">Інформація про ваше бронювання</div>
+
+            <div class="bd-dates-grid">
+                <div class="bd-date-col">
+                    <div class="bd-date-label">Реєстрація заїзду</div>
+                    <div class="bd-date-val">@bk.CheckInLabel</div>
+                    <div class="bd-date-note">з 14:00</div>
+                </div>
+                <div class="bd-date-col">
+                    <div class="bd-date-label">Реєстрація виїзду</div>
+                    <div class="bd-date-val">@bk.CheckOutLabel</div>
+                    <div class="bd-date-note">до 12:00</div>
+                </div>
+                <div class="bd-date-col">
+                    <div class="bd-date-label">Термін перебування</div>
+                    <div class="bd-date-val">@bk.Nights</div>
+                </div>
+            </div>
+
+            <!-- Chosen room -->
+            <div class="bd-chosen-header">
+                <div class="bd-chosen-label">Ви обрали:</div>
+                <div class="bd-chosen-guests">@bk.Adults дорослих – @bk.Rooms номер</div>
+                <button class="bd-change-btn" onclick="alert('Для зміни номера зверніться до адміністратора.')">Змінити вибір</button>
+            </div>
+
+            <div class="bd-room-gallery">
+                <img class="bd-room-img" id="bdRoomImg" src="~/images/@bk.RoomImg" alt="Номер" />
+                <button class="bd-rgal-prev" onclick="prevRoom()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <button class="bd-rgal-next" onclick="nextRoom()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+
+            <div class="bd-room-name">@bk.Room</div>
+            <div class="bd-room-details">
+                <div class="bd-room-detail">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+                    @bk.CheckInFull
+                </div>
+                <div class="bd-room-detail">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                    @bk.Adults дорослих · @bk.Rooms номер
+                </div>
+                <div class="bd-room-detail">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-1h16l1 1v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9z"/><path d="M3 11h18"/></svg>
+                    @bk.Bed
+                </div>
+                <div class="bd-room-detail">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    @bk.BookNote
+                </div>
+                <div class="bd-room-detail">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    # @bk.RoomCode
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Price details ── -->
+        <div class="bd-section-card">
+            <div class="bd-price-header-row">
+                <div class="bd-section-title">Деталі ціни</div>
+                <div class="bd-badge @bk.StatusCss">
+                    <span class="bd-badge-dot"></span>@bk.StatusLabel
+                </div>
+            </div>
+
+            <div class="bd-price-table">
+                <div class="bd-price-row">
+                    <span class="bd-price-label">Початкова ціна</span>
+                    <span class="bd-price-val">UAH @bk.BasePrice</span>
+                </div>
+                @if (bk.Discount > 0) {
+                    <div class="bd-price-row">
+                        <span class="bd-price-label">Знижка</span>
+                        <span class="bd-price-val bd-discount">– UAH @bk.Discount</span>
+                    </div>
+                }
+                <div class="bd-price-row">
+                    <span class="bd-price-label">Позиція бронювання</span>
+                    <span class="bd-price-val">UAH @bk.BookingPos</span>
+                </div>
+                <div class="bd-price-row">
+                    <span class="bd-price-label">Податки</span>
+                    <span class="bd-price-val">UAH @bk.Tax</span>
+                </div>
+                @if (bk.CityTax > 0) {
+                    <div class="bd-price-row">
+                        <span class="bd-price-label">Місцевий податок</span>
+                        <span class="bd-price-val">UAH @bk.CityTax</span>
+                    </div>
+                }
+                <div class="bd-price-divider"></div>
+                <div class="bd-price-total-row">
+                    <span class="bd-price-total-label">Всього</span>
+                    <div class="bd-price-total-right">
+                        @if (bk.OldTotal != bk.FinalTotal) {
+                            <span class="bd-price-old">UAH @bk.OldTotal</span>
+                        }
+                        <span class="bd-price-final">UAH @bk.FinalTotal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Action buttons ── -->
+        <div class="bd-actions">
+            @if (bk.StatusCss == "booked" || bk.StatusCss == "paid") {
+                <button class="bd-action-btn cancel" onclick="cancelBooking()">Скасувати</button>
+            }
+            <button class="bd-action-btn secondary" onclick="contactHotel()">Зв'язатись з об'єктом</button>
+            <button class="bd-action-btn primary" onclick="openReview()">Залишити відгук</button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ════ REVIEW MODAL ════ -->
+<div class="rv-overlay" id="rvOverlay" onclick="if(event.target===this)closeReview()">
+    <div class="rv-modal">
+
+        <div class="rv-modal-header">
+            <div class="rv-title">Ваш відгук</div>
+            <button class="rv-close" onclick="closeReview()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+
+        <div class="rv-modal-body">
+            <!-- Green mascot banner -->
+            <div class="rv-banner">
+                <img src="~/images/icons/Group.svg" alt="" class="rv-banner-mascot" />
+                <div class="rv-banner-text">
+                    Поділіться своїми враженнями!<br>
+                    Поставте оцінки від 1 до 10 та напишіть кілька слів — ми читаємо кожен відгук.
+                </div>
+            </div>
+
+            <!-- General impression -->
+            <div class="rv-field-group">
+                <label class="rv-field-label">Загальне враження</label>
+                <input class="rv-field-input" type="text" placeholder="Напишіть коротко загальне враження" />
+            </div>
+
+            <!-- Review text -->
+            <div class="rv-field-group">
+                <label class="rv-field-label">Відгук</label>
+                <textarea class="rv-textarea" id="rvText" rows="4" placeholder="Напишіть ваш відгук"></textarea>
+            </div>
+
+            <!-- Rating criteria -->
+            <div class="rv-criteria-title">Оцініть свій досвід проживання від 1 до 10</div>
+
+            <div class="rv-criteria-list">
+                @foreach (var cat in new[] { "Персонал", "Комфорт", "Безкоштовний Wi-Fi", "Зручності", "Співвідношення ціна/якість", "Розташування", "Чистота" }) {
+                    <div class="rv-criterion">
+                        <div class="rv-criterion-label">@cat</div>
+                        <div class="rv-num-row">
+                            @for (int i = 1; i <= 10; i++) {
+                                <button class="rv-num-btn" data-cat="@cat" data-val="@i" onclick="setScore(this,'@cat',@i)">@i</button>
+                            }
+                        </div>
+                        <div class="rv-criterion-divider"></div>
+                    </div>
+                }
+            </div>
+
+            <button class="rv-submit-btn" onclick="submitReview()">Надіслати</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ── Gallery ──
+var bdImgs = ['@bk.Img','property-2.jpg','property-3.jpg','property-4.jpg'];
+var bdIdx = 0;
+function prevImg() { bdIdx = (bdIdx - 1 + bdImgs.length) % bdImgs.length; document.getElementById('bdMainImg').src = '/images/' + bdImgs[bdIdx]; }
+function nextImg() { bdIdx = (bdIdx + 1) % bdImgs.length; document.getElementById('bdMainImg').src = '/images/' + bdImgs[bdIdx]; }
+
+var rdImgs = ['@bk.RoomImg','property-1.jpg','property-2.jpg'];
+var rdIdx = 0;
+function prevRoom() { rdIdx = (rdIdx - 1 + rdImgs.length) % rdImgs.length; document.getElementById('bdRoomImg').src = '/images/' + rdImgs[rdIdx]; }
+function nextRoom() { rdIdx = (rdIdx + 1) % rdImgs.length; document.getElementById('bdRoomImg').src = '/images/' + rdImgs[rdIdx]; }
+
+// ── Actions ──
+function cancelBooking() {
+    if (confirm('Скасувати бронювання? Умови повернення коштів залежать від тарифу.'))
+        alert('Запит на скасування надіслано. Кошти повернуться протягом 5-7 робочих днів.');
+}
+function contactHotel() { alert('Перенаправлення на сторінку зв\'язку з готелем.'); }
+
+// ── Review modal ──
+var scores = {};
+function openReview() {
+    document.getElementById('rvOverlay').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+function closeReview() {
+    document.getElementById('rvOverlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+function setScore(btn, cat, val) {
+    scores[cat] = val;
+    var row = btn.closest('.rv-num-row');
+    row.querySelectorAll('.rv-num-btn').forEach(function(b) {
+        b.classList.toggle('active', parseInt(b.getAttribute('data-val')) <= val);
+    });
+}
+function submitReview() {
+    var text = document.getElementById('rvText').value.trim();
+    if (!text) { alert('Будь ласка, напишіть відгук.'); return; }
+    alert('Дякуємо за відгук! Він буде опублікований після модерації.');
+    closeReview();
+}
+</script>
+</body>
+</html>

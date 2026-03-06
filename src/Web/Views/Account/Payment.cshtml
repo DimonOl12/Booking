@@ -1,0 +1,127 @@
+@{
+    ViewData["Title"] = "Способи оплати";
+    Layout = null;
+    ViewBag.ActiveTab = "Payment";
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Способи оплати</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+</head>
+<body>
+
+@await Html.PartialAsync("_DashboardHero")
+
+<div class="dsh-wrap">
+    <div class="pay-layout">
+
+        <!-- ── Left: Add card form ── -->
+        <div class="pay-form-col">
+            <div class="pay-form-title">Додати картку</div>
+            <div class="pay-form-desc">Безпечно додайте або видаліть способи оплати, щоб спростити процес бронювання.</div>
+
+            <div class="pay-card-box">
+                <!-- Card holder name -->
+                <div class="pay-field">
+                    <label class="pay-field-label">Ім'я власника картки*</label>
+                    <input class="pay-input" type="text" id="cardName" placeholder="Ім'я власника картки" style="text-transform:uppercase;" />
+                </div>
+
+                <!-- Card number + expiry side by side -->
+                <div class="pay-row-fields">
+                    <div class="pay-field">
+                        <label class="pay-field-label">Номер картки*</label>
+                        <input class="pay-input" type="text" id="cardNum" placeholder="Номер картки"
+                               maxlength="19" oninput="formatCardNum(this)" />
+                    </div>
+                    <div class="pay-field">
+                        <label class="pay-field-label">Термін дії*</label>
+                        <input class="pay-input" type="text" id="cardExp" placeholder="ММ/РР"
+                               maxlength="5" oninput="formatExpiry(this)" />
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="pay-actions">
+                    <button class="pay-btn-cancel" onclick="clearForm()">Скасувати</button>
+                    <button class="pay-btn-add" onclick="addCard()">Додати</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Right: Saved cards ── -->
+        <div class="pay-saved-col">
+            <div class="pay-saved-title">Збережені картки</div>
+
+            <div id="savedCards">
+                <!-- Pre-seeded card -->
+                <div class="pay-card-item" id="savedCard_1234">
+                    <div class="pay-card-brand">VISA</div>
+                    <div class="pay-card-num">•••• 1234</div>
+                    <div class="pay-card-exp">04/2030</div>
+                    <button class="pay-del-btn" onclick="removeCard('savedCard_1234')" title="Видалити">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="noCardsMsg" style="display:none;padding:24px 0;color:#777;font-size:14px;">
+                Немає збережених карток
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("_DashboardFooter")
+
+<script>
+function formatCardNum(input) {
+    var v = input.value.replace(/\D/g, '').substring(0, 16);
+    input.value = v.replace(/(.{4})/g, '$1 ').trim();
+}
+function formatExpiry(input) {
+    var v = input.value.replace(/\D/g, '').substring(0, 4);
+    if (v.length >= 3) v = v.substring(0, 2) + '/' + v.substring(2);
+    input.value = v;
+}
+function clearForm() {
+    document.getElementById('cardNum').value = '';
+    document.getElementById('cardName').value = '';
+    document.getElementById('cardExp').value = '';
+}
+function addCard() {
+    var num = document.getElementById('cardNum').value.replace(/\s/g, '');
+    var exp = document.getElementById('cardExp').value;
+    if (num.length < 16 || !exp) {
+        alert('Будь ласка, заповніть всі поля коректно.');
+        return;
+    }
+    var last4 = num.slice(-4);
+    var id = 'savedCard_' + last4 + '_' + Date.now();
+    var html = '<div class="pay-card-item" id="' + id + '">' +
+        '<div class="pay-card-brand">VISA</div>' +
+        '<div class="pay-card-num">•••• ' + last4 + '</div>' +
+        '<div class="pay-card-exp">' + exp + '</div>' +
+        '<button class="pay-del-btn" onclick="removeCard(\'' + id + '\')" title="Видалити">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+        '</button></div>';
+    document.getElementById('savedCards').insertAdjacentHTML('beforeend', html);
+    clearForm();
+    document.getElementById('noCardsMsg').style.display = 'none';
+}
+function removeCard(id) {
+    var el = document.getElementById(id);
+    if (el) el.remove();
+    if (!document.querySelector('#savedCards .pay-card-item'))
+        document.getElementById('noCardsMsg').style.display = '';
+}
+</script>
+</body>
+</html>

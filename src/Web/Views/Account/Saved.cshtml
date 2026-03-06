@@ -1,0 +1,77 @@
+@{
+    ViewData["Title"] = "Збережені";
+    Layout = null;
+    ViewBag.ActiveTab = "Saved";
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Збережені</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+</head>
+<body>
+
+@await Html.PartialAsync("_DashboardHero")
+
+<div class="dsh-wrap">
+
+    <!-- List selector chips -->
+    <div class="sv-chips-row">
+        <span class="sv-select-label">Оберіть список:</span>
+        <div class="sv-chips" id="svChips">
+            <button class="sv-chip active" onclick="selectList(this,'next')">Моя наступна подорож</button>
+            <button class="sv-chip" onclick="selectList(this,'summer')">Літо</button>
+            <button class="sv-chip" onclick="selectList(this,'winter')">Зима</button>
+        </div>
+        <button class="sv-chip-add" onclick="addList()" title="Новий список">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+    </div>
+
+    <div class="sv-title" id="svListTitle">Моя наступна подорож</div>
+
+    <!-- Content -->
+    <div class="sv-content" id="svContent">
+        <!-- Empty state -->
+        <div class="sv-empty" id="svEmpty">
+            <img src="~/images/icons/Group.svg" alt="" class="sv-empty-mascot" />
+            <div class="sv-empty-title">Поки що порожньо</div>
+            <div class="sv-empty-sub">Тут з'являться місця, які ви обрали</div>
+        </div>
+    </div>
+
+</div>
+
+@await Html.PartialAsync("_DashboardFooter")
+
+<script>
+var currentList = 'next';
+
+function selectList(btn, key) {
+    document.querySelectorAll('.sv-chip').forEach(function(c) { c.classList.remove('active'); });
+    btn.classList.add('active');
+    currentList = key;
+    var titles = { next: 'Моя наступна подорож', summer: 'Літо', winter: 'Зима' };
+    document.getElementById('svListTitle').textContent = titles[key] || btn.textContent.trim();
+}
+
+function addList() {
+    var name = prompt('Назва нового списку:');
+    if (!name || !name.trim()) return;
+    var key = 'list_' + Date.now();
+    var chips = document.getElementById('svChips');
+    var btn = document.createElement('button');
+    btn.className = 'sv-chip';
+    btn.textContent = name.trim();
+    btn.onclick = function() { selectList(btn, key); };
+    chips.appendChild(btn);
+    selectList(btn, key);
+}
+</script>
+</body>
+</html>

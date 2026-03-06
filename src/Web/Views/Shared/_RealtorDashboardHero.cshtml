@@ -1,0 +1,138 @@
+@using System.Security.Claims
+@{
+    var activeTab = ViewBag.ActiveTab as string ?? "Dashboard";
+    var initials  = User.FindFirst("Initials")?.Value ?? "?";
+    var fullName  = User.Identity?.Name ?? "";
+    if (string.IsNullOrEmpty(fullName))
+        fullName = User.FindFirst(ClaimTypes.Email)?.Value ?? "";
+}
+
+<div class="dsh-hero">
+    <img class="dsh-hero-img" src="~/images/Subtract.jpg" alt="" />
+
+    <!-- ── Navbar ── -->
+    <nav class="dsh-navbar">
+        <a href="/" class="dsh-navbar-logo">
+            <img src="~/images/icons/Reservio.svg" alt="Reservio" />
+        </a>
+        <div class="dsh-navbar-right">
+            <div class="dsh-navbar-currency">UAH</div>
+            <div class="dsh-navbar-flag">
+                <svg width="30" height="20" viewBox="0 0 30 20" fill="none">
+                    <rect width="30" height="10" fill="#0057B7"/>
+                    <rect y="10" width="30" height="10" fill="#FFD700"/>
+                </svg>
+            </div>
+
+            <div class="dsh-user-wrap" id="dshUserWrap">
+                <button class="dsh-user-btn" id="dshUserBtn" type="button">
+                    <div class="dsh-avatar-wrap">
+                        <div class="dsh-avatar-realtor">@initials</div>
+                        <span class="dsh-badge">3</span>
+                    </div>
+                    <span class="dsh-username">@fullName</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="dsh-dropdown" id="dshDrop">
+                    <a href="@Url.Action("RealtorDashboard","Account")" class="dsh-drop-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        Дашборд
+                    </a>
+                    <a href="@Url.Action("Profile","Account")" class="dsh-drop-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        Особисті дані
+                    </a>
+                    <div class="dsh-drop-divider"></div>
+                    <form method="post" asp-action="Logout" asp-controller="Account" style="margin:0">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="dsh-drop-item logout">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                            Вийти
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── Tabs bar ── -->
+    <div class="dsh-tabs-bar">
+
+        @* Dashboard *@
+        @if (activeTab == "Dashboard") {
+            <div class="dsh-tab-chip">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="9" height="11" rx="2"/><rect x="13" y="2" width="9" height="7" rx="2"/><rect x="13" y="13" width="9" height="9" rx="2"/><rect x="2" y="17" width="9" height="5" rx="2"/></svg>
+                Дашборд
+            </div>
+        } else {
+            <a href="@Url.Action("RealtorDashboard","Account")" class="dsh-tab-icon" title="Дашборд">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="9" height="11" rx="2"/><rect x="13" y="2" width="9" height="7" rx="2"/><rect x="13" y="13" width="9" height="9" rx="2"/><rect x="2" y="17" width="9" height="5" rx="2"/></svg>
+            </a>
+        }
+
+        @* My Ads *@
+        @if (activeTab == "MyAds") {
+            <div class="dsh-tab-chip">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Мої оголошення
+            </div>
+        } else {
+            <a href="@Url.Action("RealtorMyAds","Account")" class="dsh-tab-icon" title="Мої оголошення">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </a>
+        }
+
+        @* Rating *@
+        @if (activeTab == "Rating") {
+            <div class="dsh-tab-chip">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Рейтинг
+            </div>
+        } else {
+            <a href="@Url.Action("RealtorRating","Account")" class="dsh-tab-icon" title="Рейтинг">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </a>
+        }
+
+        @* Messages / Mail *@
+        @if (activeTab == "RealtorMessages") {
+            <div class="dsh-tab-chip">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                Пошта
+            </div>
+        } else {
+            <a href="@Url.Action("RealtorMessages","Account")" class="dsh-tab-icon" title="Пошта">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </a>
+        }
+
+        @* Personal Data *@
+        @if (activeTab == "RealtorProfile") {
+            <div class="dsh-tab-chip">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Особисті дані
+            </div>
+        } else {
+            <a href="@Url.Action("RealtorProfile","Account")" class="dsh-tab-icon" title="Особисті дані">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </a>
+        }
+
+    </div>
+</div>
+
+<script>
+(function () {
+    var wrap = document.getElementById('dshUserWrap');
+    var btn  = document.getElementById('dshUserBtn');
+    var menu = document.getElementById('dshDrop');
+    if (!wrap) return;
+    btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        menu.classList.toggle('open');
+    });
+    document.addEventListener('click', function (e) {
+        if (!wrap.contains(e.target)) menu.classList.remove('open');
+    });
+})();
+</script>

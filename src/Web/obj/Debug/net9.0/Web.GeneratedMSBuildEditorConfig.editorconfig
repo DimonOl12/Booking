@@ -11,125 +11,205 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Web
 build_property.RootNamespace = Web
-build_property.ProjectDir = C:\Users\LOKIZAVR\source\repos\DimonOl12\Booking\src\Web\
+build_property.ProjectDir = /workspaces/Booking/src/Web/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\LOKIZAVR\source\repos\DimonOl12\Booking\src\Web
+build_property.MSBuildProjectDirectory = /workspaces/Booking/src/Web
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Account/ForgotPassword.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZC5jc2h0bWw=
+[/workspaces/Booking/src/Web/Views/Account/BookingDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Cb29raW5nRGV0YWlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Account/ForgotPasswordStep2.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZFN0ZXAyLmNzaHRtbA==
+[/workspaces/Booking/src/Web/Views/Account/Bookings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Cb29raW5ncy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Account/ForgotPasswordStep3.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxGb3Jnb3RQYXNzd29yZFN0ZXAzLmNzaHRtbA==
+[/workspaces/Booking/src/Web/Views/Account/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Gb3Jnb3RQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Account/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+[/workspaces/Booking/src/Web/Views/Account/ForgotPasswordStep2.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Gb3Jnb3RQYXNzd29yZFN0ZXAyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Account/PartnerLogin.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQYXJ0bmVyTG9naW4uY3NodG1s
+[/workspaces/Booking/src/Web/Views/Account/ForgotPasswordStep3.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Gb3Jnb3RQYXNzd29yZFN0ZXAzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Account/PartnerRegister.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQYXJ0bmVyUmVnaXN0ZXIuY3NodG1s
+[/workspaces/Booking/src/Web/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Account/Profile.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQcm9maWxlLmNzaHRtbA==
+[/workspaces/Booking/src/Web/Views/Account/Messages.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9NZXNzYWdlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Account/Register.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+[/workspaces/Booking/src/Web/Views/Account/PartnerLogin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9QYXJ0bmVyTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Account/RegisterConfirm.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3RlckNvbmZpcm0uY3NodG1s
+[/workspaces/Booking/src/Web/Views/Account/PartnerRegister.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9QYXJ0bmVyUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Admin/Dashboard.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
+[/workspaces/Booking/src/Web/Views/Account/Payment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9QYXltZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Admin/Realtors.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUmVhbHRvcnMuY3NodG1s
+[/workspaces/Booking/src/Web/Views/Account/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Qcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Admin/Users.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXNlcnMuY3NodG1s
+[/workspaces/Booking/src/Web/Views/Account/RealtorDashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWFsdG9yRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+[/workspaces/Booking/src/Web/Views/Account/RealtorLogin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWFsdG9yTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Home/Property.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcm9wZXJ0eS5jc2h0bWw=
+[/workspaces/Booking/src/Web/Views/Account/RealtorMessages.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWFsdG9yTWVzc2FnZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Home/Realtor.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZWFsdG9yLmNzaHRtbA==
+[/workspaces/Booking/src/Web/Views/Account/RealtorMyAds.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWFsdG9yTXlBZHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Home/Search.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTZWFyY2guY3NodG1s
+[/workspaces/Booking/src/Web/Views/Account/RealtorProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWFsdG9yUHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Listings/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlzdGluZ3NcQ3JlYXRlLmNzaHRtbA==
+[/workspaces/Booking/src/Web/Views/Account/RealtorPropertyDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWFsdG9yUHJvcGVydHlEZXRhaWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Listings/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlzdGluZ3NcRGV0YWlscy5jc2h0bWw=
+[/workspaces/Booking/src/Web/Views/Account/RealtorRating.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWFsdG9yUmF0aW5nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Listings/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlzdGluZ3NcRWRpdC5jc2h0bWw=
+[/workspaces/Booking/src/Web/Views/Account/RealtorRegisterStep1.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWFsdG9yUmVnaXN0ZXJTdGVwMS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Listings/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlzdGluZ3NcSW5kZXguY3NodG1s
+[/workspaces/Booking/src/Web/Views/Account/RealtorRegisterStep2.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWFsdG9yUmVnaXN0ZXJTdGVwMi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Listings/MyListings.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlzdGluZ3NcTXlMaXN0aW5ncy5jc2h0bWw=
+[/workspaces/Booking/src/Web/Views/Account/RealtorRegisterStep3.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWFsdG9yUmVnaXN0ZXJTdGVwMy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Shared/_Footer.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Gb290ZXIuY3NodG1s
+[/workspaces/Booking/src/Web/Views/Account/RealtorRegisterStep4.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWFsdG9yUmVnaXN0ZXJTdGVwNC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Shared/_HomeNavbar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ib21lTmF2YmFyLmNzaHRtbA==
+[/workspaces/Booking/src/Web/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Shared/_HomeNavbarGuest.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ib21lTmF2YmFyR3Vlc3QuY3NodG1s
+[/workspaces/Booking/src/Web/Views/Account/RegisterConfirm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWdpc3RlckNvbmZpcm0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+[/workspaces/Booking/src/Web/Views/Account/Saved.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9TYXZlZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/Shared/_Navbar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9OYXZiYXIuY3NodG1s
+[/workspaces/Booking/src/Web/Views/Account/Settings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9TZXR0aW5ncy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[/workspaces/Booking/src/Web/Views/Admin/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/LOKIZAVR/source/repos/DimonOl12/Booking/src/Web/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+[/workspaces/Booking/src/Web/Views/Admin/Realtors.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vUmVhbHRvcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Admin/Users.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Home/Property.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcm9wZXJ0eS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Home/Realtor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9SZWFsdG9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Home/Search.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9TZWFyY2guY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Listings/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGlzdGluZ3MvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Listings/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGlzdGluZ3MvRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Listings/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGlzdGluZ3MvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Listings/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGlzdGluZ3MvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Listings/MyListings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTGlzdGluZ3MvTXlMaXN0aW5ncy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Shared/_DashboardFooter.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19EYXNoYm9hcmRGb290ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Shared/_DashboardHero.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19EYXNoYm9hcmRIZXJvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Shared/_Footer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Gb290ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Shared/_HomeNavbar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Ib21lTmF2YmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Shared/_HomeNavbarGuest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Ib21lTmF2YmFyR3Vlc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Shared/_Navbar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19OYXZiYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/Shared/_RealtorDashboardHero.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19SZWFsdG9yRGFzaGJvYXJkSGVyby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/workspaces/Booking/src/Web/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

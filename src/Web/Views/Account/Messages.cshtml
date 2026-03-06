@@ -1,0 +1,146 @@
+@{
+    ViewData["Title"] = "Повідомлення";
+    Layout = null;
+    ViewBag.ActiveTab = "Messages";
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Повідомлення</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+</head>
+<body>
+
+@await Html.PartialAsync("_DashboardHero")
+
+<div class="dsh-wrap">
+    <div class="msg-layout">
+
+        <!-- ── Left: chat list ── -->
+        <div class="msg-list-panel">
+            <div class="msg-subtabs">
+                <button class="msg-subtab active" id="tabAll" onclick="switchTab('all')">Всі повідомлення</button>
+                <button class="msg-subtab" id="tabArchive" onclick="switchTab('archive')">Архів</button>
+            </div>
+
+            <div class="msg-search">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" placeholder="Шукати" id="msgSearchInput" oninput="filterChats(this.value)"/>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </div>
+
+            <div class="msg-list" id="chatList">
+
+                <div class="msg-item" data-chat="atlas" data-tab="all" onclick="openChat('atlas')">
+                    <div class="msg-avatar">А</div>
+                    <div class="msg-item-body">
+                        <div class="msg-item-top">
+                            <span class="msg-item-name">Атлас Делюкс</span>
+                            <span class="msg-item-time">14:35</span>
+                        </div>
+                        <div class="msg-item-bottom">
+                            <span class="msg-item-preview">Доброго дня! Ми підтвердили ваше бронювання 😊</span>
+                            <span class="msg-unread-badge">3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="msg-item" data-chat="kvartyr" data-tab="all" onclick="openChat('kvartyr')">
+                    <div class="msg-avatar">К</div>
+                    <div class="msg-item-body">
+                        <div class="msg-item-top">
+                            <span class="msg-item-name">Квартира в центрі Львова</span>
+                            <span class="msg-item-time">14:35</span>
+                        </div>
+                        <div class="msg-item-bottom">
+                            <span class="msg-item-preview">Доброго дня! Ми підтвердили ваше бронювання 😊</span>
+                            <span class="msg-unread-dot"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="msg-item" data-chat="support" data-tab="all" onclick="openChat('support')">
+                    <div class="msg-avatar support">RS</div>
+                    <div class="msg-item-body">
+                        <div class="msg-item-top">
+                            <span class="msg-item-name">Служба підтримки Reservio</span>
+                            <span class="msg-item-time">вчора 01:07</span>
+                        </div>
+                        <div class="msg-item-bottom">
+                            <span class="msg-item-preview">Дякуємо за звернення! Ваш запит прийнято.</span>
+                            <span class="msg-unread-badge">1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="msg-item" data-chat="swiss" data-tab="all" onclick="openChat('swiss')">
+                    <div class="msg-avatar">Ш</div>
+                    <div class="msg-item-body">
+                        <div class="msg-item-top">
+                            <span class="msg-item-name">Готель Швейцарський</span>
+                            <span class="msg-item-time">15.01.2026</span>
+                        </div>
+                        <div class="msg-item-bottom">
+                            <span class="msg-item-preview">Будь ласка зачекайте підтвердження вашого бронювання.</span>
+                            <span class="msg-unread-dot"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── Right: chat panel / empty ── -->
+        <div id="chatPanel" class="msg-right-panel">
+
+            <!-- Empty state -->
+            <div class="msg-empty-panel" id="emptyPanel">
+                <div class="msg-empty-inner">
+                    <img src="~/images/icons/Group.svg" alt="" class="msg-empty-mascot" />
+                    <div class="msg-empty-title">Оберіть чат, щоб почати спілкування</div>
+                </div>
+            </div>
+
+            <!-- Archive empty state -->
+            <div class="msg-archive-panel" id="archivePanel" style="display:none;">
+                <div class="msg-empty-inner">
+                    <img src="~/images/icons/Group.svg" alt="" class="msg-empty-mascot" />
+                    <div class="msg-empty-title">Поки що порожньо</div>
+                    <div class="msg-empty-sub">Повідомлень поки немає</div>
+                </div>
+            </div>
+
+            <!-- Chat view -->
+            <div class="msg-chat-panel" id="chatView" style="display:none;">
+                <div class="msg-chat-header">
+                    <div class="msg-chat-header-avatar" id="chatHeaderAvatar">А</div>
+                    <div class="msg-chat-header-info">
+                        <div class="msg-chat-hotel" id="chatHeaderName">Атлас Делюкс</div>
+                        <div class="msg-chat-contact" id="chatHeaderSub">Андрій Брункевич</div>
+                    </div>
+                    <button class="msg-chat-kebab" title="Більше">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                    </button>
+                </div>
+
+                <div class="msg-messages" id="msgMessages"></div>
+
+                <div class="msg-input-area">
+                    <input class="msg-text-input" type="text" placeholder="Написати повідомлення" id="msgInput" onkeydown="if(event.key==='Enter')sendMsg()"/>
+                    <button class="msg-send-btn" onclick="sendMsg()">Надіслати</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_DashboardFooter")
+
+<script src="~/js/messages.js"></script>
+</body>
+</html>

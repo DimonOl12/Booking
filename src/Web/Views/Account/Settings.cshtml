@@ -1,0 +1,139 @@
+@{
+    ViewData["Title"] = "Налаштування";
+    Layout = null;
+    ViewBag.ActiveTab = "Settings";
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Налаштування акаунту</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+</head>
+<body>
+
+@await Html.PartialAsync("_DashboardHero")
+
+<div class="dsh-wrap">
+    <div class="set-cards">
+
+        <!-- Card 1: Параметри налаштувань -->
+        <div class="set-card">
+            <div class="set-card-title">Параметри налаштувань</div>
+            <div class="set-form-row">
+                <div class="set-field">
+                    <div class="set-field-label">Валюта</div>
+                    <select class="set-select">
+                        <option selected>UAH Ukraine Hryvnia</option>
+                        <option>EUR — Євро</option>
+                        <option>USD — Долар США</option>
+                        <option>PLN — Польський злотий</option>
+                    </select>
+                </div>
+                <div class="set-field">
+                    <div class="set-field-label">Мова</div>
+                    <div class="set-select-flag">
+                        <svg width="28" height="20" viewBox="0 0 30 20" fill="none">
+                            <rect width="30" height="10" fill="#0057B7"/>
+                            <rect y="10" width="30" height="10" fill="#FFD700"/>
+                        </svg>
+                        <span style="flex:1;">Українська</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#223300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Налаштування конфіденційності -->
+        <div class="set-card">
+            <div class="set-card-title">Налаштування конфіденційності</div>
+            <div class="set-card-desc">Скористайтеся своїм правом на конфіденційність, контролюйте свої дані й налаштуйте їх.</div>
+            <div class="set-card-subdesc">Натискаючи "Зберегти", ваші зміняться налаштування конфіденційності відповідно до чинних норм, що регламентують захист особистої форми плати.</div>
+            <div>
+                <button class="set-btn-manage" onclick="managePrivacy()">Керувати</button>
+            </div>
+        </div>
+
+        <!-- Card 3: Налаштування безпеки -->
+        <div class="set-card">
+            <div class="set-card-title">Налаштування безпеки</div>
+            <div class="set-card-desc">Захистіть параметри безпеки: налаштуйте автентифікацію або видаліть свій акаунт.</div>
+
+            <div class="set-section">
+                <div class="set-section-label">Клієнт доступу</div>
+                <div class="set-section-row">
+                    <div class="set-section-text">Легко та безпечно отримайте до свій акаунт та безпека не загострюватиме старого пароль.</div>
+                    <button class="set-btn green" onclick="manageAccess()">Налаштувати</button>
+                </div>
+                <ul class="set-sessions-list">
+                    <li>Ноутбук</li>
+                    <li>Test</li>
+                    <li>"Кабінет" що виходять з кабінету та вийдіть з системи</li>
+                    <li>Що виходять з кабінету є</li>
+                    <li>Якщо вийти</li>
+                    <li>Якщо</li>
+                </ul>
+            </div>
+
+            <div class="set-section">
+                <div class="set-section-label">Двофакторна автентифікація</div>
+                <div class="set-section-row">
+                    <div class="set-section-text">Налаштуйте двофакторну автентифікацію, щоб надійно захистити свій акаунт.</div>
+                    <button class="set-btn green" onclick="setup2fa()">Налаштувати</button>
+                </div>
+            </div>
+
+            <div class="set-section">
+                <div class="set-section-label">Активні сесії</div>
+                <div class="set-sessions-table">
+                    <div class="set-session-row">
+                        <span>Ноутбук</span>
+                        <button class="set-btn-exit" onclick="exitSession(this)">Вийти</button>
+                    </div>
+                    <div class="set-session-row">
+                        <span>Microsoft</span>
+                        <button class="set-btn-exit" onclick="exitSession(this)">Вийти</button>
+                    </div>
+                    <div class="set-session-row">
+                        <span>iPhone 14</span>
+                        <button class="set-btn-exit" onclick="exitSession(this)">Вийти</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="set-section set-danger-section">
+                <div class="set-section-row">
+                    <div class="set-section-text set-danger-text">Видалити акаунт Reservio назавжди</div>
+                    <button class="set-btn red" onclick="confirmDelete()">Видалити</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@await Html.PartialAsync("_DashboardFooter")
+
+<script>
+function managePrivacy() { alert('Налаштування конфіденційності відкрито.'); }
+function manageAccess() { alert('Управління доступом відкрито.'); }
+function setup2fa() { alert('Двофакторна автентифікація: функція буде доступна найближчим часом.'); }
+function exitSession(btn) {
+    if (confirm('Завершити цю сесію?')) {
+        btn.closest('.set-session-row').style.opacity = '0.4';
+        btn.disabled = true;
+        btn.textContent = 'Вийшли';
+    }
+}
+function confirmDelete() {
+    if (confirm('Ви впевнені, що хочете видалити акаунт? Цю дію неможливо скасувати.')) {
+        alert('Запит на видалення надіслано. Ваш акаунт буде видалено протягом 30 днів.');
+    }
+}
+</script>
+</body>
+</html>

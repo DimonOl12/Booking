@@ -1,0 +1,263 @@
+@{
+    ViewData["Title"] = "Повідомлення";
+    Layout = null;
+    ViewBag.ActiveTab = "RealtorMessages";
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Повідомлення</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+    <link rel="stylesheet" href="~/css/realtor-dashboard.css" />
+</head>
+<body>
+<div class="rdsh-page">
+
+    @await Html.PartialAsync("_RealtorDashboardHero")
+
+    <main class="rdsh-main">
+
+        <div class="rdsh-white-card rmsg-outer-card">
+
+            <!-- Two-column layout -->
+            <div class="rmsg-layout">
+
+                <!-- ── LEFT SIDEBAR ──────────────────────────── -->
+                <div class="rmsg-sidebar">
+
+                    <!-- Tabs -->
+                    <div class="rmsg-tabs">
+                        <button type="button" class="rmsg-tab rmsg-tab--active" data-tab="all">Всі повідомлення</button>
+                        <button type="button" class="rmsg-tab" data-tab="archive">Архів</button>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="rmsg-search-wrap">
+                        <svg class="rmsg-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" class="rmsg-search" placeholder="Пошук" id="rmsgSearch" />
+                        <button type="button" class="rmsg-search-clear" id="rmsgSearchClear">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- Conversation list -->
+                    <div class="rmsg-list" id="rmsgList">
+
+                        <div class="rmsg-row rmsg-row--unread" data-id="1">
+                            <div class="rmsg-avatar rmsg-avatar--accent">Н</div>
+                            <div class="rmsg-row-body">
+                                <div class="rmsg-row-top">
+                                    <span class="rmsg-row-name">Запит! Залиште відповідь на відгук</span>
+                                    <span class="rmsg-row-time">14:25</span>
+                                </div>
+                                <p class="rmsg-row-sub">Юлія Бойко залишила відгук про Urban Light</p>
+                            </div>
+                            <span class="rmsg-unread-dot"></span>
+                        </div>
+
+                        <div class="rmsg-row rmsg-row--unread" data-id="2">
+                            <div class="rmsg-avatar rmsg-avatar--mascot">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFEE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                            </div>
+                            <div class="rmsg-row-body">
+                                <div class="rmsg-row-top">
+                                    <span class="rmsg-row-name">Служба підтримки Reservio</span>
+                                    <span class="rmsg-row-time">20 Лют</span>
+                                </div>
+                                <p class="rmsg-row-sub">Дякуємо за звернення! Ваше питання вирішено</p>
+                            </div>
+                            <span class="rmsg-unread-dot"></span>
+                        </div>
+
+                        <div class="rmsg-row rmsg-row--unread" data-id="3">
+                            <div class="rmsg-avatar rmsg-avatar--gray">УЛ</div>
+                            <div class="rmsg-row-body">
+                                <div class="rmsg-row-top">
+                                    <span class="rmsg-row-name">Urban Light</span>
+                                    <span class="rmsg-row-time">14:26</span>
+                                </div>
+                                <p class="rmsg-row-sub">Гість: Дякую за чудовий відпочинок!</p>
+                            </div>
+                            <span class="rmsg-unread-dot"></span>
+                        </div>
+
+                        <div class="rmsg-row" data-id="4">
+                            <div class="rmsg-avatar rmsg-avatar--gray">УЛ</div>
+                            <div class="rmsg-row-body">
+                                <div class="rmsg-row-top">
+                                    <span class="rmsg-row-name">Urban Light</span>
+                                    <span class="rmsg-row-time">14:26</span>
+                                </div>
+                                <p class="rmsg-row-sub">Ви: Будемо раді бачити вас знову!</p>
+                            </div>
+                        </div>
+
+                        <div class="rmsg-row" data-id="5">
+                            <div class="rmsg-avatar rmsg-avatar--gray">УЛ</div>
+                            <div class="rmsg-row-body">
+                                <div class="rmsg-row-top">
+                                    <span class="rmsg-row-name">Urban Light</span>
+                                    <span class="rmsg-row-time">14:26</span>
+                                </div>
+                                <p class="rmsg-row-sub">Гість: Все було на вищому рівні</p>
+                            </div>
+                        </div>
+
+                    </div><!-- /rmsg-list -->
+                </div><!-- /rmsg-sidebar -->
+
+                <!-- ── RIGHT PANEL ── -->
+                <div class="rmsg-main" id="rmsgMain">
+
+                    <!-- Placeholder (shown when no chat selected) -->
+                    <div class="rmsg-select-placeholder" id="rmsgPlaceholder">
+                        <div class="rrat-mascot"></div>
+                        <p class="rmsg-select-title">Оберіть чат, щоб почати спілкування</p>
+                    </div>
+
+                    <!-- Chat panel (hidden by default) -->
+                    <div class="rmsg-chat" id="rmsgChat" style="display:none;">
+
+                        <!-- Chat header -->
+                        <div class="rmsg-chat-header">
+                            <div class="rmsg-chat-header-info">
+                                <p class="rmsg-chat-title" id="rmsgChatTitle">Запит! Залиште відповідь на відгук</p>
+                                <p class="rmsg-chat-subtitle">Залишити повідомлення</p>
+                            </div>
+                            <button type="button" class="rmsg-chat-menu-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                            </button>
+                        </div>
+
+                        <!-- Messages area -->
+                        <div class="rmsg-messages" id="rmsgMessages">
+
+                            <!-- Outgoing message (realtor) -->
+                            <div class="rmsg-msg rmsg-msg--out">
+                                <div class="rmsg-bubble rmsg-bubble--out">
+                                    Ми запишемося відзнакою та рекомендуємо! Ранок сонячний, ми були раді бачити вас ще раз. Дякуємо за приємний відгук — для нас це дуже важливо. Будемо раді зустріти вас знову у нашому помешканні!
+                                </div>
+                            </div>
+
+                            <!-- Guest profile card -->
+                            <div class="rmsg-guest-card">
+                                <img class="rmsg-guest-photo" src="https://placehold.co/64x64/D9D9D9/999?text=ЮБ" alt="Юлія Бойко" />
+                                <div class="rmsg-guest-info">
+                                    <p class="rmsg-guest-name">Юлія Бойко</p>
+                                    <div class="rmsg-guest-meta-row">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                        Urban Light
+                                    </div>
+                                    <div class="rmsg-guest-meta-row rmsg-guest-meta-row--done">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        Завершено
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Incoming message (guest) -->
+                            <div class="rmsg-msg rmsg-msg--in">
+                                <div class="rmsg-bubble rmsg-bubble--in">
+                                    Дякую вам за гостинний прийом та теплий відгук! Нам дуже сподобалося — все було на вищому рівні. Обов'язково повернемося і порекомендуємо друзям!
+                                </div>
+                            </div>
+
+                        </div><!-- /rmsg-messages -->
+
+                        <!-- Input area -->
+                        <div class="rmsg-input-wrap">
+                            <input type="text" class="rmsg-input" id="rmsgInput" placeholder="Написати повідомлення..." />
+                            <button type="button" class="rmsg-send-btn" id="rmsgSend">Надіслати</button>
+                        </div>
+
+                    </div><!-- /rmsg-chat -->
+
+                </div><!-- /rmsg-main -->
+
+            </div><!-- /rmsg-layout -->
+
+        </div><!-- /rdsh-white-card -->
+
+    </main>
+
+    @await Html.PartialAsync("_DashboardFooter")
+
+</div>
+
+<script>
+(function () {
+    var placeholder = document.getElementById('rmsgPlaceholder');
+    var chat        = document.getElementById('rmsgChat');
+    var chatTitle   = document.getElementById('rmsgChatTitle');
+    var messages    = document.getElementById('rmsgMessages');
+    var input       = document.getElementById('rmsgInput');
+    var sendBtn     = document.getElementById('rmsgSend');
+
+    // Tab switching
+    document.querySelectorAll('.rmsg-tab').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.rmsg-tab').forEach(function (b) { b.classList.remove('rmsg-tab--active'); });
+            btn.classList.add('rmsg-tab--active');
+        });
+    });
+
+    // Search filter
+    var searchInput = document.getElementById('rmsgSearch');
+    var searchClear = document.getElementById('rmsgSearchClear');
+    searchInput.addEventListener('input', function () {
+        var q = searchInput.value.toLowerCase();
+        searchClear.style.display = q ? 'flex' : 'none';
+        document.querySelectorAll('.rmsg-row').forEach(function (row) {
+            var name = row.querySelector('.rmsg-row-name').textContent.toLowerCase();
+            row.style.display = name.includes(q) ? '' : 'none';
+        });
+    });
+    searchClear.addEventListener('click', function () {
+        searchInput.value = '';
+        searchClear.style.display = 'none';
+        document.querySelectorAll('.rmsg-row').forEach(function (row) { row.style.display = ''; });
+    });
+
+    // Row click → open chat
+    document.querySelectorAll('.rmsg-row').forEach(function (row) {
+        row.addEventListener('click', function () {
+            document.querySelectorAll('.rmsg-row').forEach(function (r) { r.classList.remove('rmsg-row--active'); });
+            row.classList.remove('rmsg-row--unread');
+            row.classList.add('rmsg-row--active');
+            var dot = row.querySelector('.rmsg-unread-dot');
+            if (dot) dot.remove();
+
+            var name = row.querySelector('.rmsg-row-name').textContent;
+            chatTitle.textContent = name;
+
+            placeholder.style.display = 'none';
+            chat.style.display = 'flex';
+            messages.scrollTop = messages.scrollHeight;
+        });
+    });
+
+    // Send message
+    function sendMessage() {
+        var text = input.value.trim();
+        if (!text) return;
+        var msg = document.createElement('div');
+        msg.className = 'rmsg-msg rmsg-msg--out';
+        msg.innerHTML = '<div class="rmsg-bubble rmsg-bubble--out">' + text + '</div>';
+        messages.appendChild(msg);
+        input.value = '';
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') sendMessage();
+    });
+})();
+</script>
+</body>
+</html>

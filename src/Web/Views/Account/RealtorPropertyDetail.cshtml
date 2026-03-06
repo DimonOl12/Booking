@@ -1,0 +1,417 @@
+@model Web.Models.RealtorPropertyDetailViewModel
+@{
+    ViewData["Title"] = "Керування об'єктами";
+    Layout = null;
+    ViewBag.ActiveTab = "MyAds";
+    var m = Model!;
+    var statusLabel = m.Status switch {
+        "Active"       => "Активне",
+        "Available"    => "Вільно",
+        "Occupied"     => "Заселено",
+        "OnModeration" => "На модерації",
+        "Rejected"     => "Відхилене",
+        _              => m.Status
+    };
+    var statusDot = m.Status switch {
+        "Active"       => "#6C9D0B",
+        "Available"    => "#6C9D0B",
+        "Occupied"     => "#FCD53F",
+        "OnModeration" => "#FCD53F",
+        "Rejected"     => "#B3261E",
+        _              => "#777"
+    };
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservio — Керування об'єктами</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+    <link rel="stylesheet" href="~/css/realtor-dashboard.css" />
+</head>
+<body>
+<div class="rdsh-page">
+
+    @await Html.PartialAsync("_RealtorDashboardHero")
+
+    <main class="rdsh-main">
+
+        <!-- ── Page Header ─────────────────────────────────── -->
+        <div class="rdsh-header">
+            <div class="rdsh-header-info">
+                <h1 class="rdsh-title">Керування об'єктами</h1>
+                <p class="rdsh-subtitle">Керуйте своїм помешканням та бронюваннями</p>
+            </div>
+            <a href="@Url.Action("RealtorMyAds","Account")" class="rpd-back-btn">Повернутися до всіх оголошень</a>
+        </div>
+
+        <!-- ── Bookings Table ──────────────────────────────── -->
+        <div class="rdsh-white-card rpd-section">
+            <h2 class="rpd-section-title">Бронювання</h2>
+            <div class="rpd-table-wrap">
+                <div class="rpd-table-header">
+                    <span class="rpd-th rpd-col-id">ID</span>
+                    <span class="rpd-th">Помешкання</span>
+                    <span class="rpd-th">ПІБ гостя</span>
+                    <span class="rpd-th">Дія</span>
+                    <span class="rpd-th">Статус</span>
+                    <span class="rpd-th">Заїзд</span>
+                    <span class="rpd-th">Виїзд</span>
+                    <span class="rpd-th rpd-col-amount">Сума</span>
+                </div>
+                <div class="rpd-table-body">
+                    @foreach (var row in m.Bookings)
+                    {
+                        var bStatusLabel = row.Status switch {
+                            "Confirmed" => "Підтверджено",
+                            "Pending"   => "Очікує підтвердження",
+                            "Cancelled" => "Скасовано",
+                            "Completed" => "Завершено",
+                            _           => row.Status
+                        };
+                        var bStatusColor = row.Status switch {
+                            "Confirmed" => "#6C9D0B",
+                            "Pending"   => "#FCD53F",
+                            "Cancelled" => "#B3261E",
+                            "Completed" => "#000",
+                            _           => "#777"
+                        };
+                        var checkInLabel  = row.CheckIn  == "ArrivalToday"  ? "Заїзд сьогодні"  : row.CheckIn;
+                        var checkInColor  = row.CheckIn  == "ArrivalToday"  ? "#0074BA" : null;
+                        var checkOutLabel = row.CheckOut == "LeavingToday"  ? "Виїзд сьогодні" : row.CheckOut;
+                        var checkOutColor = row.CheckOut == "LeavingToday"  ? "#777777" : null;
+                        <div class="rpd-tr">
+                            <span class="rpd-td rpd-col-id rpd-muted">@row.BookingId</span>
+                            <span class="rpd-td rpd-muted">@row.Property</span>
+                            <span class="rpd-td rpd-muted">@row.GuestName</span>
+                            <span class="rpd-td rpd-muted">@row.Action</span>
+                            <span class="rpd-td">
+                                <span class="rpd-status-chip">
+                                    <span class="rpd-dot" style="background:@bStatusColor"></span>
+                                    @bStatusLabel
+                                </span>
+                            </span>
+                            <span class="rpd-td">
+                                @if (checkInColor != null)
+                                {
+                                    <span class="rpd-status-chip">
+                                        <span class="rpd-dot" style="background:@checkInColor"></span>
+                                        @checkInLabel
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="rpd-muted">@checkInLabel</span>
+                                }
+                            </span>
+                            <span class="rpd-td">
+                                @if (checkOutColor != null)
+                                {
+                                    <span class="rpd-status-chip">
+                                        <span class="rpd-dot" style="background:@checkOutColor"></span>
+                                        @checkOutLabel
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="rpd-muted">@checkOutLabel</span>
+                                }
+                            </span>
+                            <span class="rpd-td rpd-col-amount rpd-muted">@row.Amount</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Property Overview Form ──────────────────────── -->
+        <div class="rdsh-white-card rpd-section">
+            <h2 class="rpd-section-title">Огляд помешкання</h2>
+
+            <!-- Назва помешкання -->
+            <div class="rpd-field">
+                <label class="rpd-label">Назва помешкання</label>
+                <div class="rpd-val">@m.Name</div>
+            </div>
+
+            <!-- Статус + Рейтинг -->
+            <div class="rpd-field-row">
+                <div class="rpd-field rpd-field--status">
+                    <label class="rpd-label">Статус</label>
+                    <div class="rpd-val rpd-val--select">
+                        <span class="rpd-status-chip">
+                            <span class="rpd-dot" style="background:@statusDot"></span>
+                            @statusLabel
+                        </span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+                <div class="rpd-field rpd-field--flex">
+                    <label class="rpd-label">Рейтинг</label>
+                    <div class="rpd-val">@m.Rating.ToString("0.0")</div>
+                </div>
+                <div class="rpd-field rpd-field--flex">
+                    <label class="rpd-label">Ціна за ніч</label>
+                    <div class="rpd-val">UAH @m.PricePerNight.ToString("N0")</div>
+                </div>
+            </div>
+
+            <!-- Capacity/MinNights | Area/Rooms -->
+            <div class="rpd-field-row">
+                <div class="rpd-field-col">
+                    <div class="rpd-field">
+                        <label class="rpd-label">Орієнтовна кількість людей</label>
+                        <div class="rpd-val">@m.Capacity</div>
+                    </div>
+                    <div class="rpd-field">
+                        <label class="rpd-label">Мінімальний термін бронювання</label>
+                        <div class="rpd-val">@m.MinBookingNights ночі</div>
+                    </div>
+                </div>
+                <div class="rpd-field-col">
+                    <div class="rpd-field">
+                        <label class="rpd-label">Площа/м<sup>2</sup></label>
+                        <div class="rpd-val">@m.AreaM2</div>
+                    </div>
+                    <div class="rpd-field">
+                        <label class="rpd-label">Кількість кімнат</label>
+                        <div class="rpd-val">@m.Rooms</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Адреса -->
+            <div class="rpd-field">
+                <label class="rpd-label">Адреса</label>
+                <div class="rpd-val rpd-val--with-btn">
+                    <span>@m.Address</span>
+                    <button type="button" class="rpd-edit-btn">Редагувати</button>
+                </div>
+            </div>
+
+            <!-- Sub-address fields (left-bordered) -->
+            <div class="rpd-addr-sub">
+                <div class="rpd-field-row">
+                    <div class="rpd-field rpd-field--flex">
+                        <label class="rpd-label">Країна</label>
+                        <div class="rpd-val">@m.Country</div>
+                    </div>
+                    <div class="rpd-field rpd-field--flex">
+                        <label class="rpd-label">Місто</label>
+                        <div class="rpd-val">@m.City</div>
+                    </div>
+                    <div class="rpd-field rpd-field--flex">
+                        <label class="rpd-label">Вулиця</label>
+                        <div class="rpd-val">@m.Street</div>
+                    </div>
+                </div>
+                <div class="rpd-field-row">
+                    <div class="rpd-field rpd-field--flex">
+                        <label class="rpd-label">Будинок</label>
+                        <div class="rpd-val">@m.Building</div>
+                    </div>
+                    <div class="rpd-field rpd-field--flex">
+                        <label class="rpd-label">Поверх</label>
+                        <div class="rpd-val">@m.Floor</div>
+                    </div>
+                    <div class="rpd-field rpd-field--flex">
+                        <label class="rpd-label">Квартира/№</label>
+                        <div class="rpd-val">@m.Apartment</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collapsible sections -->
+            <div class="rpd-collapsible">
+                <div class="rpd-collapsible-inner">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="7" height="7"/><rect x="15" y="3" width="7" height="7"/><rect x="2" y="14" width="7" height="7"/><rect x="15" y="14" width="7" height="7"/></svg>
+                    <span>Планування та спальні місця</span>
+                </div>
+                <svg class="rpd-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="rpd-collapsible">
+                <span>Детальна інформація про помешкання</span>
+                <button type="button" class="rpd-edit-btn">Редагувати</button>
+            </div>
+            <div class="rpd-collapsible">
+                <span>Наявні зручності</span>
+                <button type="button" class="rpd-edit-btn">Редагувати</button>
+            </div>
+            <div class="rpd-collapsible">
+                <span>Фотографії</span>
+                <button type="button" class="rpd-edit-btn">Редагувати</button>
+            </div>
+            <div class="rpd-collapsible">
+                <span>Важлива інформація для гостей</span>
+                <button type="button" class="rpd-edit-btn">Редагувати</button>
+            </div>
+        </div>
+
+        <!-- ── Revenue Statistics ──────────────────────────── -->
+        <div class="rdsh-white-card rpd-section rdsh-chart-section">
+            <div class="rpd-chart-header">
+                <h2 class="rdsh-chart-title">Статистика доходів</h2>
+                <div class="rpd-ghost-btns">
+                    <button type="button" class="rpd-ghost-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v13m0 0l-4-4m4 4l4-4M2 17v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2"/></svg>
+                        Завантажити
+                    </button>
+                    <button type="button" class="rpd-ghost-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                        Налаштувати дані
+                    </button>
+                    <button type="button" class="rpd-ghost-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="10" rx="1"/><path d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/></svg>
+                        Налаштувати вид
+                    </button>
+                </div>
+            </div>
+
+            <div class="rdsh-chart-body">
+                <div class="rdsh-chart-left">
+                    <!-- Connected tab switcher -->
+                    <div class="rpd-tab-group">
+                        <button type="button" class="rpd-tab-btn rpd-tab-btn--active" data-period="month">Місяць</button>
+                        <button type="button" class="rpd-tab-btn" data-period="quarter">Квартал</button>
+                        <button type="button" class="rpd-tab-btn" data-period="year">Рік</button>
+                    </div>
+                    <div class="rdsh-chart-canvas-wrap" style="position:relative;height:230px;margin-top:16px;">
+                        <canvas id="revenueChartProp"></canvas>
+                    </div>
+                </div>
+                <div class="rdsh-chart-right">
+                    <!-- Period summary cards -->
+                    <div class="rdsh-period-cards">
+                        <div class="rdsh-period-card">
+                            <span class="rdsh-period-amount">UAH 93 856</span>
+                            <span class="rdsh-period-label">Місяць</span>
+                        </div>
+                        <div class="rdsh-period-card">
+                            <span class="rdsh-period-amount">UAH 281 575</span>
+                            <span class="rdsh-period-label">Квартал</span>
+                        </div>
+                        <div class="rdsh-period-card">
+                            <span class="rdsh-period-amount">UAH 1 126 300</span>
+                            <span class="rdsh-period-label">Рік</span>
+                        </div>
+                    </div>
+                    <!-- Hint card -->
+                    <div class="rdsh-dynamic-card">
+                        <div class="rdsh-dynamic-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 4-4 6-4 9H9c0-3-4-5-4-9a7 7 0 0 1 7-7z"/><line x1="9" y1="21" x2="15" y2="21"/></svg>
+                            <span class="rdsh-dynamic-title">Мінімізація «порожніх» дат</span>
+                        </div>
+                        <p class="rdsh-dynamic-sub">Перевірте календар на наявність розривів між бронюваннями.</p>
+                        <ul class="rdsh-dynamic-list">
+                            <li>2 вільні ночі між бронюваннями → зробіть знижку на коротке проживання</li>
+                        </ul>
+                        <p class="rdsh-dynamic-sub">Це збільшує заповнюваність.</p>
+                    </div>
+                    <!-- Mascot info card -->
+                    <div class="rdsh-info-card">
+                        <div class="rdsh-info-text">
+                            <p class="rdsh-info-title">Як формується статистика доходів?</p>
+                            <p class="rdsh-info-sub">Дані відображають завершені бронювання з урахуванням комісії платформи та підтверджених оплат за обраний період.</p>
+                        </div>
+                        <div class="rdsh-info-mascot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── All Reviews ─────────────────────────────────── -->
+        <div class="rdsh-white-card rpd-section">
+            <h2 class="rdsh-reviews-title" style="margin-bottom:20px">Всі відгуки</h2>
+            @foreach (var rv in m.Reviews)
+            {
+                <div class="rdsh-review-card">
+                    <p class="rdsh-review-text">@rv.Text</p>
+                    <div class="rdsh-review-footer">
+                        <div class="rdsh-review-author">
+                            <img class="rdsh-review-avatar" src="https://placehold.co/50x50/D9D9D9/999?text=..." alt="@rv.Author" />
+                            <div class="rdsh-review-meta">
+                                <span class="rdsh-review-name">@rv.Author</span>
+                                <span class="rdsh-review-country">@rv.Country</span>
+                                <span class="rdsh-review-date">@rv.Date</span>
+                            </div>
+                        </div>
+                        <button type="button" class="rdsh-reply-btn">Відповісти</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </main>
+
+    @await Html.PartialAsync("_DashboardFooter")
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+(function () {
+    const datasets = {
+        month: {
+            labels: ['Січ','Лют','Бер','Квіт','Трав','Черв','Лип','Серп','Вер','Жовт','Лист','Груд'],
+            data:   [100, 75, 78.6, 89.3, 92.4, 97, 89, 100, 108, 108, 97, 92]
+        },
+        quarter: {
+            labels: ['Q1','Q2','Q3','Q4'],
+            data:   [84.5, 92.9, 98.3, 95.7]
+        },
+        year: {
+            labels: ['2021','2022','2023','2024','2025','2026'],
+            data:   [60, 72, 85, 95, 105, 93]
+        }
+    };
+
+    const ctx = document.getElementById('revenueChartProp').getContext('2d');
+    const grad = ctx.createLinearGradient(0, 0, 0, 230);
+    grad.addColorStop(0, 'rgba(34,51,0,0.55)');
+    grad.addColorStop(1, 'rgba(242,242,242,0.10)');
+
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: datasets.month.labels,
+            datasets: [{
+                data: datasets.month.data,
+                borderColor: '#223300',
+                backgroundColor: grad,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4,
+                pointBackgroundColor: '#223300'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { callbacks: {
+                label: ctx => 'UAH ' + ctx.parsed.y + ' тис.'
+            }}},
+            scales: {
+                x: { grid: { color: '#C1C6B8' }, ticks: { font: { family: 'Rubik', size: 13 } } },
+                y: { grid: { color: '#C1C6B8' }, ticks: { font: { family: 'Rubik', size: 13 } } }
+            }
+        }
+    });
+
+    document.querySelectorAll('.rpd-tab-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.rpd-tab-btn').forEach(b => b.classList.remove('rpd-tab-btn--active'));
+            this.classList.add('rpd-tab-btn--active');
+            const p = datasets[this.dataset.period];
+            chart.data.labels = p.labels;
+            chart.data.datasets[0].data = p.data;
+            chart.update();
+        });
+    });
+})();
+</script>
+</body>
+</html>
