@@ -1,12 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "7CqORSStjL8=",
+  "dgSpecHash": "TiTLXPvcf0Y=",
   "success": true,
-  "projectFilePath": "/workspaces/Booking/src/Web/Web.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\Web\\Web.csproj",
   "expectedPackageFiles": [
-    "/home/codespace/.nuget/packages/microsoft.netcore.app.ref/9.0.11/microsoft.netcore.app.ref.9.0.11.nupkg.sha512",
-    "/home/codespace/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.11/microsoft.aspnetcore.app.ref.9.0.11.nupkg.sha512",
-    "/home/codespace/.nuget/packages/microsoft.netcore.app.host.linux-x64/9.0.11/microsoft.netcore.app.host.linux-x64.9.0.11.nupkg.sha512"
+    "C:\\Users\\admin\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\9.0.3\\microsoft.aspnetcore.authentication.google.9.0.3.nupkg.sha512"
   ],
   "logs": []
 }

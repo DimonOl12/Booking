@@ -22,12 +22,21 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.Name = "Reservio.Auth";
         options.ExpireTimeSpan = TimeSpan.FromDays(30);
         options.SlidingExpiration = true;
+    })
+    .AddGoogle(options =>
+    {
+        options.ClientId     = builder.Configuration["Google:ClientId"]     ?? "";
+        options.ClientSecret = builder.Configuration["Google:ClientSecret"] ?? "";
+        options.CallbackPath = "/Account/GoogleCallback";
     });
 
 builder.Services.AddHttpContextAccessor();
 
 // Reservio API client (replaces in-memory UserStore)
 builder.Services.AddHttpClient<IReservioApiClient, ReservioApiClient>();
+
+// Local fallback store — used when the Reservio API is unreachable
+builder.Services.AddSingleton<LocalUserStore>();
 
 var app = builder.Build();
 app.UseStaticFiles();

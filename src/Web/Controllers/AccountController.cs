@@ -15,10 +15,12 @@ namespace Web.Controllers
     public class AccountController : Controller
     {
         private readonly IReservioApiClient _api;
+        private readonly LocalUserStore _localUsers;
 
-        public AccountController(IReservioApiClient api)
+        public AccountController(IReservioApiClient api, LocalUserStore localUsers)
         {
             _api = api;
+            _localUsers = localUsers;
         }
 
         // ── Login ────────────────────────────────────────────────────────────────
@@ -55,17 +57,78 @@ namespace Web.Controllers
                 return View(model);
             }
 
-            var (token, error) = await _api.SignInAsync(model.Email.Trim(), model.Password);
-            if (token == null)
+            // Local-only auth (no backend API required)
+            var local = _localUsers.Authenticate(model.Email.Trim(), model.Password);
+            if (local == null)
             {
-                ViewBag.Error = error ?? "Невірний email або пароль.";
+                ViewBag.Error = "Невірний email або пароль.";
                 return View(model);
             }
-
-            await SignInFromApiTokenAsync(token);
-
+            await SignInLocalAsync(local.Value.Email, local.Value.FirstName, local.Value.LastName);
             if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                 return Redirect(returnUrl);
+            return RedirectToAction("Index", "Home");
+        }
+
+        // ── Google OAuth ──────────────────────────────────────────────────────────
+        [HttpGet]
+        public IActionResult GoogleLogin()
+        {
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("GoogleCallback", "Account")
+            };
+            return Challenge(properties, "Google");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GoogleCallback()
+        {
+            var result = await HttpContext.AuthenticateAsync("Google");
+            if (!result.Succeeded)
+                return RedirectToAction("Login");
+
+            var claims = result.Principal?.Claims.ToList() ?? [];
+
+            var email     = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value     ?? "";
+            var firstName = claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value ?? "";
+            var lastName  = claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value   ?? "";
+            var fullName  = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value      ?? email;
+
+            if (string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(fullName))
+            {
+                var parts = fullName.Split(' ', 2);
+                firstName = parts[0];
+                lastName  = parts.Length > 1 ? parts[1] : "";
+            }
+
+            var initials = "";
+            if (firstName.Length > 0) initials += char.ToUpper(firstName[0]);
+            if (lastName.Length  > 0) initials += char.ToUpper(lastName[0]);
+            if (string.IsNullOrEmpty(initials) && email.Length > 0)
+                initials = char.ToUpper(email[0]).ToString();
+
+            var cookieClaims = new List<Claim>
+            {
+                new(ClaimTypes.Name,           fullName),
+                new(ClaimTypes.Email,          email),
+                new(ClaimTypes.NameIdentifier, email),
+                new(ClaimTypes.Role,           "Customer"),
+                new("FirstName",               firstName),
+                new("LastName",                lastName),
+                new("Initials",                initials),
+                new("IsRealtor",               "false"),
+                new("email",                   email),
+                new("photo",                   ""),
+            };
+
+            var identity  = new ClaimsIdentity(cookieClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal,
+                new AuthenticationProperties { IsPersistent = true, ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30) });
 
             return RedirectToAction("Index", "Home");
         }
@@ -146,18 +209,15 @@ namespace Web.Controllers
 
             var firstName = model.FirstName.Trim();
             var lastName  = string.IsNullOrWhiteSpace(model.LastName) ? "" : model.LastName.Trim();
-            var userName  = GenerateUniqueUserName(model.Email);
 
-            var (token, error) = await _api.RegisterAsync(
-                firstName, lastName, model.Email.Trim(), userName, model.Password, "Customer");
-
-            if (token == null)
+            // Local-only registration (no backend API required)
+            if (_localUsers.Exists(model.Email.Trim()))
             {
-                ViewBag.Error = error ?? "Помилка реєстрації. Спробуйте ще раз.";
+                ViewBag.Error = "Користувач з таким email вже існує.";
                 return View(model);
             }
-
-            await SignInFromApiTokenAsync(token);
+            _localUsers.Register(model.Email.Trim(), model.Password, firstName, lastName);
+            await SignInLocalAsync(model.Email.Trim(), firstName, lastName);
             return RedirectToAction("Index", "Home");
         }
 
@@ -288,7 +348,7 @@ namespace Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPasswordStep2(string password, string confirmPassword)
+        public IActionResult ForgotPasswordStep2(string password, string confirmPassword)
         {
             var email = TempData.Peek("ResetEmail") as string;
             if (string.IsNullOrEmpty(email)) return RedirectToAction("ForgotPassword");
@@ -565,27 +625,14 @@ namespace Web.Controllers
                 return View(model);
             }
 
-            var (token, error) = await _api.SignInAsync(model.Email.Trim(), model.Password);
-            if (token == null)
+            // Local-only auth (no backend API required)
+            var local = _localUsers.Authenticate(model.Email.Trim(), model.Password);
+            if (local == null)
             {
-                ViewBag.Error = error ?? "Схоже, введені дані з помилкою. Перевірте і спробуйте знову.";
+                ViewBag.Error = "Невірний email або пароль.";
                 return View(model);
             }
-
-            // Check role from JWT
-            var claims = DecodeJwtClaims(token);
-            var roleKey = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
-            var role = claims.FirstOrDefault(c => c.Name == roleKey).Value
-                    ?? claims.FirstOrDefault(c => c.Name == "role").Value
-                    ?? "";
-
-            if (role != "Realtor")
-            {
-                ViewBag.Error = "Цей акаунт не є акаунтом партнера. Будь ласка, скористайтеся звичайним входом.";
-                return View(model);
-            }
-
-            await SignInFromApiTokenAsync(token);
+            await SignInLocalAsync(local.Value.Email, local.Value.FirstName, local.Value.LastName, isRealtor: true);
             return RedirectToAction("RealtorDashboard");
         }
 
@@ -833,23 +880,20 @@ namespace Web.Controllers
                 return View(model);
             }
 
-            var userName = GenerateUniqueUserName(model.Email);
-
-            var (token, error) = await _api.RegisterAsync(
-                model.FirstName, model.LastName, model.Email, userName, model.Password, "Realtor");
-
-            if (token == null)
+            // Local-only registration (no backend API required)
+            if (_localUsers.Exists(model.Email))
             {
-                ViewBag.Error = error ?? "Помилка реєстрації. Спробуйте ще раз.";
+                ViewBag.Error = "Користувач з таким email вже існує.";
                 return View(model);
             }
+            _localUsers.Register(model.Email, model.Password, model.FirstName, model.LastName);
 
             TempData.Remove("RltEmail");
             TempData.Remove("RltFirstName");
             TempData.Remove("RltLastName");
             TempData.Remove("RltPhone");
 
-            await SignInFromApiTokenAsync(token);
+            await SignInLocalAsync(model.Email, model.FirstName, model.LastName, isRealtor: true);
             return RedirectToAction("RealtorDashboard");
         }
 
@@ -861,6 +905,40 @@ namespace Web.Controllers
         }
 
         // ── Helpers ───────────────────────────────────────────────────────────────
+
+        private async Task SignInLocalAsync(string email, string firstName, string lastName, bool isRealtor = false)
+        {
+            var fullName = $"{firstName} {lastName}".Trim();
+            if (string.IsNullOrEmpty(fullName)) fullName = email;
+
+            var initials = "";
+            if (firstName.Length > 0) initials += char.ToUpper(firstName[0]);
+            if (lastName.Length  > 0) initials += char.ToUpper(lastName[0]);
+            if (string.IsNullOrEmpty(initials) && email.Length > 0)
+                initials = char.ToUpper(email[0]).ToString();
+
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.Name,           fullName),
+                new(ClaimTypes.Email,          email),
+                new(ClaimTypes.NameIdentifier, email),
+                new(ClaimTypes.Role,           isRealtor ? "Realtor" : "Customer"),
+                new("FirstName",               firstName),
+                new("LastName",                lastName),
+                new("Initials",                initials),
+                new("IsRealtor",               isRealtor ? "true" : "false"),
+                new("email",                   email),
+                new("photo",                   ""),
+            };
+
+            var identity  = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal,
+                new AuthenticationProperties { IsPersistent = true, ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30) });
+        }
 
         private async Task SignInFromApiTokenAsync(string token)
         {

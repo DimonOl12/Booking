@@ -787,8 +787,11 @@ img {
 /* ---- Property Cards (Unique + Deals) ---- */
 .property-scroll {
     display: flex;
+    flex-wrap: nowrap;
     gap: 16px;
-    overflow-x: auto;
+    overflow-x: scroll;
+    width: 100%;
+    min-width: 0;
     padding-bottom: 12px;
     margin-top: 24px;
     scrollbar-width: none;
@@ -955,8 +958,11 @@ img {
 /* ---- Property Types ---- */
 .types-grid {
     display: flex;
+    flex-wrap: nowrap;
     gap: 16px;
-    overflow-x: auto;
+    overflow-x: scroll;
+    width: 100%;
+    min-width: 0;
     padding-bottom: 4px;
     margin-top: 24px;
     scrollbar-width: none;

@@ -345,7 +345,7 @@
                                     @for (int h = 0; h < 24; h++)
                                     {
                                         var v = $"{h:D2}:00";
-                                        <option value="@v" @(Model.ArrivalFrom == v ? "selected" : "")>@v</option>
+                                        <option value="@v" selected="@(Model.ArrivalFrom == v ? "selected" : null)">@v</option>
                                     }
                                 </select>
                                 <span class="apw-time-lbl">До</span>
@@ -353,7 +353,7 @@
                                     @for (int h = 0; h < 24; h++)
                                     {
                                         var v = $"{h:D2}:00";
-                                        <option value="@v" @(Model.ArrivalTo == v ? "selected" : "")>@v</option>
+                                        <option value="@v" selected="@(Model.ArrivalTo == v ? "selected" : null)">@v</option>
                                     }
                                 </select>
                             </div>
@@ -366,7 +366,7 @@
                                     @for (int h = 0; h < 24; h++)
                                     {
                                         var v = $"{h:D2}:00";
-                                        <option value="@v" @(Model.DepartureFrom == v ? "selected" : "")>@v</option>
+                                        <option value="@v" selected="@(Model.DepartureFrom == v ? "selected" : null)">@v</option>
                                     }
                                 </select>
                                 <span class="apw-time-lbl">До</span>
@@ -374,7 +374,7 @@
                                     @for (int h = 0; h < 24; h++)
                                     {
                                         var v = $"{h:D2}:00";
-                                        <option value="@v" @(Model.DepartureTo == v ? "selected" : "")>@v</option>
+                                        <option value="@v" selected="@(Model.DepartureTo == v ? "selected" : null)">@v</option>
                                     }
                                 </select>
                             </div>
