@@ -125,7 +125,6 @@ C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\rjimswa.dsw
 C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
 C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\scopedcss\bundle\Web.styles.css
-C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\compressed\srogyvcpma-5ngesev1m2.gz
 C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\compressed\511kpsr85f-pvjos1az2n.gz
 C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\compressed\xzfcro0z0g-wz8kj5ctg9.gz
 C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\compressed\g0qya0o7nq-8j443h9j1m.gz
@@ -206,3 +205,4 @@ C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\compressed\
 C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\compressed\ynm9uvqszg-bozarlo4ds.gz
 C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\compressed\piur8w03k7-5bvaa7zska.gz
 C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\compressed\3zm6tytr2w-hdcu0t2ifv.gz
+C:\Users\admin\Desktop\Booking_main\Booking\src\web\obj\Debug\net9.0\compressed\srogyvcpma-cktl09u1cz.gz

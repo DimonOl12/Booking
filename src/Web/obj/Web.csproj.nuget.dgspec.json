@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\Web\\Web.csproj": {}
+    "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\web\\Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\Web\\Web.csproj": {
+    "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\web\\Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\Web\\Web.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\web\\Web.csproj",
         "projectName": "Web",
-        "projectPath": "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\Web\\Web.csproj",
+        "projectPath": "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\web\\Web.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\Web\\obj\\",
+        "outputPath": "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\web\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

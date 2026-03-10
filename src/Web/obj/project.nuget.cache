@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TiTLXPvcf0Y=",
+  "dgSpecHash": "rj6Vjf3XXFc=",
   "success": true,
-  "projectFilePath": "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\Web\\Web.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Desktop\\Booking_main\\Booking\\src\\web\\Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\admin\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\9.0.3\\microsoft.aspnetcore.authentication.google.9.0.3.nupkg.sha512"
   ],
