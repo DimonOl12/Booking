@@ -2,6 +2,37 @@
    search.css — Catalog / Search Results page
    ============================================================ */
 
+/* ══════════════════════════════════════════════════════════════
+   SEARCH HERO WRAP — 216px, фонове фото (точний кроп з Figma)
+   Містить: navbar + search bar
+   ══════════════════════════════════════════════════════════════ */
+.search-hero-wrap {
+    width: 100%;
+    height: 216px;
+    background: url('/images/Subtract2.jpg') lightgray 0px -581.311px / 100% 603.679% no-repeat;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Search bar area (займає залишок після navbar, вирівнює до низу) */
+.search-hero {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 12px;
+}
+
+.search-hero-inner {
+    max-width: var(--container-max);
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Search bar section всередині hero — без нижнього відступу */
+.search-hero .search-bar-section { margin-bottom: 0; }
+
 /* ── Page wrapper ── */
 .search-page-wrap {
     max-width: var(--container-max);
@@ -245,19 +276,19 @@
 }
 .gp-done:hover { opacity: .85; }
 
-/* ── Results heading ── */
-.results-heading { padding: 12px 0 4px; }
+/* ── Results title (у head рядку listings-main-header) ── */
 .results-title {
     font-family: var(--font-heading);
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 600;
     color: #000;
+    line-height: 1.2;
 }
 
 /* ── Layout: sidebar + main ── */
 .search-layout {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 240px 1fr;
     gap: 24px;
     align-items: start;
     margin-top: 20px;
@@ -273,7 +304,7 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 12px;
-    min-height: 120px;
+    height: 208px;
     align-items: flex-end;
 }
 .btn-map {
@@ -480,10 +511,17 @@
 .ci-btn:hover { background: var(--color-bg); }
 .counter-inline span { font-size: 16px; font-weight: 600; min-width: 20px; text-align: center; }
 
-/* ── Sort row ── */
-.sort-row {
+/* ── Listings main header: title + view toggle (одний рядок) ── */
+.listings-main-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+/* ── Sort row (окремий рядок нижче заголовку) ── */
+.sort-row {
+    display: flex;
     align-items: center;
     margin-bottom: 16px;
 }
@@ -563,7 +601,7 @@
 /* ── Default: 3-column grid (Список / Figma) ── */
 .listings-list {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
 

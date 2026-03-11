@@ -20,6 +20,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/add-property.css" />
+    <link rel="stylesheet" href="~/css/home.css" />
 </head>
 <body>
 <div class="apw-page">
@@ -29,21 +30,7 @@
     <!-- Dark overlay -->
     <div class="apw-overlay"></div>
 
-    <!-- ════════════════════════════════════════
-         WHITE HEADER
-         ════════════════════════════════════════ -->
-    <nav class="apw-navbar">
-        <a href="/" class="apw-logo">
-            <span class="apw-logo-text">Reservio</span>
-        </a>
-        <div class="apw-user">
-            <span class="apw-user-currency">UAH</span>
-            <span class="apw-user-flag">🇺🇦</span>
-            <span class="apw-register-label" id="navRegLabel">Зареєструвати своє помешкання</span>
-            <div class="apw-user-avatar">@initials</div>
-            <span class="apw-user-name">@displayName</span>
-        </div>
-    </nav>
+    @await Html.PartialAsync("_HomeNavbar")
 
     <!-- ════════════════════════════════════════
          MAIN FORM

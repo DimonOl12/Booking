@@ -19,6 +19,9 @@
 </head>
 <body>
 
+<!-- ═══ HERO WRAP: фонове фото + navbar + search bar (216px) ═══ -->
+<div class="search-hero-wrap">
+
 @if (User.Identity?.IsAuthenticated == true)
 {
     @await Html.PartialAsync("_HomeNavbar")
@@ -28,24 +31,10 @@ else
     @await Html.PartialAsync("_HomeNavbarGuest")
 }
 
-<div class="search-page-wrap">
-
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb">
-        <a href="/">Головна</a>
-        <span class="bc-sep">›</span>
-        <a href="/Home/Search">Україна</a>
-        @if (!string.IsNullOrEmpty(Model.City))
-        {
-            <span class="bc-sep">›</span>
-            <a href="/Home/Search?city=@Model.City">@Model.City</a>
-        }
-        <span class="bc-sep">›</span>
-        <span class="bc-current">Результати пошуку</span>
-    </nav>
-
-    <!-- Search bar -->
-    <div class="search-bar-section">
+    <!-- Search bar (inside hero, aligned to bottom) -->
+    <div class="search-hero">
+        <div class="search-hero-inner">
+        <div class="search-bar-section">
         <form class="search-bar" id="searchForm" method="get" action="/Home/Search">
             <div class="sb-field sb-city">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -70,9 +59,8 @@ else
 
             <button type="submit" class="sb-btn">Шукати</button>
         </form>
-    </div>
 
-    <!-- Date picker popup -->
+        <!-- Date picker popup -->
     <div class="datepicker-popup" id="datepickerPopup" style="display:none">
         <div class="dp-months">
             <div class="dp-month" id="dpMonth1"></div>
@@ -119,19 +107,29 @@ else
             </div>
         </div>
         <button class="gp-done" id="gpDone">Готово</button>
-    </div>
+        </div><!-- /.guests-popup -->
 
-    <!-- Heading -->
-    <div class="results-heading">
+        </div><!-- /.search-bar-section -->
+        </div><!-- /.search-hero-inner -->
+    </div><!-- /.search-hero -->
+
+</div><!-- /.search-hero-wrap -->
+
+<div class="search-page-wrap">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="/">Головна</a>
+        <span class="bc-sep">›</span>
+        <a href="/Home/Search">Україна</a>
         @if (!string.IsNullOrEmpty(Model.City))
         {
-            <h1 class="results-title">@Model.City: Знайдено @Model.TotalFound помешкань</h1>
+            <span class="bc-sep">›</span>
+            <a href="/Home/Search?city=@Model.City">@Model.City</a>
         }
-        else
-        {
-            <h1 class="results-title">Знайдено @Model.TotalFound помешкань</h1>
-        }
-    </div>
+        <span class="bc-sep">›</span>
+        <span class="bc-current">Результати пошуку</span>
+    </nav>
 
     <!-- Main layout: sidebar + listings -->
     <div class="search-layout">
@@ -334,10 +332,28 @@ else
             </div><!-- /filters-card -->
         </aside>
 
-        <!-- ── RIGHT: SORT BAR + LISTINGS ── -->
+        <!-- ── RIGHT: TITLE + TOGGLE + SORT + LISTINGS ── -->
         <main class="listings-main">
 
-            <!-- Sort + View toggle row -->
+            <!-- Рядок 1: Заголовок + перемикач виду (як у Figma: justify-between) -->
+            <div class="listings-main-header">
+                <h1 class="results-title">
+                    @if (!string.IsNullOrEmpty(Model.City))
+                    {
+                        @($"{Model.City}: Знайдено {Model.TotalFound} помешкань")
+                    }
+                    else
+                    {
+                        @($"Знайдено {Model.TotalFound} помешкань")
+                    }
+                </h1>
+                <div class="view-toggle">
+                    <button class="view-btn" data-view="grid">Таблиці</button>
+                    <button class="view-btn active" data-view="list">Список</button>
+                </div>
+            </div>
+
+            <!-- Рядок 2: Sort dropdown (окремо, як у Figma top-[347px]) -->
             <div class="sort-row">
                 <div class="sort-dropdown-wrap">
                     <button class="sort-dropdown-btn" id="sortDropdownBtn">
@@ -350,11 +366,6 @@ else
                         <button data-sort="price_asc">Ціна: від низької до високої</button>
                         <button data-sort="price_desc">Ціна: від високої до низької</button>
                     </div>
-                </div>
-
-                <div class="view-toggle">
-                    <button class="view-btn active" data-view="list">Список</button>
-                    <button class="view-btn" data-view="grid">Таблиця</button>
                 </div>
             </div>
 

@@ -1,0 +1,1380 @@
+<div class="w-[1920px] h-[3524px] relative bg-zinc-100">
+  <img class="w-[1920px] h-52 left-0 top-0 absolute" src="https://placehold.co/1920x216" />
+  <div class="w-[1520px] px-2 left-[200px] top-0 absolute bg-amber-50 rounded-bl-3xl rounded-br-3xl outline outline-[0.83px] outline-offset-[-0.83px] inline-flex justify-between items-center">
+    <div class="w-48 h-12 p-2.5 bg-lime-950 rounded-[30px] flex justify-center items-center">
+      <div class="w-4 h-5 bg-amber-50"></div>
+      <div class="w-3.5 h-5 bg-amber-50"></div>
+      <div class="w-4 h-5 bg-amber-50"></div>
+      <div class="w-2 h-5 bg-amber-50"></div>
+      <div class="w-4 h-5 bg-amber-50"></div>
+      <div class="w-1 h-6 bg-amber-50"></div>
+      <div class="w-5 h-5 bg-amber-50"></div>
+      <div class="w-[4.81px] h-1.5 bg-orange-600 outline outline-1 outline-orange-600"></div>
+      <div class="w-4 h-6 bg-amber-50"></div>
+    </div>
+    <div class="flex justify-start items-center gap-2">
+      <div class="h-16 px-3.5 py-2.5 rounded-3xl flex justify-start items-center">
+        <div class="text-center justify-start text-lime-950 text-lg font-bold font-['Rubik']">UAH</div>
+      </div>
+      <div class="h-16 p-2.5 rounded-3xl flex justify-start items-center">
+        <div class="w-7 h-7 relative">
+          <div class="w-7 h-3.5 left-[0.94px] top-[15px] absolute bg-yellow-400"></div>
+          <div class="w-7 h-3.5 left-[0.94px] top-[0.94px] absolute bg-sky-700"></div>
+        </div>
+      </div>
+      <div class="h-16 p-2.5 rounded-3xl flex justify-start items-center">
+        <div class="text-center justify-start text-lime-950 text-lg font-bold font-['Rubik']">Зареєструвати своє помешкання</div>
+      </div>
+      <div class="h-16 p-2.5 rounded-3xl flex justify-start items-center">
+        <div class="text-center justify-start text-lime-950 text-lg font-bold font-['Rubik']">Зареєструватися</div>
+      </div>
+      <div class="h-12 px-4 py-2 bg-orange-600 rounded-3xl flex justify-start items-center">
+        <div class="text-center justify-start text-white text-base font-bold font-['Rubik']">Увійти</div>
+      </div>
+    </div>
+  </div>
+  <div class="left-[200px] top-[248px] absolute inline-flex justify-start items-center gap-1">
+    <div class="justify-start text-black text-sm font-normal font-['Rubik']">Головна</div>
+    <div class="w-0 h-4 relative origin-top-left rotate-90 overflow-hidden">
+      <div class="w-1.5 h-3 left-[4.47px] top-[2.33px] absolute bg-lime-950"></div>
+    </div>
+    <div class="justify-start text-black text-sm font-normal font-['Rubik']">Україна</div>
+    <div class="w-0 h-4 relative origin-top-left rotate-90 overflow-hidden">
+      <div class="w-1.5 h-3 left-[4.47px] top-[2.33px] absolute bg-lime-950"></div>
+    </div>
+    <div class="justify-start text-black text-sm font-normal font-['Rubik']">Львівська область</div>
+    <div class="w-0 h-4 relative origin-top-left rotate-90 overflow-hidden">
+      <div class="w-1.5 h-3 left-[4.47px] top-[2.33px] absolute bg-lime-950"></div>
+    </div>
+    <div class="justify-start text-black text-sm font-normal font-['Rubik']">Львів</div>
+    <div class="w-0 h-4 relative origin-top-left rotate-90 overflow-hidden">
+      <div class="w-1.5 h-3 left-[4.47px] top-[2.33px] absolute bg-lime-950"></div>
+    </div>
+    <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">Результати пошуку</div>
+  </div>
+  <div class="left-[464px] top-[289px] absolute text-center justify-start text-black text-3xl font-semibold font-['Unbounded']">Львів: Знайдено 853 помешкання</div>
+  <div class="w-60 h-52 p-4 left-[200px] top-[289px] absolute bg-zinc-300 rounded-3xl inline-flex flex-col justify-end items-end gap-2.5">
+    <div data-color="Green" data-icon-left="false" data-icon-right="false" data-size="Big" data-state="Default" data-style="Primary" data-text="true" class="self-stretch px-6 py-4 bg-lime-950 rounded-[20px] inline-flex justify-center items-center gap-2">
+      <div class="flex justify-center items-center">
+        <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Перейти на карту</div>
+      </div>
+    </div>
+  </div>
+  <div class="w-[1520px] h-20 p-4 left-[200px] top-[128px] absolute bg-neutral-50 rounded-3xl inline-flex justify-start items-center gap-5">
+    <div class="flex-1 flex justify-start items-center gap-4">
+      <div data-color="White" data-icon-left="true" data-icon-right="false" data-size="Big" data-state="Default" data-style="Primary" data-text="true" class="flex-1 px-6 py-4 bg-neutral-50 rounded-3xl shadow-[0px_1px_3px_1px_rgba(0,0,0,0.15)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.30)] flex justify-start items-center gap-2">
+        <div class="w-6 h-6 relative overflow-hidden">
+          <div class="w-3.5 h-1.5 left-[4.50px] top-[4.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+          <div class="w-5 h-2 left-[2.25px] top-[11.25px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+          <div class="w-5 h-[1.50px] left-[2.25px] top-[18px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+          <div class="w-1.5 h-0.5 left-[5.25px] top-[9px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+          <div class="w-1.5 h-0.5 left-[12px] top-[9px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+        </div>
+        <div class="flex justify-center items-center">
+          <div class="justify-start text-lime-950 text-xl font-bold font-['Rubik']">Львів</div>
+        </div>
+      </div>
+      <div data-color="White" data-icon-left="true" data-icon-right="false" data-size="Big" data-state="Default" data-style="Primary" data-text="true" class="px-6 py-4 bg-neutral-50 rounded-3xl shadow-[0px_1px_3px_1px_rgba(0,0,0,0.15)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.30)] flex justify-center items-center gap-2">
+        <div class="w-6 h-6 relative overflow-hidden">
+          <div class="w-4 h-4 left-[4px] top-[2px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+        </div>
+        <div class="flex justify-center items-center">
+          <div class="justify-start text-lime-950 text-lg font-medium font-['Rubik']">Дата заїзду - Дата виїзду</div>
+        </div>
+      </div>
+      <div data-color="White" data-icon-left="true" data-icon-right="true" data-size="Big" data-state="Default" data-style="Primary" data-text="true" class="px-6 py-4 bg-neutral-50 rounded-3xl shadow-[0px_1px_3px_1px_rgba(0,0,0,0.15)] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.30)] flex justify-center items-center gap-2">
+        <div class="w-6 h-6 relative overflow-hidden">
+          <div class="w-2 h-2 left-[8px] top-[2px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+          <div class="w-4 h-2 left-[3px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+        </div>
+        <div class="flex justify-center items-center">
+          <div class="justify-start text-lime-950 text-lg font-medium font-['Rubik']">2 дорослих - 0 дитина - 1 номер</div>
+        </div>
+        <div class="w-6 h-6 relative overflow-hidden">
+          <div class="w-1.5 h-3.5 left-[18.75px] top-[8.63px] absolute origin-top-left rotate-90 outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+        </div>
+      </div>
+    </div>
+    <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Big" data-state="Default" data-style="Primary" data-text="true" class="w-64 px-6 py-4 bg-orange-600 rounded-[20px] flex justify-center items-center gap-2">
+      <div class="flex justify-center items-center">
+        <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Шукати</div>
+      </div>
+    </div>
+  </div>
+  <div data-color="Green" data-icon-left="false" data-icon-right="false" data-size="Big" data-state="Default" data-style="Outline" data-text="true" class="px-6 py-4 left-[786px] top-[2873px] absolute rounded-[20px] outline outline-1 outline-offset-[-1px] outline-lime-950 inline-flex justify-center items-center gap-2">
+    <div class="flex justify-center items-center">
+      <div class="justify-start text-lime-950 text-xl font-bold font-['Rubik']">Показати більше результатів</div>
+    </div>
+  </div>
+  <div class="w-60 left-[200px] top-[517px] absolute bg-neutral-50 rounded-3xl inline-flex flex-col justify-start items-start">
+    <div class="self-stretch h-24 px-8 rounded-3xl flex flex-col justify-start items-start gap-2.5">
+      <div class="self-stretch inline-flex justify-start items-center gap-8">
+        <div class="w-56 h-24 rounded-tl-3xl rounded-tr-3xl flex justify-start items-center gap-2.5">
+          <div class="justify-start text-black text-2xl font-bold font-['Rubik']">Фільтри</div>
+        </div>
+      </div>
+    </div>
+    <div class="self-stretch flex flex-col justify-start items-start">
+      <div class="self-stretch p-8 bg-lime-950/20 rounded-tl-3xl rounded-tr-3xl outline outline-1 outline-offset-[-1px] outline-neutral-500 flex flex-col justify-start items-start gap-6">
+        <div class="self-stretch flex flex-col justify-start items-start gap-4">
+          <div class="w-44 justify-start text-black text-lg font-medium font-['Rubik']">Бюджет на ніч</div>
+          <div class="self-stretch justify-start text-black text-sm font-normal font-['Rubik']">UAH 400 - 6500+</div>
+        </div>
+        <div class="self-stretch h-8 relative">
+          <div class="w-40 h-2 left-[179px] top-[20px] absolute origin-top-left -rotate-180 bg-lime-950"></div>
+          <div class="w-4 h-4 left-[8px] top-[8px] absolute bg-lime-950 rounded-full outline outline-1 outline-neutral-50"></div>
+          <div class="w-4 h-4 left-[159px] top-[8px] absolute bg-lime-950 rounded-full outline outline-1 outline-neutral-50"></div>
+        </div>
+      </div>
+      <div class="self-stretch flex flex-col justify-start items-start">
+        <div data-property-1="Open" class="self-stretch px-4 py-8 bg-stone-50 border-l border-r border-b border-neutral-500 flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch inline-flex justify-between items-center">
+            <div class="w-40 inline-flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch justify-start text-black text-lg font-medium font-['Rubik']">Тип розміщення</div>
+            </div>
+            <div class="w-6 h-6 relative overflow-hidden">
+              <div class="w-3.5 h-1.5 left-[5.25px] top-[8.63px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-black"></div>
+            </div>
+          </div>
+          <div class="flex flex-col justify-start items-start gap-4">
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Апартаменти</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="w-44 justify-start text-black text-sm font-medium font-['Rubik']">Домівка й апартаменти </div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Готелі</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Хостели</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Розміщення сім’ї</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Гостьові будинки</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Готелі <br/>типу “ліжко та сніданок”</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Будинки на відпочинку</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Парк готелі</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Вілли</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Мотелі</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Курортні Мотелі</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Кемпінги</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Ботелі</div>
+            </div>
+            <div class="inline-flex justify-center items-center gap-4">
+              <div data-state="Enabled" data-type="Unselected" class="w-6 h-6 p-1 inline-flex flex-col justify-center items-center">
+                <div class="p-2.5 rounded-[100px] inline-flex justify-center items-center">
+                  <div class="w-6 h-6 rounded-sm border-[1.50px] border-lime-950"></div>
+                </div>
+              </div>
+              <div class="justify-start text-black text-sm font-medium font-['Rubik']">Лоджі</div>
+            </div>
+          </div>
+        </div>
+        <div data-property-1="1" class="self-stretch px-4 py-8 bg-stone-50 border-l border-r border-b border-neutral-500 flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch inline-flex justify-between items-center">
+            <div class="w-64 inline-flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch justify-start text-black text-lg font-medium font-['Rubik']">Оцінка за відгуками</div>
+            </div>
+            <div class="w-6 h-6 relative overflow-hidden">
+              <div class="w-1.5 h-3.5 left-[18.75px] top-[8.63px] absolute origin-top-left rotate-90 outline outline-[1.50px] outline-offset-[-0.75px] outline-black"></div>
+            </div>
+          </div>
+        </div>
+        <div data-property-1="1" class="self-stretch px-4 py-8 bg-stone-50 border-l border-r border-b border-neutral-500 flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch inline-flex justify-between items-center">
+            <div class="w-56 inline-flex flex-col justify-start items-start gap-4">
+              <div class="w-32 justify-start text-black text-lg font-medium font-['Rubik']">Спальні та ванні кімнати</div>
+            </div>
+            <div class="w-6 h-6 relative overflow-hidden">
+              <div class="w-1.5 h-3.5 left-[18.75px] top-[8.63px] absolute origin-top-left rotate-90 outline outline-[1.50px] outline-offset-[-0.75px] outline-black"></div>
+            </div>
+          </div>
+        </div>
+        <div data-property-1="1" class="self-stretch px-4 py-8 bg-stone-50 border-l border-r border-b border-neutral-500 flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch inline-flex justify-between items-center">
+            <div class="flex-1 inline-flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch justify-start text-black text-lg font-medium font-['Rubik']">Зручності</div>
+            </div>
+            <div class="w-6 h-6 relative overflow-hidden">
+              <div class="w-1.5 h-3.5 left-[18.75px] top-[8.63px] absolute origin-top-left rotate-90 outline outline-[1.50px] outline-offset-[-0.75px] outline-black"></div>
+            </div>
+          </div>
+        </div>
+        <div data-property-1="1" class="self-stretch px-4 py-8 bg-stone-50 border-l border-r border-b border-neutral-500 flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch inline-flex justify-between items-center">
+            <div class="w-44 inline-flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch justify-start text-black text-lg font-medium font-['Rubik']">Зручності у номері</div>
+            </div>
+            <div class="w-6 h-6 relative overflow-hidden">
+              <div class="w-1.5 h-3.5 left-[18.75px] top-[8.63px] absolute origin-top-left rotate-90 outline outline-[1.50px] outline-offset-[-0.75px] outline-black"></div>
+            </div>
+          </div>
+        </div>
+        <div data-property-1="1" class="self-stretch px-4 py-8 bg-stone-50 border-l border-r border-b border-neutral-500 flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch inline-flex justify-between items-center">
+            <div class="w-28 inline-flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch justify-start text-black text-lg font-medium font-['Rubik']">Тип ліжка</div>
+            </div>
+            <div class="w-6 h-6 relative overflow-hidden">
+              <div class="w-1.5 h-3.5 left-[18.75px] top-[8.63px] absolute origin-top-left rotate-90 outline outline-[1.50px] outline-offset-[-0.75px] outline-black"></div>
+            </div>
+          </div>
+        </div>
+        <div data-property-1="1" class="self-stretch px-4 py-8 bg-stone-50 border-l border-r border-b border-neutral-500 flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch inline-flex justify-between items-center">
+            <div class="w-28 inline-flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch justify-start text-black text-lg font-medium font-['Rubik']">Харчування</div>
+            </div>
+            <div class="w-6 h-6 relative overflow-hidden">
+              <div class="w-1.5 h-3.5 left-[18.75px] top-[8.63px] absolute origin-top-left rotate-90 outline outline-[1.50px] outline-offset-[-0.75px] outline-black"></div>
+            </div>
+          </div>
+        </div>
+        <div data-property-1="1" class="self-stretch px-4 py-8 bg-stone-50 border-l border-r border-b border-neutral-500 flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch inline-flex justify-between items-center">
+            <div class="w-28 inline-flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch justify-start text-black text-lg font-medium font-['Rubik']">Правила бронювання</div>
+            </div>
+            <div class="w-6 h-6 relative overflow-hidden">
+              <div class="w-1.5 h-3.5 left-[18.75px] top-[8.63px] absolute origin-top-left rotate-90 outline outline-[1.50px] outline-offset-[-0.75px] outline-black"></div>
+            </div>
+          </div>
+        </div>
+        <div data-property-1="1" class="self-stretch px-4 py-8 bg-stone-50 rounded-bl-3xl rounded-br-3xl border-l border-r border-b border-neutral-500 flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch inline-flex justify-between items-center">
+            <div class="w-32 inline-flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch justify-start text-black text-lg font-medium font-['Rubik']">Зручності для осіб з інвалідністю</div>
+            </div>
+            <div class="w-6 h-6 relative overflow-hidden">
+              <div class="w-1.5 h-3.5 left-[18.75px] top-[8.63px] absolute origin-top-left rotate-90 outline outline-[1.50px] outline-offset-[-0.75px] outline-black"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="left-[468px] top-[421px] absolute inline-flex flex-col justify-start items-start">
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,5</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Чудово</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">2999 відгуків</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">Emily Resort</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Львів</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 12 400</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,5</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Чудово</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">318 відгуків</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">Rudolfo hotel</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Центр Львова • Площа Ринок</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 3 240</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,5</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Чудово</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">139 відгуки</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">Apart-HOTEL GALLERY 21</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Львів • 600 м від центру</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 1 560</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,6</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Чудово</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">242 відгуки</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">Атлас Делюкс </div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Львів • Тихий район</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 3 990</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,6</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']"> Чудово</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">400 відгуки</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">Cities Gallery Apart-hotel</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Центр  Львова, Львів</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 2 275</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,6</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Чудово</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">109 відгуки</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">Jam Apartments Miskevycha</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Центр  Львова, Львів</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 2 546</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,3</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Чудово</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">174 відгуки</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">7 Apartments</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Центр  Львова, Львів</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 3 182</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">8,4</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Дуже добре</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">439 відгуки</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">Freska Apartments</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Площа Ринок, Львів (Площа Ринок)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 810</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,4</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Чудово</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">2801 відгуки</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">On The Square</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Площа Ринок, Львів (Площа Ринок)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 2 196</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,4</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Чудово</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">4822 відгуки</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">Danylo Inn</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Центр  Львова, Львів</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 1 456</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,5</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Чудово</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">590 відгуки</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">Post House Rooms</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Центр  Львова, Львів</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 1 385</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,5</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Відмінно</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">898 відгуки</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">Apart-hotel Horowitz</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Площа Ринок, Львів (Площа Ринок)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 2 196</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,2</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Чудово</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">249 відгуки</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">2 Virmens'ka Apartment</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Площа Ринок, Львів (Площа Ринок)</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 1 199</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">9,1</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Чудово</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">3 342 відгуки</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">Yurus Hostel</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Львів</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 1 395</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-property-1="Table" class="w-96 inline-flex flex-col justify-start items-start">
+      <img class="w-96 h-44 rounded-tl-3xl rounded-tr-3xl" src="https://placehold.co/404x169" />
+      <div class="w-96 p-4 bg-neutral-50 rounded-bl-3xl rounded-br-3xl flex flex-col justify-end items-start gap-2.5">
+        <div class="w-96 flex flex-col justify-start items-start gap-4">
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch flex flex-col justify-start items-start gap-4">
+              <div class="self-stretch flex flex-col justify-start items-start gap-4">
+                <div data-property-1="Rating" class="inline-flex justify-start items-center gap-5">
+                  <div class="h-10 p-2 bg-lime-950 rounded-xl flex justify-start items-center">
+                    <div class="text-center justify-center text-amber-50 text-lg font-bold font-['Rubik']">8,1</div>
+                  </div>
+                  <div class="self-stretch inline-flex flex-col justify-between items-start">
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-black text-sm font-medium font-['Rubik']">Дуже добре</div>
+                    </div>
+                    <div class="inline-flex justify-center items-center gap-2.5">
+                      <div class="justify-start text-neutral-500 text-sm font-normal font-['Rubik']">1370 відгуків</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-stretch flex flex-col justify-start items-start gap-3">
+                  <div class="self-stretch justify-start text-lime-950 text-lg font-bold font-['Rubik']">Urban Hotel</div>
+                  <div class="self-stretch flex flex-col justify-start items-start gap-2">
+                    <div class="self-stretch justify-start text-neutral-500 text-xs font-normal font-['Rubik']">Львів</div>
+                  </div>
+                </div>
+              </div>
+              <div class="inline-flex justify-start items-center gap-2">
+                <div data-icon="True" data-icon="true" data-name="Безкоштовний Wi-Fi" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative overflow-hidden">
+                    <div class="w-4 h-3.5 left-[3.22px] top-[5px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Безкоштовна парковка" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-4 h-4 left-[3px] top-[3px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-2.5 left-[9px] top-[7px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+                <div data-icon="True" data-icon="true" data-name="Сімейні номери" data-size="Big" class="p-2 bg-zinc-300 rounded-xl flex justify-center items-center gap-4">
+                  <div class="w-6 h-6 relative">
+                    <div class="w-5 h-2.5 left-[2px] top-[9.50px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-[5px] h-[5px] left-[9.50px] top-[13px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[14px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                    <div class="w-1.5 h-1.5 left-[4px] top-[4px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-lime-950"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="self-stretch flex flex-col justify-start items-start">
+              <div class="self-stretch justify-start text-stone-950 text-lg font-medium font-['Rubik']">UAH 1 256</div>
+            </div>
+          </div>
+          <div data-color="Tangerine" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="self-stretch h-9 px-6 py-2 bg-orange-600 rounded-[20px] inline-flex justify-center items-center gap-2">
+            <div class="flex justify-center items-center">
+              <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Переглянути</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div data-property-1="1" class="left-[464px] top-[347px] absolute inline-flex justify-start items-start">
+    <div data-color="Green" data-icon-left="false" data-icon-right="true" data-size="Big" data-state="Default" data-style="Secondary" data-text="true" class="p-4 bg-neutral-50 rounded-[20px] outline outline-1 outline-lime-950 flex justify-center items-center gap-2">
+      <div class="flex justify-center items-center">
+        <div class="justify-start text-lime-950 text-xl font-normal font-['Rubik']">Відсортувати за: Наші рекомендації</div>
+      </div>
+      <div class="w-6 h-6 relative overflow-hidden">
+        <div class="w-1.5 h-3.5 left-[18.75px] top-[8.63px] absolute origin-top-left rotate-90 outline outline-[1.50px] outline-offset-[-0.75px] outline-black"></div>
+      </div>
+    </div>
+  </div>
+  <div class="p-1 left-[1471px] top-[289px] absolute bg-neutral-50 rounded-3xl inline-flex justify-start items-center gap-2">
+    <div data-color="Green" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Text" data-text="true" class="h-9 px-6 py-2 rounded-[20px] flex justify-center items-center gap-2">
+      <div class="flex justify-center items-center">
+        <div class="justify-start text-lime-950 text-lg font-medium font-['Rubik']">Таблиці</div>
+      </div>
+    </div>
+    <div data-color="Green" data-icon-left="false" data-icon-right="false" data-size="Small" data-state="Default" data-style="Primary" data-text="true" class="h-9 px-6 py-2 bg-lime-950 rounded-[20px] flex justify-center items-center gap-2">
+      <div class="flex justify-center items-center">
+        <div class="justify-start text-amber-50 text-lg font-medium font-['Rubik']">Список</div>
+      </div>
+    </div>
+  </div>
+  <div class="w-[1920px] h-[558px] left-0 top-[2966px] absolute">
+    <div class="w-[1920px] h-[558px] left-0 top-0 absolute bg-neutral-50"></div>
+    <div class="w-[1520px] px-20 pt-4 pb-8 left-[200px] top-0 absolute rounded-3xl inline-flex flex-col justify-start items-start gap-2.5">
+      <div class="w-[1368px] flex flex-col justify-start items-center gap-4">
+        <div class="self-stretch h-20 relative">
+          <div class="w-[1368px] h-0 left-0 top-[40px] absolute outline outline-1 outline-offset-[-0.50px] outline-lime-950"></div>
+          <div class="w-20 h-20 left-[644px] top-0 absolute bg-stone-900"></div>
+          <div class="w-3 h-4 left-[663.08px] top-[8.07px] absolute bg-orange-600 outline outline-1 outline-orange-600"></div>
+          <div class="w-10 h-14 left-[665.28px] top-[11.35px] absolute bg-stone-200"></div>
+        </div>
+        <div class="w-[1213px] flex flex-col justify-start items-center gap-6">
+          <div class="self-stretch text-center justify-start text-lime-950 text-3xl font-semibold font-['Unbounded']">Розпочни співпрацю!</div>
+          <div class="px-8 rounded-3xl outline outline-1 outline-offset-[-1px] outline-neutral-500 inline-flex justify-start items-center gap-6">
+            <div data-color="Green" data-icon-left="true" data-icon-right="false" data-size="Big" data-state="Default" data-style="Primary" data-text="true" class="px-6 py-4 bg-lime-950 rounded-[20px] flex justify-center items-center gap-2">
+              <div class="w-6 h-6 relative overflow-hidden">
+                <div class="w-6 h-6 left-0 top-[-0.01px] absolute bg-amber-50"></div>
+              </div>
+              <div class="flex justify-center items-center">
+                <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Instagram</div>
+              </div>
+            </div>
+            <div data-color="Green" data-icon-left="true" data-icon-right="false" data-size="Big" data-state="Default" data-style="Primary" data-text="true" class="px-6 py-4 bg-lime-950 rounded-[20px] flex justify-center items-center gap-2">
+              <div class="w-6 h-6 relative overflow-hidden">
+                <div class="w-6 h-5 left-0 top-[2.25px] absolute bg-amber-50"></div>
+              </div>
+              <div class="flex justify-center items-center">
+                <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Twitter</div>
+              </div>
+            </div>
+            <div data-color="Green" data-icon-left="true" data-icon-right="false" data-size="Big" data-state="Default" data-style="Primary" data-text="true" class="px-6 py-4 bg-lime-950 rounded-[20px] flex justify-center items-center gap-2">
+              <div class="w-6 h-6 relative overflow-hidden">
+                <div class="w-5 h-5 left-[1px] top-[0.95px] absolute outline outline-[1.50px] outline-offset-[-0.75px] outline-amber-50"></div>
+              </div>
+              <div class="flex justify-center items-center">
+                <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Facebook</div>
+              </div>
+            </div>
+            <div data-color="Green" data-icon-left="true" data-icon-right="false" data-size="Big" data-state="Default" data-style="Primary" data-text="true" class="px-6 py-4 bg-lime-950 rounded-[20px] flex justify-center items-center gap-2">
+              <div class="w-6 h-6 relative">
+                <div class="w-5 h-6 left-[1.50px] top-0 absolute bg-amber-50"></div>
+              </div>
+              <div class="flex justify-center items-center">
+                <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Tik Tok</div>
+              </div>
+            </div>
+            <div data-color="Green" data-icon-left="true" data-icon-right="false" data-size="Big" data-state="Default" data-style="Primary" data-text="true" class="px-6 py-4 bg-lime-950 rounded-[20px] flex justify-center items-center gap-2">
+              <div class="w-6 h-6 relative overflow-hidden">
+                <div class="w-6 h-4 left-0 top-[3.02px] absolute bg-amber-50"></div>
+              </div>
+              <div class="flex justify-center items-center">
+                <div class="justify-start text-amber-50 text-xl font-bold font-['Rubik']">Telegram</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-[1520px] h-64 left-[200px] top-[266px] absolute inline-flex flex-col justify-start items-center gap-4">
+      <div class="w-[1520px] py-8 border-b border-neutral-500 inline-flex justify-center items-start gap-12">
+        <div class="w-64 inline-flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch justify-start text-lime-950 text-lg font-medium font-['Rubik']">Компанія</div>
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">Про Reservio</div>
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">Як працює сервіс</div>
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">Карʼєра</div>
+          </div>
+        </div>
+        <div class="w-64 inline-flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch justify-start text-lime-950 text-lg font-medium font-['Rubik']">Допомога</div>
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">FAQ</div>
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">Підтримка користувачів</div>
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">Правила бронювання</div>
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">Скасування та повернення</div>
+          </div>
+        </div>
+        <div class="w-64 inline-flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch justify-start text-lime-950 text-lg font-medium font-['Rubik']">Для партнерів</div>
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">Увійти в Екстанет</div>
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">Здати житло</div>
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">Для власників</div>
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">Партнерська програма</div>
+          </div>
+        </div>
+        <div class="w-64 inline-flex flex-col justify-start items-start gap-6">
+          <div class="self-stretch justify-start text-lime-950 text-lg font-medium font-['Rubik']">Юридична інформація</div>
+          <div class="self-stretch flex flex-col justify-start items-start gap-4">
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">Політика конфіденційності</div>
+            <div class="self-stretch justify-start text-lime-950 text-base font-normal font-['Rubik']">Умови користування</div>
+          </div>
+        </div>
+      </div>
+      <div class="self-stretch text-center justify-start"><span class="text-neutral-500 text-sm font-normal font-['Rubik'] line-clamp-1">Copyright (2006 - 2026) - Reservio</span><sup class="text-neutral-500 text-sm font-normal font-['Rubik'] line-clamp-1">тм</sup><span class="text-neutral-500 text-sm font-normal font-['Rubik'] line-clamp-1"> . Усі права захищено.</span></div>
+    </div>
+  </div>
+</div>
