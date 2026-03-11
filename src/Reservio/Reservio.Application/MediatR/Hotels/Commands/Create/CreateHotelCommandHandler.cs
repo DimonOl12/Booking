@@ -22,11 +22,15 @@ public class CreateHotelCommandHandler(
 			ArrivalTimeUtcTo = timeConverter.ToDateTimeOffsetFromUtcTimeOnly(request.ArrivalTimeUtcTo),
 			DepartureTimeUtcFrom = timeConverter.ToDateTimeOffsetFromUtcTimeOnly(request.DepartureTimeUtcFrom),
 			DepartureTimeUtcTo = timeConverter.ToDateTimeOffsetFromUtcTimeOnly(request.DepartureTimeUtcTo),
-			IsArchived = request.IsArchived ?? false,
+            MinPrice = request.MinPrice,
+            MaxPrice = request.MaxPrice,
+            Rating = request.Rating,
+            IsArchived = request.IsArchived ?? false,
 			HotelCategoryId = request.CategoryId,
 			RealtorId = currentUserService.GetRequiredUserId(),
 		};
-		entity.Photos = await SaveAndPrioritizePhotosAsync(request.Photos, entity);
+        Console.WriteLine($"MinPrice received: {request.MinPrice}, MaxPrice received: {request.MaxPrice}");
+        entity.Photos = await SaveAndPrioritizePhotosAsync(request.Photos, entity);
 		entity.AddressId = await mediator.Send(request.Address, cancellationToken);
 
 		entity.HotelHotelAmenities = (request.HotelAmenityIds ?? [])

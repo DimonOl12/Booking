@@ -17,7 +17,11 @@ public class CreateHotelValidator : AbstractValidator<CreateHotelCommand> {
 			.MaximumLength(4000)
 				.WithMessage("Description is too long (4000)");
 
-		RuleFor(h => h.CategoryId)
+        RuleFor(x => x.MinPrice).GreaterThanOrEqualTo(0);
+        RuleFor(x => x.MaxPrice).GreaterThanOrEqualTo(x => x.MinPrice);
+        RuleFor(x => x.Rating).InclusiveBetween(0, 10);
+
+        RuleFor(h => h.CategoryId)
 			.MustAsync(existingEntityCheckerService.IsCorrectHotelCategoryIdAsync)
 				.WithMessage("HotelCategory with this id is not exists");
 

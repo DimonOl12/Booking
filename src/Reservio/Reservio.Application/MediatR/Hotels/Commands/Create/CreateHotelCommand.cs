@@ -15,7 +15,11 @@ public class CreateHotelCommand : IRequest<long> {
 	public TimeOnly DepartureTimeUtcFrom { get; set; }
 	public TimeOnly DepartureTimeUtcTo { get; set; }
 
-	public bool? IsArchived { get; set; }
+    public decimal MinPrice { get; set; }
+    public decimal MaxPrice { get; set; }
+    public double Rating { get; set; }
+
+    public bool? IsArchived { get; set; }
 
 	public CreateAddressCommand Address { get; set; } = null!;
 
