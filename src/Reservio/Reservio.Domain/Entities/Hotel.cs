@@ -16,8 +16,10 @@ public class Hotel {
 	public DateTimeOffset DepartureTimeUtcFrom { get; set; }
 
 	public DateTimeOffset DepartureTimeUtcTo { get; set; }
-
-	public bool IsArchived { get; set; }
+    public decimal MinPrice { get; set; }
+    public decimal MaxPrice { get; set; }
+    public double Rating { get; set; }
+    public bool IsArchived { get; set; }
 
 	public long AddressId { get; set; }
 	public Address Address { get; set; } = null!;
