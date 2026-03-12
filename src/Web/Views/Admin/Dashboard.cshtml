@@ -1,0 +1,167 @@
+@model Web.Models.AdminDashboardViewModel
+@{
+    Layout = null;
+    var initials = User.FindFirst("Initials")?.Value ?? "A";
+    var name = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Admin";
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>Адмін — Дашборд</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/admin.css"/>
+</head>
+<body>
+
+@await Html.PartialAsync("_AdminSidebar", "Dashboard")
+
+<div class="adm-main">
+    <div class="adm-topbar">
+        <span class="adm-topbar-title">Панель адміністратора</span>
+        <div class="adm-topbar-user">
+            <div class="adm-topbar-avatar">@initials</div>
+            <span>@name</span>
+        </div>
+    </div>
+    <div class="adm-body">
+        <h1 class="adm-page-title">Дашборд</h1>
+        <p class="adm-page-sub">Загальний огляд платформи</p>
+
+        <!-- Stats -->
+        <div class="adm-stats">
+            <div class="adm-stat-card">
+                <div class="adm-stat-icon green">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                    <div class="adm-stat-val">@Model.TotalCustomers</div>
+                    <div class="adm-stat-label">Клієнтів</div>
+                </div>
+            </div>
+            <div class="adm-stat-card">
+                <div class="adm-stat-icon red">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                </div>
+                <div>
+                    <div class="adm-stat-val">@Model.TotalRealtors</div>
+                    <div class="adm-stat-label">Ріелторів</div>
+                </div>
+            </div>
+            <div class="adm-stat-card">
+                <div class="adm-stat-icon blue">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                </div>
+                <div>
+                    <div class="adm-stat-val">@Model.TotalHotels</div>
+                    <div class="adm-stat-label">Готелів</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent customers -->
+        <div class="adm-section">
+            <div class="adm-section-head">
+                <span class="adm-section-title">Останні клієнти</span>
+                <a href="/Admin/Users" class="adm-section-link">Всі клієнти →</a>
+            </div>
+            <div class="adm-table-wrap">
+                <table class="adm-table">
+                    <thead><tr>
+                        <th>Користувач</th>
+                        <th>Username</th>
+                        <th>Статус</th>
+                    </tr></thead>
+                    <tbody>
+                    @if (!Model.RecentCustomers.Any())
+                    {
+                        <tr><td colspan="3" class="adm-empty">Немає даних</td></tr>
+                    }
+                    @foreach (var u in Model.RecentCustomers)
+                    {
+                        var ini = (u.FirstName.Length > 0 ? u.FirstName[0].ToString() : "") + (u.LastName.Length > 0 ? u.LastName[0].ToString() : "");
+                        if (string.IsNullOrEmpty(ini)) ini = u.Email.Length > 0 ? u.Email[0].ToString().ToUpper() : "?";
+                        <tr>
+                            <td>
+                                <div class="adm-user-cell">
+                                    <div class="adm-avatar">@ini.ToUpper()</div>
+                                    <div>
+                                        <div class="adm-user-name">@u.FirstName @u.LastName</div>
+                                        <div class="adm-user-email">@u.Email</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@u.UserName</td>
+                            <td>
+                                @if (u.IsLocked)
+                                {
+                                    <span class="adm-badge blocked">Заблоковано</span>
+                                }
+                                else
+                                {
+                                    <span class="adm-badge active">Активний</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent realtors -->
+        <div class="adm-section">
+            <div class="adm-section-head">
+                <span class="adm-section-title">Останні ріелтори</span>
+                <a href="/Admin/Realtors" class="adm-section-link">Всі ріелтори →</a>
+            </div>
+            <div class="adm-table-wrap">
+                <table class="adm-table">
+                    <thead><tr>
+                        <th>Ріелтор</th>
+                        <th>Username</th>
+                        <th>Статус</th>
+                    </tr></thead>
+                    <tbody>
+                    @if (!Model.RecentRealtors.Any())
+                    {
+                        <tr><td colspan="3" class="adm-empty">Немає даних</td></tr>
+                    }
+                    @foreach (var u in Model.RecentRealtors)
+                    {
+                        var ini = (u.FirstName.Length > 0 ? u.FirstName[0].ToString() : "") + (u.LastName.Length > 0 ? u.LastName[0].ToString() : "");
+                        if (string.IsNullOrEmpty(ini)) ini = u.Email.Length > 0 ? u.Email[0].ToString().ToUpper() : "?";
+                        <tr>
+                            <td>
+                                <div class="adm-user-cell">
+                                    <div class="adm-avatar">@ini.ToUpper()</div>
+                                    <div>
+                                        <div class="adm-user-name">@u.FirstName @u.LastName</div>
+                                        <div class="adm-user-email">@u.Email</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@u.UserName</td>
+                            <td>
+                                @if (u.IsLocked)
+                                {
+                                    <span class="adm-badge blocked">Заблоковано</span>
+                                }
+                                else
+                                {
+                                    <span class="adm-badge active">Активний</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

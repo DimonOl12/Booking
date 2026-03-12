@@ -1,0 +1,144 @@
+@model Web.Models.AdminHotelsViewModel
+@{
+    Layout = null;
+    var initials = User.FindFirst("Initials")?.Value ?? "A";
+    var name = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Admin";
+    string PageUrl(int p) => $"/Admin/Hotels?page={p}&search={Uri.EscapeDataString(Model.Search ?? "")}&status={Model.StatusFilter ?? ""}";
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>Адмін — Готелі</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/admin.css"/>
+</head>
+<body>
+@await Html.PartialAsync("_AdminSidebar", "Hotels")
+<div class="adm-main">
+    <div class="adm-topbar">
+        <span class="adm-topbar-title">Готелі</span>
+        <div class="adm-topbar-user">
+            <div class="adm-topbar-avatar">@initials</div>
+            <span>@name</span>
+        </div>
+    </div>
+    <div class="adm-body">
+        <h1 class="adm-page-title">Готелі</h1>
+        <p class="adm-page-sub">Всього: @Model.TotalCount</p>
+
+        @if (!string.IsNullOrEmpty(Model.Flash))
+        {
+            <div class="adm-flash">@Model.Flash</div>
+        }
+
+        <div class="adm-toolbar">
+            <form method="get" action="/Admin/Hotels" class="adm-search-form">
+                <input type="hidden" name="status" value="@(Model.StatusFilter ?? "")"/>
+                <div class="adm-search-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    <input type="text" name="search" value="@(Model.Search ?? "")" placeholder="Пошук за назвою…" class="adm-search-input"/>
+                    <button type="submit" class="adm-search-btn">Шукати</button>
+                </div>
+            </form>
+            <div class="adm-filter-tabs">
+                <a href="/Admin/Hotels?search=@Uri.EscapeDataString(Model.Search ?? "")" class="adm-filter-tab @(string.IsNullOrEmpty(Model.StatusFilter) ? "active" : "")">Усі</a>
+                <a href="/Admin/Hotels?search=@Uri.EscapeDataString(Model.Search ?? "")&status=active" class="adm-filter-tab @(Model.StatusFilter == "active" ? "active" : "")">Активні</a>
+                <a href="/Admin/Hotels?search=@Uri.EscapeDataString(Model.Search ?? "")&status=archived" class="adm-filter-tab @(Model.StatusFilter == "archived" ? "active" : "")">Архів</a>
+            </div>
+        </div>
+
+        <div class="adm-section">
+            <div class="adm-table-wrap">
+                <table class="adm-table">
+                    <thead><tr>
+                        <th>Готель</th>
+                        <th>Місто</th>
+                        <th>Категорія</th>
+                        <th>Рейтинг</th>
+                        <th>Ціна від</th>
+                        <th>Статус</th>
+                        <th></th>
+                    </tr></thead>
+                    <tbody>
+                    @if (!Model.Hotels.Any())
+                    {
+                        <tr><td colspan="7" class="adm-empty">Нічого не знайдено</td></tr>
+                    }
+                    @foreach (var h in Model.Hotels)
+                    {
+                        var photo = h.Photos.OrderBy(p => p.Priority).FirstOrDefault()?.Name;
+                        <tr>
+                            <td>
+                                <div class="adm-user-cell">
+                                    @if (!string.IsNullOrEmpty(photo))
+                                    {
+                                        <img src="/images/@photo" class="adm-hotel-img" alt=""/>
+                                    }
+                                    else
+                                    {
+                                        <div class="adm-hotel-img" style="display:flex;align-items:center;justify-content:center;color:#999">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+                                        </div>
+                                    }
+                                    <div>
+                                        <div class="adm-user-name">@h.Name</div>
+                                        <div class="adm-user-email">ID: @h.Id</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@h.Address.City.Name</td>
+                            <td>@h.Category.Name</td>
+                            <td>
+                                <span style="font-weight:700;">@h.Rating.ToString("0.0")</span>
+                            </td>
+                            <td>
+                                @if (h.MinPrice.HasValue)
+                                {
+                                    <span>UAH @h.MinPrice.Value.ToString("N0")</span>
+                                }
+                                else
+                                {
+                                    <span style="color:var(--adm-muted)">—</span>
+                                }
+                            </td>
+                            <td>
+                                @if (h.IsArchived)
+                                {
+                                    <span class="adm-badge archived">Архів</span>
+                                }
+                                else
+                                {
+                                    <span class="adm-badge active">Активний</span>
+                                }
+                            </td>
+                            <td>
+                                <a href="/Home/Property/@h.Id" target="_blank" class="adm-btn adm-btn-primary" style="text-decoration:none">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    Переглянути
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            @if (Model.TotalPages > 1)
+            {
+                <div class="adm-pagination">
+                    <a href="@PageUrl(Model.CurrentPage - 1)" class="adm-page-btn @(Model.CurrentPage == 0 ? "disabled" : "")">←</a>
+                    @for (int i = 0; i < Model.TotalPages; i++)
+                    {
+                        <a href="@PageUrl(i)" class="adm-page-btn @(i == Model.CurrentPage ? "active" : "")">@(i + 1)</a>
+                    }
+                    <a href="@PageUrl(Model.CurrentPage + 1)" class="adm-page-btn @(Model.CurrentPage >= Model.TotalPages - 1 ? "disabled" : "")">→</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+</body>
+</html>

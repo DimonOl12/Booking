@@ -202,3 +202,14 @@ public class RefCityDto
     public string Name { get; set; } = "";
     public RefItemDto Country { get; set; } = new();
 }
+
+public class AdminUserDto
+{
+    public long Id { get; set; }
+    public string Email { get; set; } = "";
+    public string UserName { get; set; } = "";
+    public string FirstName { get; set; } = "";
+    public string LastName { get; set; } = "";
+    public string Photo { get; set; } = "";
+    public bool IsLocked { get; set; }
+}

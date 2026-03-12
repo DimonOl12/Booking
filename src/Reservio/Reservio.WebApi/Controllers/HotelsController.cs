@@ -34,7 +34,7 @@ public class HotelsController : BaseApiController {
 	}
 
 	[HttpPost]
-	[Authorize(Roles = "Realtor")]
+	[Authorize(Roles = "Realtor,Admin")]
 	public async Task<IActionResult> Create([FromForm] CreateHotelCommand command) {
 		var id = await Mediator.Send(command);
 

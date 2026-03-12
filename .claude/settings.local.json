@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5292/api/Hotels/Create 2>&1 || echo \"CONNECTION_FAILED\")",
+      "Bash(curl -s -X POST http://localhost:5292/api/Accounts/SignIn -d \"email=admin@gmail.com&password=12345678\" -w \"\\\\nHTTP_STATUS:%{http_code}\")",
+      "Bash(echo \"JWT role check:\" && echo \"eyJpZCI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ItCe0LvQtdCzIiwibGFzdE5hbWUiOiLQntC70YzQttC40YciLCJwaG90byI6IjMwaWt3ZWN1LnFkby53ZWJwIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE3NzU4NTY1NDB9\" | python3 -c \"import sys,base64,json; p=sys.stdin.read\\(\\).strip\\(\\); p+='='*\\(-len\\(p\\)%4\\); print\\(json.dumps\\(json.loads\\(base64.b64decode\\(p\\)\\), indent=2, ensure_ascii=False\\)\\)\")",
+      "Bash(find \"C:\\\\Users\\\\admin\\\\Desktop\\\\Booking_main\\\\Booking\\\\src\\\\Reservio\\\\Reservio.Application\" -type d -name \"MediatR\" 2>/dev/null | head -1 | xargs ls -la 2>/dev/null)",
+      "Bash(ls -1 \"C:\\\\Users\\\\admin\\\\Desktop\\\\Booking_main\\\\Booking\\\\src\\\\Reservio\\\\Reservio.WebApi\\\\Controllers\" | grep -E \"\\\\.cs$\")",
+      "Bash(ls -la \"C:\\\\Users\\\\admin\\\\Desktop\\\\Booking_main\\\\Booking\\\\src\\\\Web\\\\Controllers\" | grep -E \"\\\\.cs$\")",
+      "Bash(cd /c/Users/admin/Desktop/Booking_main/Booking/src/Web && dotnet build --no-restore 2>&1 | tail -30)",
+      "Bash(cd \"C:\\\\Users\\\\admin\\\\Desktop\\\\Booking_main\\\\Booking\\\\src\\\\Web\" && dotnet build --no-restore 2>&1 | tail -20)",
+      "Bash(cd \"C:\\\\Users\\\\admin\\\\Desktop\\\\Booking_main\\\\Booking\\\\src\\\\Web\" && dotnet build 2>&1 | tail -20)",
+      "WebFetch(domain:www.figma.com)"
+    ]
+  }
+}

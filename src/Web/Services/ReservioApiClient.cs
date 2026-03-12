@@ -48,6 +48,13 @@ public interface IReservioApiClient
     void ClearJwtToken();
     string? GetJwtToken();
     string BuildImageUrl(string? photoName);
+
+    // ─── Admin ────────────────────────────────────────────────────────────────
+    Task<ApiPage<AdminUserDto>> GetAdminCustomersAsync(int pageIndex = 0, int pageSize = 20, string? search = null, bool? isLocked = null);
+    Task<ApiPage<AdminUserDto>> GetAdminRealtorsAsync(int pageIndex = 0, int pageSize = 20, string? search = null, bool? isLocked = null);
+    Task<ApiPage<HotelApiDto>> GetAdminHotelsAsync(int pageIndex = 0, int pageSize = 15, string? search = null, bool? isArchived = null);
+    Task<bool> BlockUserAsync(long id);
+    Task<bool> UnlockUserAsync(long id);
 }
 
 public class ReservioApiClient : IReservioApiClient
@@ -358,6 +365,96 @@ public class ReservioApiClient : IReservioApiClient
         {
             return (null, "Сервер тимчасово недоступний.");
         }
+    }
+
+    // ─── Admin ────────────────────────────────────────────────────────────────
+
+    public async Task<ApiPage<AdminUserDto>> GetAdminCustomersAsync(int pageIndex = 0, int pageSize = 20, string? search = null, bool? isLocked = null)
+    {
+        try
+        {
+            var qs = new List<string> { $"PageIndex={pageIndex}", $"PageSize={pageSize}" };
+            if (!string.IsNullOrWhiteSpace(search))
+                qs.Add($"FirstName={Uri.EscapeDataString(search)}");
+            if (isLocked.HasValue)
+                qs.Add($"IsLocked={isLocked.Value.ToString().ToLower()}");
+            using var req = new HttpRequestMessage(HttpMethod.Get,
+                $"{_baseUrl}/api/Accounts/GetCustomerPage?{string.Join("&", qs)}");
+            AddAuth(req);
+            using var resp = await _http.SendAsync(req);
+            if (!resp.IsSuccessStatusCode) return new ApiPage<AdminUserDto>();
+            var body = await resp.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<ApiPage<AdminUserDto>>(body, _json) ?? new ApiPage<AdminUserDto>();
+        }
+        catch { return new ApiPage<AdminUserDto>(); }
+    }
+
+    public async Task<ApiPage<AdminUserDto>> GetAdminRealtorsAsync(int pageIndex = 0, int pageSize = 20, string? search = null, bool? isLocked = null)
+    {
+        try
+        {
+            var qs = new List<string> { $"PageIndex={pageIndex}", $"PageSize={pageSize}" };
+            if (!string.IsNullOrWhiteSpace(search))
+                qs.Add($"FirstName={Uri.EscapeDataString(search)}");
+            if (isLocked.HasValue)
+                qs.Add($"IsLocked={isLocked.Value.ToString().ToLower()}");
+            using var req = new HttpRequestMessage(HttpMethod.Get,
+                $"{_baseUrl}/api/Accounts/GetRealtorPage?{string.Join("&", qs)}");
+            AddAuth(req);
+            using var resp = await _http.SendAsync(req);
+            if (!resp.IsSuccessStatusCode) return new ApiPage<AdminUserDto>();
+            var body = await resp.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<ApiPage<AdminUserDto>>(body, _json) ?? new ApiPage<AdminUserDto>();
+        }
+        catch { return new ApiPage<AdminUserDto>(); }
+    }
+
+    public async Task<ApiPage<HotelApiDto>> GetAdminHotelsAsync(int pageIndex = 0, int pageSize = 15, string? search = null, bool? isArchived = null)
+    {
+        try
+        {
+            var qs = new List<string> { $"PageIndex={pageIndex}", $"PageSize={pageSize}" };
+            if (!string.IsNullOrWhiteSpace(search))
+                qs.Add($"Name={Uri.EscapeDataString(search)}");
+            if (isArchived.HasValue)
+                qs.Add($"IsArchived={isArchived.Value.ToString().ToLower()}");
+            var url = $"{_baseUrl}/api/Hotels/GetPage?{string.Join("&", qs)}";
+            using var req = new HttpRequestMessage(HttpMethod.Get, url);
+            AddAuth(req);
+            using var resp = await _http.SendAsync(req);
+            if (!resp.IsSuccessStatusCode) return new ApiPage<HotelApiDto>();
+            var body = await resp.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<ApiPage<HotelApiDto>>(body, _json) ?? new ApiPage<HotelApiDto>();
+        }
+        catch { return new ApiPage<HotelApiDto>(); }
+    }
+
+    public async Task<bool> BlockUserAsync(long id)
+    {
+        try
+        {
+            var payload = JsonSerializer.Serialize(new { id, lockoutEndUtc = new DateTime(2099, 12, 31) });
+            using var req = new HttpRequestMessage(HttpMethod.Patch, $"{_baseUrl}/api/Accounts/BlockUserById")
+            {
+                Content = new StringContent(payload, Encoding.UTF8, "application/json")
+            };
+            AddAuth(req);
+            using var resp = await _http.SendAsync(req);
+            return resp.IsSuccessStatusCode;
+        }
+        catch { return false; }
+    }
+
+    public async Task<bool> UnlockUserAsync(long id)
+    {
+        try
+        {
+            using var req = new HttpRequestMessage(HttpMethod.Patch, $"{_baseUrl}/api/Accounts/{id}");
+            AddAuth(req);
+            using var resp = await _http.SendAsync(req);
+            return resp.IsSuccessStatusCode;
+        }
+        catch { return false; }
     }
 
     // ─── Helpers ──────────────────────────────────────────────────────────────

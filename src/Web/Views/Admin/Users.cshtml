@@ -1,0 +1,139 @@
+@model Web.Models.AdminUsersViewModel
+@{
+    Layout = null;
+    var initials = User.FindFirst("Initials")?.Value ?? "A";
+    var name = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Admin";
+    string PageUrl(int p) => $"/Admin/Users?page={p}&search={Uri.EscapeDataString(Model.Search ?? "")}&status={Model.StatusFilter ?? ""}";
+}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>Адмін — Клієнти</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/admin.css"/>
+</head>
+<body>
+@await Html.PartialAsync("_AdminSidebar", "Users")
+<div class="adm-main">
+    <div class="adm-topbar">
+        <span class="adm-topbar-title">Клієнти</span>
+        <div class="adm-topbar-user">
+            <div class="adm-topbar-avatar">@initials</div>
+            <span>@name</span>
+        </div>
+    </div>
+    <div class="adm-body">
+        <h1 class="adm-page-title">Клієнти</h1>
+        <p class="adm-page-sub">Всього: @Model.TotalCount</p>
+
+        @if (!string.IsNullOrEmpty(Model.Flash))
+        {
+            <div class="adm-flash">@Model.Flash</div>
+        }
+
+        <div class="adm-toolbar">
+            <form method="get" action="/Admin/Users" class="adm-search-form">
+                <input type="hidden" name="status" value="@(Model.StatusFilter ?? "")"/>
+                <div class="adm-search-wrap">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    <input type="text" name="search" value="@(Model.Search ?? "")" placeholder="Пошук за ім'ям…" class="adm-search-input"/>
+                    <button type="submit" class="adm-search-btn">Шукати</button>
+                </div>
+            </form>
+            <div class="adm-filter-tabs">
+                <a href="/Admin/Users?search=@Uri.EscapeDataString(Model.Search ?? "")" class="adm-filter-tab @(string.IsNullOrEmpty(Model.StatusFilter) ? "active" : "")">Усі</a>
+                <a href="/Admin/Users?search=@Uri.EscapeDataString(Model.Search ?? "")&status=active" class="adm-filter-tab @(Model.StatusFilter == "active" ? "active" : "")">Активні</a>
+                <a href="/Admin/Users?search=@Uri.EscapeDataString(Model.Search ?? "")&status=blocked" class="adm-filter-tab @(Model.StatusFilter == "blocked" ? "active" : "")">Заблоковані</a>
+            </div>
+        </div>
+
+        <div class="adm-section">
+            <div class="adm-table-wrap">
+                <table class="adm-table">
+                    <thead><tr>
+                        <th>Користувач</th>
+                        <th>Username</th>
+                        <th>Статус</th>
+                        <th>Дії</th>
+                    </tr></thead>
+                    <tbody>
+                    @if (!Model.Users.Any())
+                    {
+                        <tr><td colspan="4" class="adm-empty">Нічого не знайдено</td></tr>
+                    }
+                    @foreach (var u in Model.Users)
+                    {
+                        var ini = (u.FirstName.Length > 0 ? u.FirstName[0].ToString() : "") + (u.LastName.Length > 0 ? u.LastName[0].ToString() : "");
+                        if (string.IsNullOrEmpty(ini)) ini = u.Email.Length > 0 ? u.Email[0].ToString().ToUpper() : "?";
+                        <tr>
+                            <td>
+                                <div class="adm-user-cell">
+                                    <div class="adm-avatar">@ini.ToUpper()</div>
+                                    <div>
+                                        <div class="adm-user-name">@u.FirstName @u.LastName</div>
+                                        <div class="adm-user-email">@u.Email</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@u.UserName</td>
+                            <td>
+                                @if (u.IsLocked)
+                                {
+                                    <span class="adm-badge blocked">Заблоковано</span>
+                                }
+                                else
+                                {
+                                    <span class="adm-badge active">Активний</span>
+                                }
+                            </td>
+                            <td>
+                                @if (u.IsLocked)
+                                {
+                                    <form method="post" action="/Admin/UnlockUser" style="display:inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@u.Id"/>
+                                        <input type="hidden" name="returnUrl" value="@PageUrl(Model.CurrentPage)"/>
+                                        <button type="submit" class="adm-btn adm-btn-success">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 11V7a4 4 0 018 0v4"/><rect x="3" y="11" width="18" height="11" rx="2"/></svg>
+                                            Розблокувати
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form method="post" action="/Admin/BlockUser" style="display:inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@u.Id"/>
+                                        <input type="hidden" name="returnUrl" value="@PageUrl(Model.CurrentPage)"/>
+                                        <button type="submit" class="adm-btn adm-btn-danger">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                                            Заблокувати
+                                        </button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            @if (Model.TotalPages > 1)
+            {
+                <div class="adm-pagination">
+                    <a href="@PageUrl(Model.CurrentPage - 1)" class="adm-page-btn @(Model.CurrentPage == 0 ? "disabled" : "")">←</a>
+                    @for (int i = 0; i < Model.TotalPages; i++)
+                    {
+                        <a href="@PageUrl(i)" class="adm-page-btn @(i == Model.CurrentPage ? "active" : "")">@(i + 1)</a>
+                    }
+                    <a href="@PageUrl(Model.CurrentPage + 1)" class="adm-page-btn @(Model.CurrentPage >= Model.TotalPages - 1 ? "disabled" : "")">→</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+</body>
+</html>

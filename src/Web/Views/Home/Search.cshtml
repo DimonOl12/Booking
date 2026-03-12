@@ -19,7 +19,7 @@
 </head>
 <body>
 
-<!-- ═══ HERO WRAP: фонове фото + navbar + search bar (216px) ═══ -->
+<!-- ═══ HERO WRAP: фонове фото + navbar + search bar ═══ -->
 <div class="search-hero-wrap">
 
 @if (User.Identity?.IsAuthenticated == true)
@@ -31,7 +31,6 @@ else
     @await Html.PartialAsync("_HomeNavbarGuest")
 }
 
-    <!-- Search bar (inside hero, aligned to bottom) -->
     <div class="search-hero">
         <div class="search-hero-inner">
         <div class="search-bar-section">

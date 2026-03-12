@@ -57,7 +57,17 @@ namespace Web.Controllers
                 return View(model);
             }
 
-            // Local-only auth (no backend API required)
+            // Try backend API first — get JWT for authenticated API calls
+            var (apiToken, _) = await _api.SignInAsync(model.Email.Trim(), model.Password);
+            if (apiToken != null)
+            {
+                await SignInFromApiTokenAsync(apiToken);
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    return Redirect(returnUrl);
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Fallback: local-only auth (no backend API required)
             var local = _localUsers.Authenticate(model.Email.Trim(), model.Password);
             if (local == null)
             {
@@ -625,7 +635,15 @@ namespace Web.Controllers
                 return View(model);
             }
 
-            // Local-only auth (no backend API required)
+            // Try backend API first — get JWT for authenticated API calls
+            var (apiToken, _) = await _api.SignInAsync(model.Email.Trim(), model.Password);
+            if (apiToken != null)
+            {
+                await SignInFromApiTokenAsync(apiToken);
+                return RedirectToAction("RealtorDashboard");
+            }
+
+            // Fallback: local-only auth (no backend API required)
             var local = _localUsers.Authenticate(model.Email.Trim(), model.Password);
             if (local == null)
             {
@@ -976,7 +994,7 @@ namespace Web.Controllers
 
             var roleKey = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
             var role    = map.GetValueOrDefault(roleKey, map.GetValueOrDefault("role", "Customer"));
-            var isRealtor = role == "Realtor" ? "true" : "false";
+            var isRealtor = (role == "Realtor" || role == "Admin") ? "true" : "false";
 
             var claims = new List<Claim>
             {

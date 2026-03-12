@@ -204,5 +204,6 @@ C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\compressed\
 C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\compressed\3zm6tytr2w-hdcu0t2ifv.gz
 C:\Users\admin\Desktop\Booking_main\Booking\src\web\obj\Debug\net9.0\compressed\srogyvcpma-lt0t2cmjb5.gz
 C:\Users\admin\Desktop\Booking_main\Booking\src\web\obj\Debug\net9.0\compressed\ly3l2spzbq-l6kxxzwwzu.gz
-C:\Users\admin\Desktop\Booking_main\Booking\src\web\obj\Debug\net9.0\compressed\89cggriqbs-ekzqcr770i.gz
-C:\Users\admin\Desktop\Booking_main\Booking\src\web\obj\Debug\net9.0\compressed\piur8w03k7-5dutpi6nu8.gz
+C:\Users\admin\Desktop\Booking_main\Booking\src\web\obj\Debug\net9.0\compressed\piur8w03k7-fkou9b34kq.gz
+C:\Users\admin\Desktop\Booking_main\Booking\src\Web\obj\Debug\net9.0\compressed\w9kmfgkxm4-gug1zdcmzi.gz
+C:\Users\admin\Desktop\Booking_main\Booking\src\web\obj\Debug\net9.0\compressed\89cggriqbs-ecif7f4j0w.gz

@@ -132,6 +132,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/admin/Desktop/Booking_main/Booking/src/web/Views/Admin/Hotels.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSG90ZWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/admin/Desktop/Booking_main/Booking/src/web/Views/Admin/Realtors.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUmVhbHRvcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -174,6 +178,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/admin/Desktop/Booking_main/Booking/src/web/Views/Listings/MyListings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlzdGluZ3NcTXlMaXN0aW5ncy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/admin/Desktop/Booking_main/Booking/src/web/Views/Shared/_AdminSidebar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pblNpZGViYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/admin/Desktop/Booking_main/Booking/src/web/Views/Shared/_DashboardFooter.cshtml]
